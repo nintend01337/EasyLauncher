@@ -17,8 +17,18 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button  Click="JoinSinglePlayerButton_Click" Margin="10" Content="Одиночная игра" Grid.Column="0"/>
-            <Button  Click="JoinTestRangeButton_Click" Margin="10" Content="Полигон" Grid.Column="1"/>
+
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="3">
+                        <Button  Click="JoinSinglePlayerButton_Click" Margin="10" Content="Одиночная игра"/>
+                        <Button  Click="JoinTestRangeButton_Click" Margin="10" Content="Полигон" />
+                  </StackPanel>
+            </Grid>
 
         </Grid>
         <Grid Grid.Row="1">
@@ -39,8 +49,8 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Content="Обновить" Click="StatsRefreshButton_Click"/>
-                            <Button Grid.Column="1" Content="Чистый список" Click="StatsAsListButton_Click"/>
+                            <Button Grid.Column="0" Content="Обновить" Click="StatsRefreshButton_Click" IsEnabled="False"/>
+                            <Button Grid.Column="1" Content="Чистый список" Click="StatsAsListButton_Click" IsEnabled="False"/>
                         </Grid>
                         <Grid Grid.Row="1">
                             <!--Stats Design go here-->
@@ -48,7 +58,7 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Предметы">
+                <TabItem Header="Предметы" IsEnabled="False">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>

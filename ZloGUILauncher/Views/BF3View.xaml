@@ -17,7 +17,16 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Margin="10" Content="Одиночная игра" Grid.Column="0" Click="JoinSPButton_Click" Background="LightGray" Foreground="Black" />
+           
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Margin="10" Content="Одиночная игра" Grid.Column="2" Click="JoinSPButton_Click" Background="LightGray" Foreground="Black" />
+            </Grid>
+        
         </Grid>
         <Grid Grid.Row="1">
             <TabControl>
