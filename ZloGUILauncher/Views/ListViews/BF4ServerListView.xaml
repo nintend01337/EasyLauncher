@@ -11,14 +11,14 @@
     <FrameworkElement.Resources>
         <CollectionViewSource x:Key="ServersView"/>
     </FrameworkElement.Resources>
-    <Grid>
+    <Grid Background="Transparent">
         <DataGrid x:Name="ServersDG"
                   ItemsSource="{Binding Source={StaticResource ServersView}}" 
                   SelectionMode="Single" SelectionUnit="FullRow"
                   IsSynchronizedWithCurrentItem="True" 
                   IsTextSearchEnabled="True"
                   AutoGenerateColumns="False"                     
-                  IsReadOnly="True" Foreground="Azure" ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}">
+                  IsReadOnly="True" Foreground="WhiteSmoke" ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}">
             <DataGrid.Resources>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="Control.HorizontalContentAlignment"
