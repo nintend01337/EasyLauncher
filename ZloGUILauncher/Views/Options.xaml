@@ -1,0 +1,35 @@
+﻿<UserControl
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ZloGUILauncher.Views"
+      xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="ZloGUILauncher.Views.Options"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800">
+
+    <Grid Background="{DynamicResource AccentColorBrush}">
+
+        <StackPanel  HorizontalAlignment="Left" Background="Black" Opacity="0.6" Width="218">
+            <Expander Header="Expander TEST" Height="100" ExpandDirection="Down">
+                <Grid Background="#FFE5E5E5"/>
+
+            </Expander>
+            <Custom:ToggleSwitch Header="Automatic Launch Zlo" Height="100" Margin="-1,0,0,0" Width="180"/>
+            <Custom:ToggleSwitch Header="Automatic Launch Origin" Height="100" Margin="-1,0,0,0" Width="190"/>
+            <Button Width="100" Height="25" Content="TEST" HorizontalAlignment="Right" />
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Background="Black" Opacity="0.6">
+            <Grid>
+            <Label Content="Directory ZlOrigin and ZClient"/> 
+          
+            <TextBox IsReadOnly="True"/>
+            <Button Content="Browse"/>
+            </Grid>
+        </StackPanel>
+        <Grid VerticalAlignment="Center" Height="200" Width="200" HorizontalAlignment="Center" Background="Black" Opacity="0.6">
+            <!--<ListView Binding.TargetUpdated="{}" />-->
+
+        </Grid>
+    </Grid>
+</UserControl>

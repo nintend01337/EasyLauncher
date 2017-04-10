@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="ZloGUILauncher.Views.BF4View"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ZloGUILauncher.Views"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
+              d:DesignHeight="284.664" d:DesignWidth="496.486">
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button  Click="JoinSinglePlayerButton_Click" Margin="10" Content="Одиночная игра" Grid.Column="0"/>
+            <Button  Click="JoinTestRangeButton_Click" Margin="10" Content="Полигон" Grid.Column="1"/>
+
+        </Grid>
+        <Grid Grid.Row="1">
+            <TabControl>
+                <TabItem Header="Список Серверов">
+                    <Grid>
+                        <local:BF4ServerListView Foreground="Transparent"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Статистика" >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="Обновить" Click="StatsRefreshButton_Click"/>
+                            <Button Grid.Column="1" Content="Чистый список" Click="StatsAsListButton_Click"/>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <!--Stats Design go here-->
+                            <Button Margin="5" Content="Клик здесь и выпадет окно !!" Click="StatsAsWindowButton_Click"></Button>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Предметы">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="Обновить" Click="ItemsRefreshButton_Click"/>
+                        </Grid>
+                        <DataGrid Grid.Row="1" x:Name="ItemsDG"
+                                  SelectionMode="Single"
+                                  SelectionUnit="FullRow"
+                                  IsSynchronizedWithCurrentItem="True" 
+                                  IsTextSearchEnabled="True" AutoGenerateColumns="False" 
+                                  IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Flag Name" Binding="{Binding Path=Value.FlagName,Mode=OneWay}"/>
+                                <DataGridTextColumn Header="Item Name" Binding="{Binding Path=Value.ItemName,Mode=OneWay}"/>
+                                <DataGridCheckBoxColumn Header="Item Acquired" Binding="{Binding Path=Value.ItemExists,Mode=OneWay}"/>
+                                <DataGridTextColumn Header="Item Description" Binding="{Binding Path=Value.ItemDescription,Mode=OneWay}"/>                                
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</UserControl>

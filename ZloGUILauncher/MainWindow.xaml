@@ -1,0 +1,103 @@
+﻿<Controls:MetroWindow 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZloGUILauncher"
+        xmlns:views="clr-namespace:ZloGUILauncher.Views" x:Class="ZloGUILauncher.MainWindow"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"   
+        xmlns:helpers="clr-namespace:ZloGUILauncher"    
+        mc:Ignorable="d"
+         Height="600" Width="1000" ResizeMode="CanMinimize" ShowSystemMenuOnRightClick="False"
+    GlowBrush="{DynamicResource AccentColorBrush}" ShowIconOnTitleBar="True" Icon="icon.ico" WindowStartupLocation="CenterScreen" >
+    <Controls:MetroWindow.Background>
+        <ImageBrush ImageSource="{StaticResource background}" Stretch="UniformToFill"/>
+    </Controls:MetroWindow.Background>
+    
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type ScrollViewer}">
+                <Style.Setters>
+                    <Setter Property="helpers:ScrollViewerCorrector.FixScrolling" Value="True" />
+                </Style.Setters>
+            </Style>
+
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
+                <Style.Setters>
+                    <Setter Property="Background" Value="LightGray"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Style.Setters>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Text="ZClient State : "/>
+                <TextBlock x:Name="IsConnectedTextBlock" Text="DisConnected" Foreground="Red"/>
+            </StackPanel>
+            <StackPanel Margin="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Text="Player : "/>
+                <TextBlock x:Name="PlayerInfoTextBlock"  Text="name [id]" Foreground="LimeGreen"/>
+            </StackPanel>
+        </Grid>
+        <TabControl SelectionChanged="MainTabControl_SelectionChanged" Grid.Row="1" x:Name="MainTabControl" TabStripPlacement="Top">
+            <TabItem Header="Battlefiled 4">
+                <Grid>
+                    <!--BF4-->
+                    <views:BF4View x:Name="Ibf4View"/>
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="Battlefiled 3" IsEnabled="True">
+
+                <Grid>
+                    <!--BF3-->
+                    <views:BF3View/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Опции" IsEnabled="True">
+                <Grid IsEnabled="False">
+                    <views:Options/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Log" IsEnabled="False">
+                <Grid>
+                    <!--<views:GameStateViewer/>-->
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+        <StatusBar Grid.Row="2">
+            <TextBlock VerticalAlignment="Center" Text="Последнее событие : "/>
+            <TextBlock VerticalAlignment="Center" x:Name="LatestGameStateTextBlock" Text="[Game] [type] state"></TextBlock>
+            <Button Click="ViewAllGameStatesButton_Click" Content="ЛОГ"/>
+        </StatusBar>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"  Text="Developed by nintend01337" Margin="0,0,9,7" Grid.Row="2"/>
+    </Grid>
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Media/icon_reboot.png"/>
+                <Button Click="RestartLauncherButton_Click" Content="Restart"/>
+                <TextBlock Text="         "/>
+                <Image Source="Media/discord_logo_white.PNG"/>
+                <Button Click="OfficialDiscordButton_Click" Content="Discord"/>
+            </StackPanel>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
+</Controls:MetroWindow>
