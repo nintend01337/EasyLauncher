@@ -214,5 +214,16 @@ namespace ZloGUILauncher.Views
                 }
             }
         }
+
+        private void ServersDG_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems != null && e.AddedItems.Count > 0)
+            {
+                if (e.AddedItems[0] is BF4_GUI_Server serv)
+                {
+                    serv.getCountry();
+                }
+            }
+        }
     }
 }

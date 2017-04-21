@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 using Zlo.Extras;
 
@@ -57,7 +58,7 @@ namespace ZloGUILauncher.Servers
             {
                 if (m_IP == null || BitConverter.ToUInt32(m_IP.GetAddressBytes() , 0) == raw.ServerIP)
                 {
-                    m_IP = new IPAddress(BitConverter.GetBytes(raw.ServerIP));
+                    m_IP = new IPAddress(BitConverter.GetBytes(raw.ServerIP).Reverse().ToArray());
                 }
                 return m_IP;
             }
@@ -132,7 +133,7 @@ namespace ZloGUILauncher.Servers
         }
 
         public int Ping { get; set; }
-
+        public string Country { get; set; }
 
         public void UpdateAllProps()
         {
@@ -151,6 +152,7 @@ namespace ZloGUILauncher.Servers
             UpdatePing();
             Maps.Update();
             Players.Update();
+           // getCountry();
         }
 
         public void UpdatePing()
@@ -173,12 +175,38 @@ namespace ZloGUILauncher.Servers
             }));
         }
 
+        public void getCountry()
+        {
 
+            try
+            {
+                string strFile = "Unknown";
+                using (var objClient = new System.Net.WebClient())
+                {
+                    strFile = objClient.DownloadString("http://freegeoip.net/xml/" + IP.ToString());
+                }
+                int firstlocation = strFile.IndexOf("<CountryName>") + "<CountryName>".Length;
+                int lastlocation = strFile.IndexOf("</", firstlocation);
+                string location = strFile.Substring(firstlocation, lastlocation - firstlocation);
+                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
+                {
+                    Country = location;
+                }));
+            }
+            catch
+            {
+                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
+                {
+                    Country = "Неизвестно";
+                }));
+            }
+        }
 
-        public void OPC(string prop)
+            public void OPC(string prop)
         {
             PropertyChanged?.Invoke(this , new PropertyChangedEventArgs(prop));
         }
+       
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }

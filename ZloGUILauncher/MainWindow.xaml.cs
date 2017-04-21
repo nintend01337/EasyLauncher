@@ -22,9 +22,6 @@ using MahApps.Metro.Controls;
 
 namespace ZloGUILauncher
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow
     {
         public const string AssemblyName = "Easy Launcher";
@@ -64,7 +61,7 @@ namespace ZloGUILauncher
                 {
                     //connected
                     IsConnectedTextBlock.Text = "Подключен";
-                    IsConnectedTextBlock.Foreground = Brushes.Green;
+                    IsConnectedTextBlock.Foreground = Brushes.LimeGreen;
                 }
                 else
                 {

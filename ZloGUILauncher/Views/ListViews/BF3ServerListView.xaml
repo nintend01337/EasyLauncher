@@ -18,7 +18,7 @@
                   IsSynchronizedWithCurrentItem="True" 
                   IsTextSearchEnabled="True" AutoGenerateColumns="False"                      
                   IsReadOnly="True" 
-                  ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}">
+                  ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}" SelectionChanged="ServersDG_SelectionChanged">
             <DataGrid.Resources>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="HorizontalContentAlignment"
@@ -122,6 +122,10 @@
                                 <DockPanel>
                                     <TextBlock Text="Punkbuster : "/>
                                     <TextBlock Text="{Binding Path=IsHasPB}"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Country : "/>
+                                    <TextBlock Text="{Binding Path=Country}"/>
                                 </DockPanel>
                             </StackPanel>
                         </GroupBox>

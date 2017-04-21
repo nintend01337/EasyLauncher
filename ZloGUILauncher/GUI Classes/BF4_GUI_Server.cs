@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 using Zlo.Extras;
 
@@ -57,7 +58,7 @@ namespace ZloGUILauncher.Servers
             {
                 if (m_IP == null || BitConverter.ToUInt32(m_IP.GetAddressBytes() , 0) == raw.ServerIP)
                 {
-                    m_IP = new IPAddress(BitConverter.GetBytes(raw.ServerIP));
+                    m_IP = new IPAddress(BitConverter.GetBytes(raw.ServerIP).Reverse().ToArray());
                 }
                 return m_IP;
             }
@@ -173,7 +174,7 @@ namespace ZloGUILauncher.Servers
 
             Maps.Update();
             Players.Update();
-            //getCountry();            
+         //   getCountry();            
         }
 
         public void UpdatePing()
@@ -212,8 +213,41 @@ namespace ZloGUILauncher.Servers
         //        GeoIP IPRes = IPServ.GetGeoIP(raw.ServerIP.ToString());
         //        if (IPRes.ReturnCode == 1)
         //            Country = IPRes.CountryName.ToString();
-                
+
         //    }));
         // }
+
+
+        public void getCountry()
+        {
+
+            try
+            {
+                string strFile = "Unknown";
+                using (var objClient = new System.Net.WebClient())
+                {
+                    strFile = objClient.DownloadString("http://freegeoip.net/xml/" + IP.ToString());
+                }
+                int firstlocation = strFile.IndexOf("<CountryName>") + "<CountryName>".Length;
+                int lastlocation = strFile.IndexOf("</", firstlocation);
+                string location = strFile.Substring(firstlocation, lastlocation - firstlocation);
+                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
+                {
+                    Country = location;
+                }));
+            }
+            catch
+            {
+                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
+                {
+                   Country = "Неизвестно";
+                }));
+            }
+
+            
+
+        }
+
+
     }
 }
