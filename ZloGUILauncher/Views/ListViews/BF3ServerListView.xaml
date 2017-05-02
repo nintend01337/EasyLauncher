@@ -12,8 +12,9 @@
             <CollectionViewSource x:Key="ServersView"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Background="White">
+    <Grid Background="Transparent">
         <DataGrid x:Name="ServersDG" ItemsSource="{Binding Source={StaticResource ServersView}}" 
+                 Opacity="0.8"
                   SelectionMode="Single" SelectionUnit="FullRow"
                   IsSynchronizedWithCurrentItem="True" 
                   IsTextSearchEnabled="True" AutoGenerateColumns="False"                      

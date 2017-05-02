@@ -18,13 +18,13 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="3">
+                    <StackPanel Grid.Column="0">
                         <Button  Click="JoinSinglePlayerButton_Click" Margin="10" Content="Одиночная игра"/>
                         <Button  Click="JoinTestRangeButton_Click" Margin="10" Content="Полигон" />
                   </StackPanel>

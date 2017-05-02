@@ -11,9 +11,7 @@ using ZloGUILauncher.Views;
 
 namespace ZloGUILauncher
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+  
     public partial class App : Application
     {
         App() : base()
@@ -42,19 +40,6 @@ namespace ZloGUILauncher
                     m_Client = new API_ZloClient();
                 }
                 return m_Client;
-            }
-        }
-
-        private static GameStateViewer m_gamestateviewer;
-        public static GameStateViewer GameStateViewer
-        {
-            get
-            {
-                if (m_gamestateviewer == null)
-                {
-                    m_gamestateviewer = new GameStateViewer();
-                }
-                return m_gamestateviewer;
             }
         }
     }

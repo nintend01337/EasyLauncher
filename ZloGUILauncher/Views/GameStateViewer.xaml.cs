@@ -46,12 +46,12 @@ namespace ZloGUILauncher.Views
             NewParagraph.Inlines.Add(TypeText);
             NewParagraph.Inlines.Add(MessageText);
 
-            StateTextBox.Document.Blocks.Add(NewParagraph);
+            //StateTextBox.Document.Blocks.Add(NewParagraph);
         }
 
         private void ClearButton_Click(object sender , RoutedEventArgs e)
         {
-            StateTextBox.Document.Blocks?.Clear();
+           // StateTextBox.Document.Blocks?.Clear();
         }
 
         private void Window_Closing(object sender , System.ComponentModel.CancelEventArgs e)

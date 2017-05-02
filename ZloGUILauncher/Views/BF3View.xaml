@@ -18,13 +18,13 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
            
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="2" Orientation="Vertical" >
+                <StackPanel Grid.Column="0" Orientation="Vertical" >
                 <Button Margin="10" Content="Одиночная игра" Grid.Column="2" Click="JoinSPButton_Click" Background="LightGray" Foreground="Black" />
                 <TextBlock Margin="10" Text="               " Grid.Column="2"/>
                     

@@ -13,13 +13,13 @@
     </FrameworkElement.Resources>
     <Grid Background="Transparent">
         <DataGrid x:Name="ServersDG"
-            
+                   Opacity="0.8"
                   ItemsSource="{Binding Source={StaticResource ServersView}}" 
                   SelectionMode="Single" SelectionUnit="FullRow"
                   IsSynchronizedWithCurrentItem="True" 
                   IsTextSearchEnabled="True"
                   AutoGenerateColumns="False"                     
-                  IsReadOnly="True" Foreground="WhiteSmoke" ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}" SelectionChanged="ServersDG_SelectionChanged">
+                  IsReadOnly="True"  ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}" SelectionChanged="ServersDG_SelectionChanged">
             <DataGrid.Resources>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="Control.HorizontalContentAlignment" Value="Center" />

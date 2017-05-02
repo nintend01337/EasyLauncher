@@ -203,21 +203,6 @@ namespace ZloGUILauncher.Servers
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
-
-
-        //public void getCountry()
-        //{
-        //    Task.Run((Action)(() =>
-        //    {
-        //        GeoIPService IPServ = new GeoIPService();
-        //        GeoIP IPRes = IPServ.GetGeoIP(raw.ServerIP.ToString());
-        //        if (IPRes.ReturnCode == 1)
-        //            Country = IPRes.CountryName.ToString();
-
-        //    }));
-        // }
-
-
         public void getCountry()
         {
 

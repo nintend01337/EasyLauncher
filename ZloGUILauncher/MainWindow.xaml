@@ -73,15 +73,30 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Опции" IsEnabled="True">
-                <Grid IsEnabled="False">
+            <TabItem Header="Опции">
+                <Grid >
                     <views:Options/>
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Log" IsEnabled="False">
+            <TabItem Header="Log">
                 <Grid>
                     <!--<views:GameStateViewer/>-->
+                    <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <RichTextBox VerticalScrollBarVisibility="Visible" BorderThickness="0" x:Name="LogBox" Background="#FF0D0D0D" IsReadOnly="True" Grid.ColumnSpan="2">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0" />
+                </Style>
+            </RichTextBox.Resources>
+            <RichTextBox.Document>
+                <FlowDocument x:Name="LogDocument"/>
+            </RichTextBox.Document>
+        </RichTextBox>
+        <Button Grid.Row="1" Click="ClearButton_Click" Content="Очистить"/>
                 </Grid>
             </TabItem>
 
@@ -89,7 +104,6 @@
         <StatusBar Grid.Row="2">
             <TextBlock VerticalAlignment="Center" Text="Последнее событие : "/>
             <TextBlock VerticalAlignment="Center" x:Name="LatestGameStateTextBlock" Text="[Game] [type] state"></TextBlock>
-            <Button Click="ViewAllGameStatesButton_Click" Content="ЛОГ"/>
         </StatusBar>
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"  Text="Developed by nintend01337" Margin="0,0,9,7" Grid.Row="2"/>
     </Grid>

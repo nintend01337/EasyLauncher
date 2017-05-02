@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,7 @@ namespace ZloGUILauncher.Views
         public Options()
         {
             InitializeComponent();
+           
         }
 
         private void ReadSettings()
@@ -37,6 +39,22 @@ namespace ZloGUILauncher.Views
             
         }
 
+        private void ChangeAppThemeButtonClick(object sender, RoutedEventArgs e)
+        {
+            var theme = ThemeManager.DetectAppStyle(Application.Current);
+            ThemeManager.ChangeAppStyle(Application.Current, theme.Item2, ThemeManager.GetAppTheme("Base" + ((Button)sender).Content));
+        }
 
+
+        private void AccentSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedAccent = AccentSelector.SelectedItem as Accent;
+            if (selectedAccent != null)
+            {
+                var theme = ThemeManager.DetectAppStyle(Application.Current);
+                ThemeManager.ChangeAppStyle(Application.Current, selectedAccent, theme.Item1);
+                Application.Current.MainWindow.Activate();
+            }
+        }
     }
 }

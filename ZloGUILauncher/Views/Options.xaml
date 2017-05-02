@@ -4,32 +4,54 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ZloGUILauncher.Views"
+    xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
       xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="ZloGUILauncher.Views.Options"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800">
 
     <Grid Background="{DynamicResource AccentColorBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-        <StackPanel  HorizontalAlignment="Left" Background="Black" Opacity="0.6" Width="218">
-            <Expander Header="Expander TEST" Height="100" ExpandDirection="Down">
-                <Grid Background="#FFE5E5E5"/>
 
-            </Expander>
-            <Custom:ToggleSwitch Header="Automatic Launch Zlo" Height="100" Margin="-1,0,0,0" Width="180"/>
-            <Custom:ToggleSwitch Header="Automatic Launch Origin" Height="100" Margin="-1,0,0,0" Width="190"/>
-            <Button Width="100" Height="25" Content="TEST" HorizontalAlignment="Right" />
+        <StackPanel Grid.Row="3" Orientation="Vertical">
+        <Button Content="Dark"
+                            Click="ChangeAppThemeButtonClick" />
+        <Button Content="Light"
+                            Click="ChangeAppThemeButtonClick" />
         </StackPanel>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Background="Black" Opacity="0.6">
+        
+        <StackPanel Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Top" Background="Black" Opacity="0.6">
             <Grid>
             <Label Content="Directory ZlOrigin and ZClient"/> 
           
             <TextBox IsReadOnly="True"/>
             <Button Content="Browse"/>
             </Grid>
+
         </StackPanel>
         <Grid VerticalAlignment="Center" Height="200" Width="200" HorizontalAlignment="Center" Background="Black" Opacity="0.6">
             <!--<ListView Binding.TargetUpdated="{}" />-->
-
         </Grid>
+        <StackPanel Grid.Row="2" Orientation="Vertical">
+            <TextBlock Text="Оформление"/>
+            <ComboBox  x:Name="AccentSelector"
+                              Margin="0 0 2 0"
+                              VerticalAlignment="Center"
+                              SelectionChanged="AccentSelectionChanged"
+                              ItemsSource="{x:Static metro:ThemeManager.Accents}">
+            <ComboBox.ItemTemplate>
+
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+            </ComboBox>
+       </StackPanel>
     </Grid>
 </UserControl>

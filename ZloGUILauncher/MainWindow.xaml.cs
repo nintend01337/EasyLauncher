@@ -26,7 +26,8 @@ namespace ZloGUILauncher
     {
         public const string AssemblyName = "Easy Launcher";
         public const string autor = "nintend01337";
-        public string version = "1.1.5 beta";
+        public string version = "1.1.7 beta";
+        public string ApiVersion;
         public bool isDebug = false;
 
 
@@ -101,7 +102,7 @@ namespace ZloGUILauncher
                 Dispatcher.Invoke(() =>
                 {
                     Title =  AssemblyName + "|" + version +" | "+  "API version " + Current.ToString();
-                    
+                    ApiVersion = Current.ToString();
                 });
             }
         }
@@ -117,8 +118,10 @@ namespace ZloGUILauncher
             else
             {
                 //no errors
-                string Sourcedll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo.dll");
-                string Newdll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo_New.dll");
+                string executablePath = Directory.GetCurrentDirectory();
+                string Sourcedll = "Zlo.dll";
+                string Newdll = "Zlo_New.dll";
+                string Olddll = "Zlo_old.dll";
                 string BatchText =
                    $@"
 @ECHO off
@@ -130,8 +133,11 @@ echo Waiting for process %EXE% to close ...
 tasklist /FI ""IMAGENAME eq %EXE%"" 2>NUL | find /I /N ""%EXE%"">NUL
 if ""%ERRORLEVEL%""==""0"" goto LOOP
 echo Process %EXE% closed
+mkdir backup
+rename  ""{Sourcedll}"" ""{Olddll}""
+move /y ""{Olddll}"" backup
 move /y ""{Newdll}"" ""{Sourcedll}"" 
-start """" ""{System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.FriendlyName)}"" ""done""
+start """" ""{AppDomain.CurrentDomain.FriendlyName}"" ""done""
 Exit
 ";
                 var bat_path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UpdateBat.bat");
@@ -149,8 +155,29 @@ Exit
         {
             Dispatcher.Invoke(() =>
             {
-                App.GameStateViewer.StateReceived(game, type, message);
                 LatestGameStateTextBlock.Text = $"[{game}] [{type}] {message}";
+
+                var t = DateTime.Now;
+                Run DateText = new Run($"{t.ToShortTimeString()} : ");
+                DateText.Foreground = new SolidColorBrush(Colors.White);
+
+                Run GameText = new Run($"[{game}] ");
+                GameText.Foreground = new SolidColorBrush(Colors.LightGreen);
+
+                Run TypeText = new Run($"[{type}] ");
+                TypeText.Foreground = new SolidColorBrush(Color.FromRgb(77, 188, 233));
+
+                Run MessageText = new Run($"{message}");
+                MessageText.Foreground = new SolidColorBrush(Colors.White);
+
+                Paragraph NewParagraph = new Paragraph();
+                NewParagraph.Inlines.Add(DateText);
+                NewParagraph.Inlines.Add(GameText);
+                NewParagraph.Inlines.Add(TypeText);
+                NewParagraph.Inlines.Add(MessageText);
+
+                LogBox.Document.Blocks.Add(NewParagraph);
+                
             });
         }
 
@@ -170,12 +197,7 @@ Exit
 
             }
         }
-
-        private void ViewAllGameStatesButton_Click(object sender, RoutedEventArgs e)
-        {
-            App.GameStateViewer.Show();
-        }
-
+        
         private void RestartLauncherButton_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.Invoke(() =>
@@ -213,6 +235,12 @@ Exit
         private void OfficialDiscordButton_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("https://discord.gg/QrBvQtt");
+        }
+
+
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            LogBox.Document.Blocks?.Clear();
         }
     }
 }
