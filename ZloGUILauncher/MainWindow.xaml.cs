@@ -41,8 +41,9 @@ namespace ZloGUILauncher
             App.Client.APIVersionReceived += Client_APIVersionReceived;
             App.Client.Disconnected += Client_Disconnected;
             App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
-            if (App.Client.Connect())
-            {
+            if (!App.Client.Connect())
+                return;
+            
                 App.Client.SubToServerList(Zlo.Extras.ZloGame.BF_3);
                 App.Client.SubToServerList(Zlo.Extras.ZloGame.BF_4);
 
@@ -51,7 +52,7 @@ namespace ZloGUILauncher
 
                 App.Client.GetStats(Zlo.Extras.ZloGame.BF_3);
                 
-            }
+            
         }
 
         private void Client_ConnectionStateChanged(bool IsConnectedToZloClient)
@@ -101,8 +102,9 @@ namespace ZloGUILauncher
             {
                 Dispatcher.Invoke(() =>
                 {
-                    Title =  AssemblyName + "|" + version +" | "+  "API version " + Current.ToString();
                     ApiVersion = Current.ToString();
+                    Title = AssemblyName + "|" + version + " | " + "API version " + ApiVersion;
+                   
                 });
             }
         }
