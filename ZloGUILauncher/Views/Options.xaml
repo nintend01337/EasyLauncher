@@ -35,9 +35,7 @@
             </Grid>
 
         </StackPanel>
-        <Grid VerticalAlignment="Center" Height="200" Width="200" HorizontalAlignment="Center" Background="Black" Opacity="0.6">
-            <!--<ListView Binding.TargetUpdated="{}" />-->
-        </Grid>
+        
         <StackPanel Grid.Row="2" Orientation="Vertical">
             <TextBlock Text="Оформление"/>
             <ComboBox  x:Name="AccentSelector"
