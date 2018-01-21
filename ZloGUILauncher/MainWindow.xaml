@@ -8,7 +8,7 @@
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:helpers="clr-namespace:ZloGUILauncher"
                       Height="600" Width="1000" ResizeMode="CanMinimize" ShowSystemMenuOnRightClick="false"
-                      GlowBrush="{DynamicResource AccentColorBrush}" ShowIconOnTitleBar="true" Icon="icon.ico"
+                      GlowBrush="{DynamicResource AccentColorBrush}" ShowTitleBar="True" ShowIconOnTitleBar="true" Icon="icon.ico"
                       WindowStartupLocation="CenterScreen">
     <Control.Background>
         <ImageBrush ImageSource="{StaticResource background}" Stretch="UniformToFill"/>

@@ -46,13 +46,12 @@ namespace ZloGUILauncher
             
                 App.Client.SubToServerList(Zlo.Extras.ZloGame.BF_3);
                 App.Client.SubToServerList(Zlo.Extras.ZloGame.BF_4);
-
+            
                 App.Client.GetStats(Zlo.Extras.ZloGame.BF_4);
                 App.Client.GetItems(Zlo.Extras.ZloGame.BF_4);
 
                 App.Client.GetStats(Zlo.Extras.ZloGame.BF_3);
                 
-            
         }
 
         private void Client_ConnectionStateChanged(bool IsConnectedToZloClient)
@@ -104,7 +103,6 @@ namespace ZloGUILauncher
                 {
                     ApiVersion = Current.ToString();
                     Title = AssemblyName + "|" + version + " | " + "API version " + ApiVersion;
-                   
                 });
             }
         }
