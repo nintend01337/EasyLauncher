@@ -22,9 +22,6 @@ using ZloGUILauncher.Servers;
 
 namespace ZloGUILauncher.Views
 {
-    /// <summary>
-    /// Interaction logic for BF4ServerListView.xaml
-    /// </summary>
     public partial class BF4ServerListView : UserControl
     {
         public CollectionViewSource ViewSource
@@ -58,7 +55,6 @@ namespace ZloGUILauncher.Views
             DataServersList.ServerUpdated += DataServersList_ServerUpdated;
             DataServersList.ServerRemoved += DataServersList_ServerRemoved;
             ViewSource.Source = BF4_GUI_Servers;
-
         }       
         private void DataServersList_ServerRemoved(uint id , API_BF4ServerBase server)
         {
@@ -93,7 +89,6 @@ namespace ZloGUILauncher.Views
             {
                 var newserv = new BF4_GUI_Server(server);
                 BF4_GUI_Servers.Add(newserv);                
-               
             });
         }
 
@@ -102,10 +97,6 @@ namespace ZloGUILauncher.Views
             var row = ServersDG.ItemContainerGenerator.ContainerFromItem(element) as DataGridRow;
             if (row == null) return;
 
-           
-
-            
-            
             ColorAnimation switchOnAnimation = new ColorAnimation
             {
                 From = Colors.Transparent,
@@ -114,7 +105,6 @@ namespace ZloGUILauncher.Views
                 AutoReverse = true
             };
             Storyboard blinkStoryboard = new Storyboard();
-
 
             blinkStoryboard.Children.Add(switchOnAnimation);
             Storyboard.SetTargetProperty(switchOnAnimation, new PropertyPath("Background.Color"));
@@ -128,63 +118,21 @@ namespace ZloGUILauncher.Views
         {
             var b = sender as Button;
             var server = (BF4_GUI_Server)b.DataContext;
-            if (server.IsHasPW)
-            {
-                InputBox inb = new InputBox(requestmsg);
-                var ish = inb.ShowDialog();
-                if (ish.HasValue && ish.Value)
-                {
-                    var pw = inb.OutPut;
-                    App.Client.JoinOnlineGameWithPassWord(OnlinePlayModes.BF4_Multi_Player , server.ID , pw);
-                }
-            }
-            else
-            {
-                App.Client.JoinOnlineGame(OnlinePlayModes.BF4_Multi_Player , server.ID);
-            }
+            App.Client.JoinOnlineGame(OnlinePlayModes.BF4_Multi_Player , server.ID); 
         }
-        string requestmsg = "Введите пароль : \nNote : Если вы уверены что на сервере нет пароля закройте это окно";
+        //string requestmsg = "Введите пароль : \nNote : Если вы уверены что на сервере нет пароля закройте это окно";
         private void JoinSpectatorButton_Click(object sender , RoutedEventArgs e)
         {
             var b = sender as Button;
             var server = (BF4_GUI_Server)b.DataContext;
-            if (server.IsHasPW)
-            {
-                InputBox inb = new InputBox(requestmsg);
-                var ish = inb.ShowDialog();
-                if (ish.HasValue && ish.Value)
-                {
-                    var pw = inb.OutPut;
-                    App.Client.JoinOnlineGameWithPassWord(OnlinePlayModes.BF4_Spectator , server.ID , pw);
-                }
-            }
-            else
-            {
-                App.Client.JoinOnlineGame(OnlinePlayModes.BF4_Spectator , server.ID);
-            }
+            App.Client.JoinOnlineGame(OnlinePlayModes.BF4_Spectator , server.ID); 
         }
         private void JoinCommanderButton_Click(object sender , RoutedEventArgs e)
         {
             var b = sender as Button;
             var server = (BF4_GUI_Server)b.DataContext;
-            if (server.IsHasPW)
-            {
-                InputBox inb = new InputBox(requestmsg);
-                var ish = inb.ShowDialog();
-                if (ish.HasValue && ish.Value)
-                {
-                    var pw = inb.OutPut;
-                    App.Client.JoinOnlineGameWithPassWord(OnlinePlayModes.BF4_Commander , server.ID , pw);
-                }
-            }
-            else
-            {
-                App.Client.JoinOnlineGame(OnlinePlayModes.BF4_Commander , server.ID);
-            }
+            App.Client.JoinOnlineGame(OnlinePlayModes.BF4_Commander , server.ID); 
         }
-
-
-     
 
         private void ScrollViewer_PreviewMouseWheel(object sender , MouseWheelEventArgs e)
         {

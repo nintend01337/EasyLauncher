@@ -54,20 +54,19 @@
         </Grid>
         <Controls:MetroAnimatedTabControl SelectionChanged="MainTabControl_SelectionChanged" x:Name="MainTabControl" Grid.Row="1"
                                       TabStripPlacement="Top" Controls:TabControlHelper.IsUnderlined="true">
-            <TabItem Header="Battlefiled 3" IsEnabled="true">
+            <TabItem Header="Battlefield 3" IsEnabled="true">
                 <Grid>
                     <views:BF3View/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Battlefiled 4">
+            <TabItem Header="Battlefield 4">
                 <Grid>
                     <views:BF4View x:Name="Ibf4View"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Battlefiled:Hardline">
+            <TabItem Header="Battlefield:Hardline">
                 <Grid>
-                    <!--<views:BF4View x:Name="Ibf4View"/>-->
-                    <TextBlock Text="NOT IMPLEMENTED!!! | НЕ реализовано"/> 
+                    <views:BFHView x:Name="IbfhView"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Опции">

@@ -20,16 +20,16 @@ using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.Controls;
 using Zlo.Extras;
+
 namespace ZloGUILauncher
 {
     public partial class MainWindow
     {
         public const string AssemblyName = "Easy Launcher";
         public const string autor = "nintend01337";
-        public string version = "1.1.7 beta FIX 2";
+        public string version = "1.2.0 beta";
         public string ApiVersion;
         public bool isDebug = false;
-
 
         public MainWindow()
         {
@@ -41,7 +41,7 @@ namespace ZloGUILauncher
             App.Client.APIVersionReceived += Client_APIVersionReceived;
             App.Client.Disconnected += Client_Disconnected;
             App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
-            
+           
             if (App.Client.Connect())
             {
                 switch (App.Client.SavedActiveServerListener)
@@ -87,9 +87,7 @@ namespace ZloGUILauncher
                 {
                     IsConnectedTextBlock.Text = "Отключен";
                     IsConnectedTextBlock.Foreground = Brushes.Red;
-
                 }
-
             });
 
         }
@@ -252,11 +250,7 @@ Exit
                         App.Client.SubToServerList(ZloGame.BF_4);
                         break;
                     case 2:
-                        //    App.Client.SubToServerList(ZloGame.BF_HardLine);
-                        Dispatcher.Invoke(async () =>
-                        {
-                            await this.ShowMessageAsync("BFH", $"BFH еще нет :), Добавить ?", MessageDialogStyle.AffirmativeAndNegative);
-                        });
+                            App.Client.SubToServerList(ZloGame.BF_HardLine);
                         break;
                     default:
                         break;
