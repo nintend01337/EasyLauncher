@@ -5,6 +5,7 @@
        MahApps.Metro
        Newtonsoft.Json
        System.Windows.Interactivity
+       Zlo
     </IncludeAssemblies>    
   </Costura>
 </Weavers>

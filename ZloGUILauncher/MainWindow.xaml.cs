@@ -19,14 +19,14 @@ using System.Windows.Shapes;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.Controls;
-
+using Zlo.Extras;
 namespace ZloGUILauncher
 {
     public partial class MainWindow
     {
         public const string AssemblyName = "Easy Launcher";
         public const string autor = "nintend01337";
-        public string version = "1.1.7 beta";
+        public string version = "1.1.7 beta FIX 2";
         public string ApiVersion;
         public bool isDebug = false;
 
@@ -41,16 +41,35 @@ namespace ZloGUILauncher
             App.Client.APIVersionReceived += Client_APIVersionReceived;
             App.Client.Disconnected += Client_Disconnected;
             App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
-            if (!App.Client.Connect())
-                return;
             
-                App.Client.SubToServerList(Zlo.Extras.ZloGame.BF_3);
-                App.Client.SubToServerList(Zlo.Extras.ZloGame.BF_4);
-            
-                App.Client.GetStats(Zlo.Extras.ZloGame.BF_4);
-                App.Client.GetItems(Zlo.Extras.ZloGame.BF_4);
+            if (App.Client.Connect())
+            {
+                switch (App.Client.SavedActiveServerListener)
+                {
+                   
+                    case ZloGame.BF_3:
+                        MainTabControl.SelectedIndex = 0;
+                       // App.Client.SubToServerList(ZloGame.BF_3);
+                        App.Client.GetStats(ZloGame.BF_3);
+                        break;
 
-                App.Client.GetStats(Zlo.Extras.ZloGame.BF_3);
+                    case ZloGame.BF_4:
+                        MainTabControl.SelectedIndex = 1;
+
+                      //  App.Client.SubToServerList(ZloGame.BF_4);
+                        App.Client.GetStats(ZloGame.BF_4);
+                        App.Client.GetItems(ZloGame.BF_4);
+                        break;
+
+                    case ZloGame.BF_HardLine:
+                        MainTabControl.SelectedIndex = 2;
+
+                        //App.Client.SubToServerList(ZloGame.BF_HardLine);
+                        App.Client.GetStats(ZloGame.BF_HardLine);
+                        App.Client.GetItems(ZloGame.BF_HardLine);
+                        break;
+                }
+            }
                 
         }
 
@@ -77,24 +96,32 @@ namespace ZloGUILauncher
 
         private void Client_Disconnected(Zlo.Extras.DisconnectionReasons Reason)
         {
-            MessageBox.Show($"Клиент отключен по причине : {Reason}");
+            // MessageBox.Show($"Клиент отключен по причине : {Reason}");
+            Dispatcher.Invoke(async () =>
+            {
+                await this.ShowMessageAsync("",$"Вылет по причине : {Reason}",MessageDialogStyle.Affirmative);
+            });
         }
 
         private void Client_APIVersionReceived(Version Current, Version Latest, bool IsNeedUpdate, string DownloadAdress)
         {
+            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
             if (IsNeedUpdate)
             {
-                Dispatcher.Invoke(() =>
+                Dispatcher.Invoke(async() =>
                 {
-                    MessageBox.Show($"Текущая dll версия : {Current}\n Последняя dll версия : {Latest}\n Нажмите ОК для обновления Zlo.dll", "Обновление", MessageBoxButton.OK);
-                    string Sourcedll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo.dll");
-                    string Newdll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo_New.dll");
+                    // MessageBox.Show($"Текущая dll версия : {Current}\n Последняя dll версия : {Latest}\n Обновить сейчас? Zlo.dll", "Обновление", MessageBoxButton.YesNo);
+                    if ( await this.ShowMessageAsync("Обновление", $"Текущая dll версия : {Current}\n Последняя dll версия : {Latest}\n Обновить сейчас?", MessageDialogStyle.AffirmativeAndNegative)==MessageDialogResult.Affirmative);
+                  { 
+                      string Sourcedll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo.dll");
+                      string Newdll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo_New.dll");
 
                     using (WebClient wc = new WebClient())
                     {
                         wc.DownloadFileCompleted += Wc_DownloadFileCompleted;
                         wc.DownloadFileAsync(new Uri(DownloadAdress), Newdll);
                     }
+                   }
                 });
             }
             else
@@ -210,8 +237,7 @@ Exit
 
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var tc = sender as TabControl;
-            if (tc != null)
+            if (sender is TabControl tc)
             {
                 if (tc.SelectedIndex < 0)
                 {
@@ -220,10 +246,17 @@ Exit
                 switch (tc.SelectedIndex)
                 {
                     case 0:
-                        App.Client.SubToServerList(Zlo.Extras.ZloGame.BF_4);
+                        App.Client.SubToServerList(ZloGame.BF_3);
                         break;
                     case 1:
-                        App.Client.SubToServerList(Zlo.Extras.ZloGame.BF_3);
+                        App.Client.SubToServerList(ZloGame.BF_4);
+                        break;
+                    case 2:
+                        //    App.Client.SubToServerList(ZloGame.BF_HardLine);
+                        Dispatcher.Invoke(async () =>
+                        {
+                            await this.ShowMessageAsync("BFH", $"BFH еще нет :), Добавить ?", MessageDialogStyle.AffirmativeAndNegative);
+                        });
                         break;
                     default:
                         break;
@@ -237,10 +270,10 @@ Exit
             Process.Start("https://discord.gg/QrBvQtt");
         }
 
-
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
             LogBox.Document.Blocks?.Clear();
         }
     }
+            
 }

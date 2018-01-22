@@ -64,6 +64,12 @@
                     <views:BF4View x:Name="Ibf4View"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="Battlefiled:Hardline">
+                <Grid>
+                    <!--<views:BF4View x:Name="Ibf4View"/>-->
+                    <TextBlock Text="NOT IMPLEMENTED!!! | НЕ реализовано"/> 
+                </Grid>
+            </TabItem>
             <TabItem Header="Опции">
                 <Grid>
                     <views:Options/>
