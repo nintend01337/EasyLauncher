@@ -23,8 +23,8 @@ using Zlo.Extras;
 
 namespace ZloGUILauncher
 {
-    public partial class MainWindow
-    {
+    public partial class MainWindow : MetroWindow
+    {        
         public const string AssemblyName = "Easy Launcher";
         public const string autor = "nintend01337";
         public string version = "1.2.0 beta";
@@ -35,27 +35,26 @@ namespace ZloGUILauncher
         {
             InitializeComponent();
             App.Current.MainWindow = this;
+            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
             App.Client.ErrorOccured += Client_ErrorOccured;
             App.Client.UserInfoReceived += Client_UserInfoReceived;
             App.Client.GameStateReceived += Client_GameStateReceived;
             App.Client.APIVersionReceived += Client_APIVersionReceived;
             App.Client.Disconnected += Client_Disconnected;
-            App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
+            //App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
            
             if (App.Client.Connect())
             {
                 switch (App.Client.SavedActiveServerListener)
-                {
-                   
+                {                   
                     case ZloGame.BF_3:
                         MainTabControl.SelectedIndex = 0;
-                       // App.Client.SubToServerList(ZloGame.BF_3);
+                       //App.Client.SubToServerList(ZloGame.BF_3);
                         App.Client.GetStats(ZloGame.BF_3);
                         break;
 
                     case ZloGame.BF_4:
                         MainTabControl.SelectedIndex = 1;
-
                       //  App.Client.SubToServerList(ZloGame.BF_4);
                         App.Client.GetStats(ZloGame.BF_4);
                         App.Client.GetItems(ZloGame.BF_4);
@@ -63,17 +62,15 @@ namespace ZloGUILauncher
 
                     case ZloGame.BF_HardLine:
                         MainTabControl.SelectedIndex = 2;
-
                         //App.Client.SubToServerList(ZloGame.BF_HardLine);
                         App.Client.GetStats(ZloGame.BF_HardLine);
                         App.Client.GetItems(ZloGame.BF_HardLine);
                         break;
                 }
-            }
-                
+            }                
         }
 
-        private void Client_ConnectionStateChanged(bool IsConnectedToZloClient)
+        /*private void Client_ConnectionStateChanged(bool IsConnectedToZloClient)
         {
             Dispatcher.Invoke(() =>
             {
@@ -81,23 +78,20 @@ namespace ZloGUILauncher
                 {                    
                     //connected
                     /*IsConnectedTextBlock.Text = "Подключен";
-                    IsConnectedTextBlock.Foreground = Brushes.LimeGreen;*/
+                    IsConnectedTextBlock.Foreground = Brushes.LimeGreen;
                 }
                 else
                 {
                     /*IsConnectedTextBlock.Text = "Отключен";
-                    IsConnectedTextBlock.Foreground = Brushes.Red;*/
+                    IsConnectedTextBlock.Foreground = Brushes.Red;
                 }
             });
 
-        }
+        }*/
 
         private void Client_UserInfoReceived(uint UserID, string UserName)
         {
-            Dispatcher.Invoke(() =>
-            {
-                Title = "Welcome " + UserName + " | " + AssemblyName;
-            });
+            Title = AssemblyName + " | " + "Welcome " + UserName;
         }
 
         private void Client_Disconnected(Zlo.Extras.DisconnectionReasons Reason)
@@ -110,30 +104,23 @@ namespace ZloGUILauncher
         }
 
         private void Client_APIVersionReceived(Version Current, Version Latest, bool IsNeedUpdate, string DownloadAdress)
-        {
-            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
-            if (IsNeedUpdate)
-            {
+        {            
+            if (IsNeedUpdate) {
                 Dispatcher.Invoke(async() =>
                 {
                     // MessageBox.Show($"Текущая dll версия : {Current}\n Последняя dll версия : {Latest}\n Обновить сейчас? Zlo.dll", "Обновление", MessageBoxButton.YesNo);
-                    if ( await this.ShowMessageAsync("Обновление", $"Текущая dll версия : {Current}\n Последняя dll версия : {Latest}\n Обновить сейчас?", MessageDialogStyle.AffirmativeAndNegative)==MessageDialogResult.Affirmative);
-                  { 
-                      string Sourcedll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo.dll");
-                      string Newdll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo_New.dll");
-
-                    using (WebClient wc = new WebClient())
-                    {
-                        wc.DownloadFileCompleted += Wc_DownloadFileCompleted;
-                        wc.DownloadFileAsync(new Uri(DownloadAdress), Newdll);
-                    }
+                    if ( await this.ShowMessageAsync("Обновление", $"Текущая dll версия : {Current}\n Последняя dll версия : {Latest}\n Обновить сейчас?", MessageDialogStyle.AffirmativeAndNegative)==MessageDialogResult.Affirmative){ 
+                        string Sourcedll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo.dll");
+                        string Newdll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo_New.dll");
+                        using (WebClient wc = new WebClient()){
+                            wc.DownloadFileCompleted += Wc_DownloadFileCompleted;
+                            wc.DownloadFileAsync(new Uri(DownloadAdress), Newdll);
+                        }
                    }
                 });
             }
-            else
-            {
-                Dispatcher.Invoke(() =>
-                {
+            else {
+                Dispatcher.Invoke(() => {
                    // ApiVersion = Current.ToString();
                    // Title = AssemblyName + "|" + version + " | " + "API version " + ApiVersion;
                 });
@@ -183,7 +170,7 @@ Exit
             }
         }
 
-#region Setup Events
+        #region Setup Events
         private void Client_GameStateReceived(Zlo.Extras.ZloGame game, string type, string message)
         {
             Dispatcher.Invoke(() =>
@@ -216,17 +203,12 @@ Exit
 
         private void Client_ErrorOccured(Exception Error, string CustomMessage)
         {
-            if (isDebug)
-            {
-                MessageBox.Show($"{Error.ToString()}", CustomMessage);
-
-            }
+            if (isDebug) MessageBox.Show($"{Error.ToString()}", CustomMessage);
         }
         
         private void RestartLauncherButton_Click(object sender, RoutedEventArgs e)
         {
-            Dispatcher.Invoke(() =>
-            {
+            Dispatcher.Invoke(() => {
                 App.Client.Close();
                 Process.Start(Application.ResourceAssembly.Location);
                 Application.Current.Shutdown();
@@ -241,12 +223,8 @@ Exit
 
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is TabControl tc)
-            {
-                if (tc.SelectedIndex < 0)
-                {
-                    return;
-                }
+            if (sender is TabControl tc){
+                if (tc.SelectedIndex < 0) return;
                 switch (tc.SelectedIndex)
                 {
                     case 0:
@@ -263,7 +241,6 @@ Exit
                 }
             }
         }
-        #endregion
 
         private void OfficialDiscordButton_Click(object sender, RoutedEventArgs e)
         {
@@ -274,6 +251,7 @@ Exit
         {
             LogBox.Document.Blocks?.Clear();
         }
-    }
-            
+        #endregion
+        
+    }            
 }
