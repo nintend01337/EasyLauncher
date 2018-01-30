@@ -78,8 +78,7 @@ namespace ZloGUILauncher
             Dispatcher.Invoke(() =>
             {
                 if (IsConnectedToZloClient)
-                {
-                    Title = "Welcome " + ZloRequest.User_Info + " | " + AssemblyName;
+                {                    
                     //connected
                     /*IsConnectedTextBlock.Text = "Подключен";
                     IsConnectedTextBlock.Foreground = Brushes.LimeGreen;*/
@@ -93,6 +92,14 @@ namespace ZloGUILauncher
 
         }
 
+        private void Client_UserInfoReceived(uint UserID, string UserName)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                Title = "Welcome " + UserName + " | " + AssemblyName;
+            });
+        }
+
         private void Client_Disconnected(Zlo.Extras.DisconnectionReasons Reason)
         {
             // MessageBox.Show($"Клиент отключен по причине : {Reason}");
@@ -104,7 +111,7 @@ namespace ZloGUILauncher
 
         private void Client_APIVersionReceived(Version Current, Version Latest, bool IsNeedUpdate, string DownloadAdress)
         {
-            //MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
+            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
             if (IsNeedUpdate)
             {
                 Dispatcher.Invoke(async() =>
@@ -127,8 +134,8 @@ namespace ZloGUILauncher
             {
                 Dispatcher.Invoke(() =>
                 {
-                    ApiVersion = Current.ToString();
-                    Title = AssemblyName + "|" + version + " | " + "API version " + ApiVersion;
+                   // ApiVersion = Current.ToString();
+                   // Title = AssemblyName + "|" + version + " | " + "API version " + ApiVersion;
                 });
             }
         }
@@ -205,14 +212,6 @@ Exit
                 LogBox.Document.Blocks.Add(NewParagraph);
                 
             });
-        }
-
-        private void Client_UserInfoReceived(uint UserID, string UserName)
-        {
-            /*Dispatcher.Invoke(() =>
-            {
-                PlayerInfoTextBlock.Text = $"{UserName} ({UserID})";
-            });*/
         }
 
         private void Client_ErrorOccured(Exception Error, string CustomMessage)

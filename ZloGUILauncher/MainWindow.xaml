@@ -6,12 +6,17 @@
                       xmlns:helpers="clr-namespace:ZloGUILauncher"
                       Height="600" Width="1000" ResizeMode="CanMinimize" ShowSystemMenuOnRightClick="false"
                       GlowBrush="{DynamicResource AccentColorBrush}" ShowTitleBar="True" ShowIconOnTitleBar="true" Icon="icon.ico"
-                      WindowStartupLocation="CenterScreen">
+
+                      WindowStartupLocation="CenterScreen" Foreground="Black">
     <Control.Background>
         <ImageBrush ImageSource="{StaticResource background}" Stretch="UniformToFill"/>
     </Control.Background>
 
     <FrameworkElement.Resources>
+        <Color x:Key="TabSelectColor">#CC2C2C2C</Color>
+        <SolidColorBrush x:Key="TabSelectColorBrush" Color="{StaticResource TabSelectColor}" Opacity="0.8" />
+
+
         <Style TargetType="{x:Type ScrollViewer}">
             <Style.Setters>
                 <Setter Property="helpers:ScrollViewerCorrector.FixScrolling" Value="true"/>
@@ -34,7 +39,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Rectangle Fill="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" Height="548.04" VerticalAlignment="Top" Width="110" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+        <Rectangle Fill="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" Height="548.04" VerticalAlignment="Top" Width="109" Grid.RowSpan="2"/>
         <Controls:MetroAnimatedTabControl 
             SelectionChanged="MainTabControl_SelectionChanged"
             x:Name="MainTabControl" Grid.Row="1" TabStripPlacement="Left"
@@ -55,7 +60,7 @@
                                 </Grid>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Panel" Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                                        <Setter TargetName="Panel" Property="Background" Value="{DynamicResource TabSelectColorBrush}" />
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="False">
                                         <Setter TargetName="Panel" Property="Background" Value="{DynamicResource ResourceKey}" />
@@ -75,7 +80,7 @@
                         </StackPanel.Background>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid Margin="-10,0,0,0">
+                <Grid Margin="-11,0,0,0">
                     <views:BF3View x:Name="Ibf3View" />
                 </Grid>
             </TabItem>
@@ -87,7 +92,7 @@
                         </StackPanel.Background>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid Margin="-10,0,0,0">
+                <Grid Margin="-11,0,0,0">
                     <views:BF4View x:Name="Ibf4View"/>
                 </Grid>
             </TabItem>
@@ -99,7 +104,7 @@
                         </StackPanel.Background>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid Margin="-10,0,0,0">
+                <Grid Margin="-11,0,0,0">
                     <views:BFHView x:Name="IbfhView"/>
                 </Grid>
             </TabItem>
@@ -110,7 +115,7 @@
                             <ImageBrush ImageSource="Media/settings.ico" Stretch="Uniform">
                                 <ImageBrush.RelativeTransform>
                                     <TransformGroup>
-                                        <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleX="0.75" ScaleY="0.75"/>
+                                        <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleY="0.75" ScaleX="0.75"/>
                                         <SkewTransform CenterY="0.5" CenterX="0.5"/>
                                         <RotateTransform CenterY="0.5" CenterX="0.5"/>
                                         <TranslateTransform/>

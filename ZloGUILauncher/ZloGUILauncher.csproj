@@ -408,9 +408,6 @@
     <Resource Include="Media\imig.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="bfh.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Media\settings.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -420,12 +417,6 @@
     <Resource Include="Media\bf3.ico" />
     <Resource Include="Media\bf4.ico" />
     <Resource Include="Media\bfh.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="white-restart-512.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="white-restart-512 %281%29.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Media\restart.ico" />
