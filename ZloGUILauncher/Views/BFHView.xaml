@@ -4,61 +4,56 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ZloGUILauncher.Views"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300">
 
 
-    <Grid Background="Transparent">
+    <Grid Background="#00000000">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <!--<StackPanel Margin="5" Grid.Column="0">
-                <TextBlock Text="Dogtag advanced : "/>
-                <TextBox x:Name="BFH_DT1" MaxLength="5"/>
-                <Button Click="SetterButton_Click" Tag="dt1" Content="Set Advanced Dog tag"></Button>
-            </StackPanel>
-            <StackPanel Margin="5" Grid.Column="1">
-                <TextBlock Text="Dogtag basic : "/>
-                <TextBox x:Name="BFH_DT2" MaxLength="5"/>
-                <Button Click="SetterButton_Click" Tag="dt2" Content="Set Basic Dog tag"></Button>
-            </StackPanel>
-            <StackPanel Margin="5" Grid.Column="2">
-                <TextBlock Text="Clan tag : "/>
-                <TextBox x:Name="BFH_CT" MaxLength="4" MaxLines="1"/>
-                <Button Click="SetterButton_Click" Tag="ct" Content="Set Clan tag"/>
-            </StackPanel>
-            <Grid Margin="5" Grid.Column="3">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Button Click="GetterButton_Click" Grid.Row="0" Content="Get all"></Button>
-                <Button Click="SetterButton_Click" Tag="all" Grid.Row="1" Content="Set all"></Button>
-            </Grid>-->
-        </Grid>
-
         <Grid Grid.Row="1">
-            <Button  Click="JoinSinglePlayerButton_Click" Margin="10" Content="Одиночная игра" Grid.Column="0"/>
-        </Grid>
-        <Grid Grid.Row="2">
-            <TabControl>
-                <TabItem Header="Список серверов">
+            <controls:MetroTabControl Background="#00252525">
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TabItem">
+                                    <Grid Name="Panel">
+                                        <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Panel" Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter TargetName="Panel" Property="Background" Value="Transparent" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+                <TabItem Header="Список серверов"  Background="Red" Height="37" Foreground="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="True" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
                     <Grid>
-                        <local:BFHServerListView/>
+                        <local:BFHServerListView FontSize="11" FontWeight="Normal"/>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Статистика" IsEnabled="False">
+                <TabItem Header="Одиночная игра"  Background="Red" Height="37" Foreground="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="True" FontSize="16" FontFamily="Verdana" FontWeight="Bold" Padding="0,2,6,2">
+                    <Grid>
+                        <local:BFHServerListView FontSize="11" FontWeight="Normal"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Статистика" IsEnabled="False"  Background="Red" Height="37" Foreground="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="True" FontSize="16" FontFamily="Verdana" FontWeight="Bold" Visibility="Hidden">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -77,7 +72,7 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Предметы" IsEnabled="False">
+                <TabItem Header="Предметы" IsEnabled="False"  Background="Red" Height="37" Foreground="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="True" FontSize="16" FontFamily="Verdana" FontWeight="Bold" Visibility="Hidden">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -96,7 +91,7 @@
                                   IsSynchronizedWithCurrentItem="True" 
                                   IsTextSearchEnabled="True" AutoGenerateColumns="False" 
                                   IsReadOnly="True"
-                                  IsEnabled="False">
+                                  IsEnabled="False" Margin="0,0,0,-161.305" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Background="#CA252525" FontSize="11" FontWeight="Normal">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Flag Name" Binding="{Binding Path=Value.FlagName,Mode=OneWay}"/>
                                 <DataGridTextColumn Header="Item Name" Binding="{Binding Path=Value.ItemName,Mode=OneWay}"/>
@@ -106,7 +101,7 @@
                         </DataGrid>
                     </Grid>
                 </TabItem>
-            </TabControl>
+            </controls:MetroTabControl>
         </Grid>
     </Grid>
 </UserControl>

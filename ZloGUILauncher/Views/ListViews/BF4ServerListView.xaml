@@ -12,13 +12,11 @@
         <CollectionViewSource x:Key="ServersView"/>
     </FrameworkElement.Resources>
     <Grid Background="Transparent">
-        <DataGrid x:Name="ServersDG"
-                  Opacity="0.8"
-                  ItemsSource="{Binding Source={StaticResource ServersView}}" 
+        <DataGrid x:Name="ServersDG" ItemsSource="{Binding Source={StaticResource ServersView}}" 
+                  Opacity="0.8"                  
                   SelectionMode="Single" SelectionUnit="FullRow"
                   IsSynchronizedWithCurrentItem="True" 
-                  IsTextSearchEnabled="True"
-                  AutoGenerateColumns="False"                     
+                  IsTextSearchEnabled="True" AutoGenerateColumns="False"                     
                   IsReadOnly="True"  ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}" SelectionChanged="ServersDG_SelectionChanged">
             <DataGrid.Resources>
                 <Style TargetType="DataGridColumnHeader">
@@ -37,7 +35,7 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{DynamicResource AccentColor}"/>
+               <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{DynamicResource AccentColor}"/>
             </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=ID,UpdateSourceTrigger=PropertyChanged}" Width="Auto"  Header="ID" SortMemberPath="ID"/>
@@ -75,7 +73,6 @@
                                 <DataGridTextColumn Binding="{Binding Path=Name}" Header="Player Name" Foreground="Black"/>
                                 <DataGridTextColumn Binding="{Binding Path=ID}" Header="Player ID" Foreground="Black"/>
                             </DataGrid.Columns>
-
                             <DataGrid.RowStyle>
                                 <Style  TargetType="DataGridRow">
                                     <Setter Property="Background" Value="White"/>

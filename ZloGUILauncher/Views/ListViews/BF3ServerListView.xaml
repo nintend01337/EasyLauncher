@@ -18,8 +18,7 @@
                   SelectionMode="Single" SelectionUnit="FullRow"
                   IsSynchronizedWithCurrentItem="True" 
                   IsTextSearchEnabled="True" AutoGenerateColumns="False"                      
-                  IsReadOnly="True" 
-                  ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}" SelectionChanged="ServersDG_SelectionChanged">
+                  IsReadOnly="True" ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}" SelectionChanged="ServersDG_SelectionChanged">
             <DataGrid.Resources>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="HorizontalContentAlignment"

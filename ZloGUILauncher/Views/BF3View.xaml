@@ -4,42 +4,49 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ZloGUILauncher.Views"
-            xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignHeight="284.664" d:DesignWidth="496.486">
-    <Grid Background="{DynamicResource {x:Static SystemColors.WindowFrameColor}}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-           
-            <Grid Grid.Column="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" Orientation="Vertical" >
-                <Button Margin="10" Content="Одиночная игра" Grid.Column="2" Click="JoinSPButton_Click" Background="LightGray" Foreground="Black" />
-                <TextBlock Margin="10" Text="               " Grid.Column="2"/>
-                    
-                </StackPanel>
-              </Grid>
-        
-        </Grid>
+
+    <Grid Background="Transparent">
         <Grid Grid.Row="1">
-            <TabControl>
-                <TabItem Header="Список Серверов">
+            <controls:MetroTabControl Background="#00252525">
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TabItem">
+                                    <Grid Name="Panel">
+                                        <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Panel" Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter TargetName="Panel" Property="Background" Value="Transparent" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+                <TabItem Header="Список Серверов" Background="Red" Height="37" Foreground="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="True" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
                     <Grid>
-                        <local:BF3ServerListView />
+                        <local:BF3ServerListView Foreground="Black" Grid.ColumnSpan="3" FontSize="11" FontWeight="Normal" FontFamily="Verdana"/>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Статистика" IsEnabled="False">
+                <TabItem Header="Одиночная игра" Background="#FFEE1313" Height="37" Foreground="White" BorderBrush="Black" BorderThickness="1" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
+                    <Grid>
+                        <local:BF3ServerListView Foreground="Black" Grid.ColumnSpan="3" FontSize="11" FontWeight="Normal" FontFamily="Verdana"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Статистика" IsEnabled="False" Background="#FFEA2D2D" Height="37" Foreground="White" BorderThickness="1" BorderBrush="Black" FontSize="16" FontFamily="Verdana" FontWeight="Bold" Margin="0,-1,0.99,1">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -54,17 +61,14 @@
                             <Button Grid.Column="0" Content="Обновить" Click="StatsRefreshButton_Click"/>
                         </Grid>
                         <DataGrid Grid.Row="1" x:Name="StatsDG"
-                                  SelectionMode="Single"
-                                  SelectionUnit="FullRow"
-                                  IsSynchronizedWithCurrentItem="True" 
-                                  IsTextSearchEnabled="True" AutoGenerateColumns="True" 
-                                  IsReadOnly="True"/>
+                                      SelectionMode="Single"
+                                      SelectionUnit="FullRow"
+                                      IsSynchronizedWithCurrentItem="True" 
+                                      IsTextSearchEnabled="True" AutoGenerateColumns="True" 
+                                      IsReadOnly="True"/>
                     </Grid>
                 </TabItem>
-                <Label Content="Label" Height="100" Width="100"/>
-
-
-            </TabControl>
+            </controls:MetroTabControl>
         </Grid>
     </Grid>
 </UserControl>

@@ -12,33 +12,53 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0">
-                        <Button  Click="JoinSinglePlayerButton_Click" Margin="10" Content="Одиночная игра"/>
-                        <Button  Click="JoinTestRangeButton_Click" Margin="10" Content="Полигон" />
-                  </StackPanel>
-            </Grid>
 
-        </Grid>
+
         <Grid Grid.Row="1">
-            <TabControl>
-                <TabItem Header="Список Серверов">
+            <controls:MetroTabControl Background="#00252525">
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TabItem">
+                                    <Grid Name="Panel">
+                                        <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Panel" Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter TargetName="Panel" Property="Background" Value="Transparent" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+                <TabItem Header="Список Серверов" Background="Red" Height="37" Foreground="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="True" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
                     <Grid>
-                        <local:BF4ServerListView Foreground="Transparent"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="161*"/>
+                            <ColumnDefinition Width="23*"/>
+                            <ColumnDefinition Width="313*"/>
+                        </Grid.ColumnDefinitions>
+                        <local:BF4ServerListView Foreground="Black" Grid.ColumnSpan="3" FontSize="11" FontWeight="Normal" FontFamily="Verdana"/>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Статистика" >
+                <TabItem Header="Одиночная игра" Background="#FFEE1313" Height="37" Foreground="White" BorderBrush="Black" BorderThickness="1" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
+                    <Grid/>
+                </TabItem>
+                <TabItem Header="Полигон" Background="#FFEA2D2D" Height="37" Foreground="White" BorderThickness="1" BorderBrush="Black" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
+                    <Grid/>
+                </TabItem>
+                <TabItem Header="Статистика" Background="#FFE60C0C" Height="37" Foreground="White" BorderBrush="Black" BorderThickness="1" FontSize="16" FontFamily="Verdana" FontWeight="Bold" >
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -58,7 +78,7 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Предметы" IsEnabled="False">
+                <TabItem Header="Предметы" IsEnabled="False" Background="#FFFB0000" Height="37" Foreground="White" BorderThickness="1" BorderBrush="Black" FontSize="16" FontFamily="Verdana" FontWeight="Bold" Visibility="Hidden">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -76,17 +96,17 @@
                                   SelectionUnit="FullRow"
                                   IsSynchronizedWithCurrentItem="True" 
                                   IsTextSearchEnabled="True" AutoGenerateColumns="False" 
-                                  IsReadOnly="True">
+                                  IsReadOnly="True" FontSize="12" FontWeight="Normal">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Flag Name" Binding="{Binding Path=Value.FlagName,Mode=OneWay}"/>
                                 <DataGridTextColumn Header="Item Name" Binding="{Binding Path=Value.ItemName,Mode=OneWay}"/>
                                 <DataGridCheckBoxColumn Header="Item Acquired" Binding="{Binding Path=Value.ItemExists,Mode=OneWay}"/>
-                                <DataGridTextColumn Header="Item Description" Binding="{Binding Path=Value.ItemDescription,Mode=OneWay}"/>                                
+                                <DataGridTextColumn Header="Item Description" Binding="{Binding Path=Value.ItemDescription,Mode=OneWay}"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
                 </TabItem>
-            </TabControl>
+            </controls:MetroTabControl>
         </Grid>
     </Grid>
 </UserControl>

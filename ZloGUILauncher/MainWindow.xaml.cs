@@ -75,7 +75,8 @@ namespace ZloGUILauncher
 
         private void Client_ConnectionStateChanged(bool IsConnectedToZloClient)
         {
-            Dispatcher.Invoke(() =>
+            
+            /*Dispatcher.Invoke(() =>
             {
                 if (IsConnectedToZloClient)
                 {
@@ -88,7 +89,7 @@ namespace ZloGUILauncher
                     IsConnectedTextBlock.Text = "Отключен";
                     IsConnectedTextBlock.Foreground = Brushes.Red;
                 }
-            });
+            });*/
 
         }
 
@@ -103,7 +104,7 @@ namespace ZloGUILauncher
 
         private void Client_APIVersionReceived(Version Current, Version Latest, bool IsNeedUpdate, string DownloadAdress)
         {
-            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
+            //MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
             if (IsNeedUpdate)
             {
                 Dispatcher.Invoke(async() =>
@@ -208,10 +209,10 @@ Exit
 
         private void Client_UserInfoReceived(uint UserID, string UserName)
         {
-            Dispatcher.Invoke(() =>
+            /*Dispatcher.Invoke(() =>
             {
                 PlayerInfoTextBlock.Text = $"{UserName} ({UserID})";
-            });
+            });*/
         }
 
         private void Client_ErrorOccured(Exception Error, string CustomMessage)
@@ -233,6 +234,12 @@ Exit
             });
         }
 
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Views.Options options = new Views.Options();
+            options.Visibility = Visibility.Visible;
+        }
+
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is TabControl tc)
@@ -250,7 +257,7 @@ Exit
                         App.Client.SubToServerList(ZloGame.BF_4);
                         break;
                     case 2:
-                            App.Client.SubToServerList(ZloGame.BF_HardLine);
+                        App.Client.SubToServerList(ZloGame.BF_HardLine);
                         break;
                     default:
                         break;

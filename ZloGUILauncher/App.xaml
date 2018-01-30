@@ -4,8 +4,7 @@
              xmlns:local="clr-namespace:ZloGUILauncher"
           xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              StartupUri="MainWindow.xaml" ShutdownMode="OnMainWindowClose">
-    <Application.Resources>
-
+    <Application.Resources>          
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->

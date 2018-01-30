@@ -39,11 +39,11 @@ namespace ZloGUILauncher.Views
             
         }
 
-        private void ChangeAppThemeButtonClick(object sender, RoutedEventArgs e)
+        /*private void ChangeAppThemeButtonClick(object sender, RoutedEventArgs e)
         {
             var theme = ThemeManager.DetectAppStyle(Application.Current);
             ThemeManager.ChangeAppStyle(Application.Current, theme.Item2, ThemeManager.GetAppTheme("Base" + ((Button)sender).Content));
-        }
+        }*/
 
 
         private void AccentSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -56,5 +56,13 @@ namespace ZloGUILauncher.Views
                 Application.Current.MainWindow.Activate();
             }
         }
+        private void ChangeAppThemeSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var theme = ThemeManager.DetectAppStyle(Application.Current);
+            ThemeManager.ChangeAppStyle(Application.Current, theme.Item2, ThemeManager.GetAppTheme("Base" + ((((ComboBox)sender).SelectedValue) as ListBoxItem).Content));
+            Application.Current.MainWindow.Activate();
+
+        }
     }
 }
+

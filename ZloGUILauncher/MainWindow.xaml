@@ -13,7 +13,11 @@
     <Control.Background>
         <ImageBrush ImageSource="{StaticResource background}" Stretch="UniformToFill"/>
     </Control.Background>
+
     <FrameworkElement.Resources>
+
+
+
         <Style TargetType="{x:Type ScrollViewer}">
             <Style.Setters>
                 <Setter Property="helpers:ScrollViewerCorrector.FixScrolling" Value="true"/>
@@ -32,49 +36,64 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Margin="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                  Orientation="Vertical">
-                <StackPanel Margin="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <TextBlock Text="ZClient State : "/>
-                    <TextBlock x:Name="IsConnectedTextBlock" Text="DisConnected" Foreground="Red"/>
-                </StackPanel>
-                <StackPanel Margin="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <TextBlock Text="Player : "/>
-                    <TextBlock x:Name="PlayerInfoTextBlock" Text="name [id]" Foreground="LimeGreen"/>
-                </StackPanel>
-            </StackPanel>
-        </Grid>
+        <Rectangle Fill="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" Height="548.04" VerticalAlignment="Top" Width="110" Grid.RowSpan="2"/>
         <Controls:MetroAnimatedTabControl SelectionChanged="MainTabControl_SelectionChanged" x:Name="MainTabControl" Grid.Row="1"
-                                      TabStripPlacement="Top" Controls:TabControlHelper.IsUnderlined="true">
-            <TabItem Header="Battlefield 3" IsEnabled="true">
+                                      TabStripPlacement="Left" Controls:TabControlHelper.IsUnderlined="true" Background="#CC252525">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Grid Name="Panel">
+                                    <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Panel" Property="Background" Value="LightSkyBlue" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Panel" Property="Background" Value="{DynamicResource ResourceKey}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+            <TabItem Margin="0,0,0.5,0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" Height="112" Width="110">
+                <TabItem.Header>
+                    <Image Width="90" Source="media/256x256.png" MinWidth="80" MinHeight="90" Height="90"/>
+                </TabItem.Header>
                 <Grid>
-                    <views:BF3View/>
+                    <views:BF3View Visibility="Visible"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Battlefield 4">
+            <TabItem Height="112" Width="110">
+                <TabItem.Header>
+                    <Image Width="90" Source="media/bf4.png" MinWidth="80" MinHeight="90" Height="90"/>
+                </TabItem.Header>
                 <Grid>
                     <views:BF4View x:Name="Ibf4View"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Battlefield:Hardline">
+            <TabItem HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" Height="112" Width="110">
+                <TabItem.Header>
+                    <Image Width="90" Source="media/bfh.png" MinWidth="80" MinHeight="90" Height="90" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0"/>
+                </TabItem.Header>
                 <Grid>
                     <views:BFHView x:Name="IbfhView"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Опции">
+            <TabItem Header="Options" Margin="0,187.08,0.25,-192.08" HorizontalAlignment="Right" Width="55.684">
                 <Grid>
                     <views:Options/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Log">
+            <TabItem Header="Log" Margin="0,167.12,0,-172.12" HorizontalAlignment="Left" Width="53.413">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -82,14 +101,12 @@
                     </Grid.RowDefinitions>
                     <RichTextBox x:Name="LogBox" VerticalScrollBarVisibility="Visible" BorderThickness="0" Background="#FF0D0D0D"
                        IsReadOnly="true" Grid.ColumnSpan="2">
-                        <FrameworkElement.Resources>
+                        <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
-                                <Setter Property="Block.Margin" Value="0"/>
+                                <Setter Property="Margin" Value="0"/>
                             </Style>
-                        </FrameworkElement.Resources>
-                        <RichTextBox.Document>
-                            <FlowDocument x:Name="LogDocument"/>
-                        </RichTextBox.Document>
+                        </RichTextBox.Resources>
+                        <FlowDocument x:Name="LogDocument"/>
                     </RichTextBox>
                     <Button Click="ClearButton_Click" Grid.Row="1" Content="Очистить"/>
                 </Grid>
@@ -100,7 +117,7 @@
             <TextBlock x:Name="LatestGameStateTextBlock" VerticalAlignment="Center" Text="[Game] [type] state"/>
         </StatusBar>
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Text="Developed by nintend01337"
-               Margin="0,0,9,7" Grid.Row="2"/>
+               Margin="0,0,9,7" Grid.Row="2" Foreground="White"/>
     </Grid>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
