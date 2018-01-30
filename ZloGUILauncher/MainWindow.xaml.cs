@@ -75,21 +75,21 @@ namespace ZloGUILauncher
 
         private void Client_ConnectionStateChanged(bool IsConnectedToZloClient)
         {
-            
-            /*Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(() =>
             {
                 if (IsConnectedToZloClient)
                 {
+                    Title = "Welcome " + ZloRequest.User_Info + " | " + AssemblyName;
                     //connected
-                    IsConnectedTextBlock.Text = "Подключен";
-                    IsConnectedTextBlock.Foreground = Brushes.LimeGreen;
+                    /*IsConnectedTextBlock.Text = "Подключен";
+                    IsConnectedTextBlock.Foreground = Brushes.LimeGreen;*/
                 }
                 else
                 {
-                    IsConnectedTextBlock.Text = "Отключен";
-                    IsConnectedTextBlock.Foreground = Brushes.Red;
+                    /*IsConnectedTextBlock.Text = "Отключен";
+                    IsConnectedTextBlock.Foreground = Brushes.Red;*/
                 }
-            });*/
+            });
 
         }
 

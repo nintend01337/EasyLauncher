@@ -405,22 +405,30 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Media\icon_reboot.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Media\imig.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Media\discord_logo_white.PNG" />
+    <Resource Include="bfh.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Media\256x256.png" />
+    <Resource Include="Media\settings.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Media\bf4.png" />
+    <Resource Include="Media\discord.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Media\bfh.png" />
+    <Resource Include="Media\bf3.ico" />
+    <Resource Include="Media\bf4.ico" />
+    <Resource Include="Media\bfh.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="white-restart-512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="white-restart-512 %281%29.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\restart.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.2.3.22\build\Fody.targets" Condition="Exists('..\packages\Fody.2.3.22\build\Fody.targets')" />
