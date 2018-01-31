@@ -88,7 +88,6 @@ namespace ZloGUILauncher
                     IsConnectedTextBlock.Foreground = Brushes.Red;
                 }
             });
-
         }*/
 
         private void Client_UserInfoReceived(uint UserID, string UserName)
@@ -174,6 +173,7 @@ Exit
             }
         }
 
+        
         #region Setup Events
         private void Client_GameStateReceived(Zlo.Extras.ZloGame game, string type, string message)
         {
@@ -200,7 +200,10 @@ Exit
                 NewParagraph.Inlines.Add(TypeText);
                 NewParagraph.Inlines.Add(MessageText);
 
-                LogBox.Document.Blocks.Add(NewParagraph);
+                LogBox.Document.Blocks.Add(NewParagraph);                
+
+                if (type == "StateChanged") OnGameStarted(); //Это может тоже по красоте
+                if (type == "Alert") OnGameClosed();
                 
             });
         }
@@ -255,7 +258,33 @@ Exit
         {
             LogBox.Document.Blocks?.Clear();
         }
+
+        private void OnGameStarted()
+        {
+            Banner.Visibility = Visibility.Visible;
+            MainTabControl.Visibility = Visibility.Hidden;
+        }
+
+        private void OnGameClosed()
+        {
+            MainTabControl.Visibility = Visibility.Visible;
+            Banner.Visibility = Visibility.Hidden;            
+        }
+
+        private void CloseGameBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //Zlo.Extras.ZloGame game = new ZloGame();
+            OnGameClosed();
+            //Process[] proc = Process.GetProcessesByName(game.ToString());
+            //proc[0].Kill();
+        } // Надо это по красоте сделать
+
+        private void LogsGrid_MouseLeave(object sender, MouseEventArgs e) { LogGrid.Visibility = Visibility.Hidden; }
+
         #endregion
-        
+
+        private void StatusBar_MouseDoubleClick(object sender, MouseButtonEventArgs e){LogGrid.Visibility = Visibility.Visible;}
+
+        private void LogGrid_MouseLeave(object sender, MouseEventArgs e){LogGrid.Visibility = Visibility.Hidden;}
     }            
 }
