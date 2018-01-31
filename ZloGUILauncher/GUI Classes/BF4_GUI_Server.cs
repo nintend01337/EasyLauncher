@@ -11,44 +11,28 @@ using System.Windows;
 using System.Windows.Threading;
 using Zlo.Extras;
 
-
 namespace ZloGUILauncher.Servers
 {
     public class BF4_GUI_Server : INotifyPropertyChanged
     {
         public API_BF4ServerBase raw;
-      
-        public BF4_GUI_Server(API_BF4ServerBase b)
-        {
+        public BF4_GUI_Server(API_BF4ServerBase b){
             raw = b;             
         }
-        public uint ID
-        {
+        public uint ID{
             get { return raw.ServerID; }
         }
-        public string Name
-        {
+        public string Name{
             get { return raw.ServerName; }
         }
-
-        public int Current_Players
-        {
+        public int Current_Players{
             get { return raw.Players.Count; }
         }
-        public int Max_Players
-        {
-            get
-            {
-                return raw.PlayerCapacities[0];
-            }
+        public int Max_Players{
+            get { return raw.PlayerCapacities[0]; }
         }
-
-        public string RepPlayers
-        {
-            get
-            {
-                return $"{Current_Players}/{Max_Players}";
-            }
+        public string RepPlayers{
+            get { return $"{Current_Players}/{Max_Players}"; }
         }
 
         private IPAddress m_IP;
@@ -65,95 +49,57 @@ namespace ZloGUILauncher.Servers
         }
         public ushort Port
         {
-            get
-            {
-                return raw.ServerPort;
-               
-            }
+            get { return raw.ServerPort; }
         }
-               
+        public int Ping { get; set; }
+        public string Country { get; set; }
+
         public string ServerType
         {
-            get
-            {
-                return raw.Attributes["servertype"];
-            }
+            get { return raw.Attributes["servertype"]; }
         }
         
         private GUI_PlayerList m_Players;
         public GUI_PlayerList Players
         {
-            get
-            {
-                if (m_Players == null)
-                {
-                    m_Players = new GUI_PlayerList(raw.Players);
-                }
-                return m_Players;
-            }
+            get { if (m_Players == null) m_Players = new GUI_PlayerList(raw.Players); return m_Players; }
         }
 
         private GUI_MapRotation m_Maps;
         public GUI_MapRotation Maps
         {
-            get
-            {
-                if (m_Maps == null)
-                {
-                    m_Maps = new GUI_MapRotation(raw.MapRotation);                    
-                }                
-                return m_Maps;
-            }
+            get { if (m_Maps == null) m_Maps = new GUI_MapRotation(raw.MapRotation); return m_Maps; }
         }
 
         public bool IsHasPW
         {
-            get
-            {
-                return raw.IsPasswordProtected;
-            }
+            get { return raw.IsPasswordProtected; }
         }
         public bool YesNo(string toconv)
         {
             if (toconv== "YES")
-            {
                 return true;
-            }
             else
-            {
                 return false;
-            }
         }
         public bool IsHasPB
         {
-            get
-            {
+            get {
                 if (raw.Attributes.ContainsKey("punkbuster"))
-                {
                     return YesNo(raw.Attributes["punkbuster"]);
-                }
                 else
-                {
                     return false;
-                }
             }
         }
         public bool IsHasFF
         {
-            get
-            {
+            get {
                 if (raw.Attributes.ContainsKey("fairfight"))
-                {
                     return YesNo(raw.Attributes["fairfight"]);
-                }
                 else
-                {
                     return false;
-                }
             }
         }
-        public int Ping { get; set; }
-        public string Country { get; set; }
 
         public void UpdateAllProps()
         {
@@ -180,18 +126,14 @@ namespace ZloGUILauncher.Servers
         { 
             Task.Run((Action)(() =>
             {
-                try
-                {
-                    if (IP == null)
-                        return;
-                     PingReply pingReply = new System.Net.NetworkInformation.Ping().Send(raw.ServerIP.ToString(),500);
-                    if (pingReply.Status == IPStatus.Success)
-                        this.Ping = ((int)pingReply.RoundtripTime);
+                try {
+                    if (IP == null) return;
+                    PingReply pingReply = new System.Net.NetworkInformation.Ping().Send(raw.ServerIP.ToString(),500);
+                    if (pingReply.Status == IPStatus.Success) this.Ping = ((int)pingReply.RoundtripTime);
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex){
                     Ping = 666;
-                    ex.Message.ToString();                 // сообщение в случаи неудачи проверки пинга незнаю зачем :)
+                    ex.Message.ToString(); // сообщение в случаи неудачи проверки пинга незнаю зачем :)
                 }
             }));
         }
@@ -200,33 +142,25 @@ namespace ZloGUILauncher.Servers
         {
             PropertyChanged?.Invoke(this , new PropertyChangedEventArgs(prop));
         }
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public void getCountry()
         {
-
-            try
-            {
+            try {
                 string strFile = "Unknown";
-                using (var objClient = new System.Net.WebClient())
-                {
-                    strFile = objClient.DownloadString("http://freegeoip.net/xml/" + IP.ToString());
-                }
+                using (var objClient = new System.Net.WebClient()){ strFile = objClient.DownloadString("http://freegeoip.net/xml/" + IP.ToString()); }
                 int firstlocation = strFile.IndexOf("<CountryName>") + "<CountryName>".Length;
                 int lastlocation = strFile.IndexOf("</", firstlocation);
                 string location = strFile.Substring(firstlocation, lastlocation - firstlocation);
-                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
-                {
-                    Country = location;
-                }));
+                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>{ Country = location; }));
             }
-            catch
-            {
+            catch {
                 Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
                 {
                    Country = "Неизвестно";
                 }));
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

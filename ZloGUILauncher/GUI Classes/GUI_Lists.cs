@@ -17,21 +17,15 @@ namespace ZloGUILauncher
         private API_MapRotationBase m_raw;
         public API_MapRotationBase Raw
         {
-            get
-            {
-                return m_raw;
-            }
+            get { return m_raw; }
         }
 
         private GUI_Map m_CurrentActualMap;
         public GUI_Map CurrentActualMap
         {
-            get
-            {
+            get {
                 if (m_CurrentActualMap == null)
-                {
                     m_CurrentActualMap = new GUI_Map(Raw.CurrentActualMap);
-                }
                 return m_CurrentActualMap;
             }            
         }
@@ -39,12 +33,9 @@ namespace ZloGUILauncher
         private GUI_Map m_LogicalCurrentMap;
         public GUI_Map LogicalCurrentMap
         {
-            get
-            {
+            get {
                 if (m_LogicalCurrentMap == null)
-                {
                     m_LogicalCurrentMap = new GUI_Map(Raw.LogicalCurrentMap);
-                }
                 return m_LogicalCurrentMap;
             }
         }
@@ -52,29 +43,20 @@ namespace ZloGUILauncher
         private GUI_Map m_LogicalNextMap;
         public GUI_Map LogicalNextMap
         {
-            get
-            {
+            get {
                 if (m_LogicalNextMap == null)
-                {
                     m_LogicalNextMap = new GUI_Map(Raw.LogicalNextMap);
-                }
                 return m_LogicalNextMap;
             }
         }
 
         public int CurrentMapIndex
         {
-            get
-            {
-                return Raw.CurrentMapIndex;
-            }
+            get { return Raw.CurrentMapIndex; }
         }
         public int NextMapIndex
         {
-            get
-            {
-                return Raw.NextMapIndex;
-            }
+            get { return Raw.NextMapIndex; }
         }
 
         public GUI_MapRotation(API_MapRotationBase b)
@@ -87,8 +69,7 @@ namespace ZloGUILauncher
             Dispatcher.CurrentDispatcher.Invoke(() =>
             {
                 Clear();
-                for (int i = 0; i < Raw.Count; i++)
-                {
+                for (int i = 0; i < Raw.Count; i++) {
                     var n = new GUI_Map(Raw[i]);
                     Add(n);
                 }
@@ -97,12 +78,9 @@ namespace ZloGUILauncher
                 LogicalCurrentMap.raw = Raw.LogicalCurrentMap;
                 LogicalNextMap.raw = Raw.LogicalNextMap;
 
-
-
                 OPC(nameof(CurrentActualMap));
                 OPC(nameof(LogicalCurrentMap));
                 OPC(nameof(LogicalNextMap));
-
                 OPC(nameof(CurrentMapIndex));
                 OPC(nameof(NextMapIndex));
             });
@@ -118,10 +96,7 @@ namespace ZloGUILauncher
         private API_PlayerListBase m_raw;
         public API_PlayerListBase Raw
         {
-            get
-            {
-                return m_raw;
-            }
+            get { return m_raw; }
         }
         public GUI_PlayerList(API_PlayerListBase b)
         {
@@ -130,12 +105,9 @@ namespace ZloGUILauncher
         }
         public void Update()
         {
-            
-            Dispatcher.CurrentDispatcher.Invoke(() =>
-            {
+            Dispatcher.CurrentDispatcher.Invoke(() => {
                 Clear();
-                for (int i = 0; i < Raw.Count; i++)
-                {
+                for (int i = 0; i < Raw.Count; i++) {
                     var n = new GUI_Player(Raw[i]);
                     Add(n);
                     

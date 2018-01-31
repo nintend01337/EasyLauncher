@@ -17,41 +17,25 @@ namespace ZloGUILauncher.GUI_Classes
         }
         public bool IsCurrentInRotation
         {
-            get
-            {
-                return raw.IsCurrentInRotation;
-            }
+            get { return raw.IsCurrentInRotation; }
         }
         public bool IsActualCurrentMap
         {
-            get
-            {
-                return raw.IsActualCurrentMap;
-            }
+            get { return raw.IsActualCurrentMap; }
         }
         public bool IsNextInRotation
         {
-            get
-            {
-                return raw.IsNextInRotation;
-            }
+            get { return raw.IsNextInRotation; }
         }
 
         public string MapName
         {
-            get
-            {
-                return raw.MapName;
-            }
+            get { return raw.MapName; }
         }
         public string GameModeName
         {
-            get
-            {
-                return raw.GameModeName;
-            }
+            get { return raw.GameModeName; }
         }
-
 
         public void OPC(string prop)
         {

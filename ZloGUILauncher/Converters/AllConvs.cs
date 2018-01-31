@@ -22,6 +22,7 @@ namespace ZloGUILauncher.Converters
             throw new NotImplementedException();
         }
     }
+
     public class JTokenToStringConverter : IValueConverter
     {
         public object Convert(object value , Type targetType , object parameter , CultureInfo culture)
@@ -34,6 +35,7 @@ namespace ZloGUILauncher.Converters
             throw new NotImplementedException();
         }
     }
+
     public class JTokenToTimeSpanConverter : IValueConverter
     {
         public object Convert(object value , Type targetType , object parameter , CultureInfo culture)

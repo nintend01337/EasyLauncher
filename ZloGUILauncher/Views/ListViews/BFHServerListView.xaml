@@ -11,7 +11,7 @@
     <FrameworkElement.Resources>
         <CollectionViewSource x:Key="ServersView"/>
     </FrameworkElement.Resources>
-    <Grid Background="Transparent">
+    <Grid Background="#7E000000">
         <DataGrid x:Name="ServersDG" ItemsSource="{Binding Source={StaticResource ServersView}}" 
                   Opacity="0.8"                  
                   SelectionMode="Single" SelectionUnit="FullRow"

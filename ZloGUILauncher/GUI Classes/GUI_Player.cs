@@ -21,33 +21,20 @@ namespace ZloGUILauncher
         }
         public uint ID
         {
-            get
-            {
-                return raw.ID;
-            }
+            get { return raw.ID; }
         }
         public string Name
         {
-            get
-            {
-                return raw.Name;
-            }
+            get { return raw.Name; }
         }
         public byte Slot
         {
-            get
-            {
-                return raw.Slot;
-            }
+            get { return raw.Slot; }
         }
-
 
         public bool IsCurrent
         {
-            get
-            {
-                return ID == App.Client.CurrentPlayerID;
-            }
+            get { return ID == App.Client.CurrentPlayerID; }
         }
         public void OPC(string prop)
         {

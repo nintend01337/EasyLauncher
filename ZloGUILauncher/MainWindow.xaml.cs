@@ -41,7 +41,7 @@ namespace ZloGUILauncher
             App.Client.GameStateReceived += Client_GameStateReceived;
             App.Client.APIVersionReceived += Client_APIVersionReceived;
             App.Client.Disconnected += Client_Disconnected;
-            //App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
+            App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
            
             if (App.Client.Connect())
             {
@@ -70,28 +70,23 @@ namespace ZloGUILauncher
             }                
         }
 
-        /*private void Client_ConnectionStateChanged(bool IsConnectedToZloClient)
+        private void Client_ConnectionStateChanged(bool IsConnectedToZloClient)
         {
             Dispatcher.Invoke(() =>
             {
-                if (IsConnectedToZloClient)
-                {                    
-                    //connected
-                    /*IsConnectedTextBlock.Text = "Подключен";
-                    IsConnectedTextBlock.Foreground = Brushes.LimeGreen;
-                }
-                else
-                {
-                    /*IsConnectedTextBlock.Text = "Отключен";
-                    IsConnectedTextBlock.Foreground = Brushes.Red;
+                if (!IsConnectedToZloClient){
+                    Title = AssemblyName + " " + version + " | " + "Not connected!";
                 }
             });
 
-        }*/
+        }
 
         private void Client_UserInfoReceived(uint UserID, string UserName)
         {
-            Title = AssemblyName + " | " + "Welcome " + UserName;
+            Dispatcher.Invoke(async () =>
+            {
+                Title = AssemblyName +" " + version + " | " + "Welcome " + UserName;
+            });
         }
 
         private void Client_Disconnected(Zlo.Extras.DisconnectionReasons Reason)

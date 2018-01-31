@@ -58,7 +58,7 @@
                 <TabItem Header="Полигон" Background="#FFEA2D2D" Height="37" Foreground="White" BorderThickness="1" BorderBrush="Black" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
                     <Grid/>
                 </TabItem>
-                <TabItem Header="Статистика" Background="#FFE60C0C" Height="37" Foreground="White" BorderBrush="Black" BorderThickness="1" FontSize="16" FontFamily="Verdana" FontWeight="Bold" >
+                <TabItem Header="Статистика" Background="#FFE60C0C" Height="37" Foreground="White" BorderBrush="Black" BorderThickness="1" FontSize="16" FontFamily="Verdana" FontWeight="Bold" IsEnabled="False" >
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
