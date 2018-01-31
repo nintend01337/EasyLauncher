@@ -27,7 +27,7 @@ namespace ZloGUILauncher
     {        
         public const string AssemblyName = "Easy Launcher";
         public const string autor = "nintend01337";
-        public string version = "1.2.0 beta";
+        public string version = "1.2.5 beta";
         public string ApiVersion;
         public string soldiername;
         public string soldierID;

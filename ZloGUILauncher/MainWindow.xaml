@@ -129,7 +129,7 @@
                     <views:Options/>
                 </Grid>
             </TabItem>
-            <TabItem Header="LOGS" Margin="0,72,0,-72" HorizontalAlignment="Left" Width="55" Height="28" FontFamily="Verdana">
+            <TabItem Header="LOG" Margin="0,72,0,-72" HorizontalAlignment="Left" Width="55" Height="28" FontFamily="Verdana">
 
                 <Grid Margin="-10,0,0,0">
                     <Grid.RowDefinitions>

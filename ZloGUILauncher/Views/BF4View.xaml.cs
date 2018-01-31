@@ -13,26 +13,26 @@ namespace ZloGUILauncher.Views
         public BF4View()
         {
             InitializeComponent();
-            App.Client.StatsReceived += Client_StatsReceived;
-            App.Client.ItemsReceived += Client_ItemsReceived;
+            //App.Client.StatsReceived += Client_StatsReceived;
+            //App.Client.ItemsReceived += Client_ItemsReceived;
         }
 
-        private void Client_ItemsReceived(Zlo.Extras.ZloGame Game , Dictionary<string , API_Item> List)
-        {
-            if (Game == Zlo.Extras.ZloGame.BF_4)
-            {
-                Dispatcher.Invoke(() => { ItemsDG.ItemsSource = List; });
+        //private void Client_ItemsReceived(Zlo.Extras.ZloGame Game , Dictionary<string , API_Item> List)
+        //{
+        //    if (Game == Zlo.Extras.ZloGame.BF_4)
+        //    {
+        //        Dispatcher.Invoke(() => { ItemsDG.ItemsSource = List; });
 
-            }
-        }
+        //    }
+        //}
 
-        private void Client_StatsReceived(Zlo.Extras.ZloGame Game , Dictionary<string , float> List)
-        {
-            if (Game == ZloGame.BF_4)
-            {
-                Dispatcher.Invoke(() => { StatsListWin.StatsDG.ItemsSource = List; });
-            }
-        }
+        //private void Client_StatsReceived(Zlo.Extras.ZloGame Game , Dictionary<string , float> List)
+        //{
+        //    if (Game == ZloGame.BF_4)
+        //    {
+        //        Dispatcher.Invoke(() => { StatsListWin.StatsDG.ItemsSource = List; });
+        //    }
+        //}
 
         private static BF4StatsListWindow m_StatsListWin;
         public static BF4StatsListWindow StatsListWin
@@ -64,12 +64,12 @@ namespace ZloGUILauncher.Views
 
         private void StatsRefreshButton_Click(object sender , RoutedEventArgs e)
         {
-            App.Client.GetStats(Zlo.Extras.ZloGame.BF_4);
+           // App.Client.GetStats(Zlo.Extras.ZloGame.BF_4);
         }
 
         private void ItemsRefreshButton_Click(object sender , RoutedEventArgs e)
         {
-            App.Client.GetItems(Zlo.Extras.ZloGame.BF_4);
+          //  App.Client.GetItems(Zlo.Extras.ZloGame.BF_4);
         }
 
         private void JoinSinglePlayerButton_Click(object sender , RoutedEventArgs e)
@@ -91,6 +91,27 @@ namespace ZloGUILauncher.Views
         {
             StatsWin.Show();
             
+        }
+
+        private void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is TabControl tc)
+            {
+                if (tc.SelectedIndex < 0) return;
+                switch (tc.SelectedIndex)
+                {
+                    case 1:
+                        App.Client.JoinOfflineGame(Zlo.Extras.OfflinePlayModes.BF4_Single_Player);
+                        tc.SelectedIndex = 0;
+                        break;
+                    case 2:
+                        App.Client.JoinOfflineGame(Zlo.Extras.OfflinePlayModes.BF4_Test_Range);
+                        tc.SelectedIndex = 0;
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 }
