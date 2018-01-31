@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="1">
-            <controls:MetroTabControl Background="#00252525">
+            <controls:MetroTabControl Background="#00252525" SelectionChanged="MetroTabControl_SelectionChanged">
                 <TabControl.Resources>
                     <Style TargetType="TabItem">
                         <Setter Property="Template">

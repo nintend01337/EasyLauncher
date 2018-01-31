@@ -16,7 +16,7 @@
 
 
         <Grid Grid.Row="1">
-            <controls:MetroTabControl Background="#00252525">
+            <controls:MetroTabControl Background="#00252525" SelectionChanged="MetroTabControl_SelectionChanged">
                 <TabControl.Resources>
                     <Style TargetType="TabItem">
                         <Setter Property="Template">
@@ -58,7 +58,7 @@
                 <TabItem Header="Полигон" Background="#FFEA2D2D" Height="37" Foreground="White" BorderThickness="1" BorderBrush="Black" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
                     <Grid/>
                 </TabItem>
-                <TabItem Header="Статистика" Background="#FFE60C0C" Height="37" Foreground="White" BorderBrush="Black" BorderThickness="1" FontSize="16" FontFamily="Verdana" FontWeight="Bold" IsEnabled="False" >
+                <!--<TabItem Header="Статистика" Background="#FFE60C0C" Height="37" Foreground="White" BorderBrush="Black" BorderThickness="1" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -73,11 +73,11 @@
                             <Button Grid.Column="1" Content="Чистый список" Click="StatsAsListButton_Click" IsEnabled="False"/>
                         </Grid>
                         <Grid Grid.Row="1">
-                            <!--Stats Design go here-->
+                            --><!--Stats Design go here--><!--
                             <Button Margin="5" Content="Клик здесь и выпадет окно !!" Click="StatsAsWindowButton_Click"></Button>
                         </Grid>
                     </Grid>
-                </TabItem>
+                </TabItem>-->
                 <TabItem Header="Предметы" IsEnabled="False" Background="#FFFB0000" Height="37" Foreground="White" BorderThickness="1" BorderBrush="Black" FontSize="16" FontFamily="Verdana" FontWeight="Bold" Visibility="Hidden">
                     <Grid>
                         <Grid.RowDefinitions>

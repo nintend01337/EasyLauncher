@@ -27,8 +27,10 @@ namespace ZloGUILauncher
     {        
         public const string AssemblyName = "Easy Launcher";
         public const string autor = "nintend01337";
-        public string version = "1.2.0 beta";
+        public string version = "1.2.5 beta";
         public string ApiVersion;
+        public string soldiername;
+        public string soldierID;
         public bool isDebug = false;
 
         public MainWindow()
@@ -41,7 +43,7 @@ namespace ZloGUILauncher
             App.Client.GameStateReceived += Client_GameStateReceived;
             App.Client.APIVersionReceived += Client_APIVersionReceived;
             App.Client.Disconnected += Client_Disconnected;
-            App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
+            //App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
            
             if (App.Client.Connect())
             {
@@ -70,23 +72,30 @@ namespace ZloGUILauncher
             }                
         }
 
-        private void Client_ConnectionStateChanged(bool IsConnectedToZloClient)
+        /*private void Client_ConnectionStateChanged(bool IsConnectedToZloClient)
         {
             Dispatcher.Invoke(() =>
             {
-                if (!IsConnectedToZloClient){
-                    Title = AssemblyName + " " + version + " | " + "Not connected!";
+                if (IsConnectedToZloClient)
+                {                    
+                    //connected
+                    /*IsConnectedTextBlock.Text = "Подключен";
+                    IsConnectedTextBlock.Foreground = Brushes.LimeGreen;
+                }
+                else
+                {
+                    /*IsConnectedTextBlock.Text = "Отключен";
+                    IsConnectedTextBlock.Foreground = Brushes.Red;
                 }
             });
 
-        }
+        }*/
 
         private void Client_UserInfoReceived(uint UserID, string UserName)
         {
-            Dispatcher.Invoke(async () =>
-            {
-                Title = AssemblyName +" " + version + " | " + "Welcome " + UserName;
-            });
+            //Title = AssemblyName + " | " + "Welcome " + UserName;
+            soldiername = UserName;
+            soldierID = UserID.ToString();
         }
 
         private void Client_Disconnected(Zlo.Extras.DisconnectionReasons Reason)
@@ -116,8 +125,8 @@ namespace ZloGUILauncher
             }
             else {
                 Dispatcher.Invoke(() => {
-                   // ApiVersion = Current.ToString();
-                   // Title = AssemblyName + "|" + version + " | " + "API version " + ApiVersion;
+                    ApiVersion = Current.ToString();
+                    Title = AssemblyName + " | " + version + " | " + "API version " + ApiVersion + " | " + soldiername +"  ID : " + soldierID ;     //soldier ID нужен ли ?
                 });
             }
         }
