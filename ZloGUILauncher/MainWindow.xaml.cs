@@ -29,6 +29,8 @@ namespace ZloGUILauncher
         public const string autor = "nintend01337";
         public string version = "1.2.0 beta";
         public string ApiVersion;
+        public string soldiername;
+        public string soldierID;
         public bool isDebug = false;
 
         public MainWindow()
@@ -91,7 +93,9 @@ namespace ZloGUILauncher
 
         private void Client_UserInfoReceived(uint UserID, string UserName)
         {
-            Title = AssemblyName + " | " + "Welcome " + UserName;
+            //Title = AssemblyName + " | " + "Welcome " + UserName;
+            soldiername = UserName;
+            soldierID = UserID.ToString();
         }
 
         private void Client_Disconnected(Zlo.Extras.DisconnectionReasons Reason)
@@ -121,8 +125,8 @@ namespace ZloGUILauncher
             }
             else {
                 Dispatcher.Invoke(() => {
-                   // ApiVersion = Current.ToString();
-                   // Title = AssemblyName + "|" + version + " | " + "API version " + ApiVersion;
+                    ApiVersion = Current.ToString();
+                    Title = AssemblyName + " | " + version + " | " + "API version " + ApiVersion + " | " + soldiername +"  ID : " + soldierID ;     //soldier ID нужен ли ?
                 });
             }
         }
