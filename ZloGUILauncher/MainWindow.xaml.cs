@@ -126,7 +126,7 @@ namespace ZloGUILauncher
             else {
                 Dispatcher.Invoke(() => {
                     ApiVersion = Current.ToString();
-                    Title = AssemblyName + " | " + version + " | " + "API version " + ApiVersion + " | " + soldiername +"  ID : " + soldierID ;     //soldier ID нужен ли ?
+                    Title = AssemblyName + " | " + version + " | " + "API version " + ApiVersion + " | " + (soldiername != null ? "WELCOME, " + soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
                 });
             }
         }

@@ -5,19 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ZloGUILauncher.Views"
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-      mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300">
-
-
-    <Grid Background="#00000000">
+             mc:Ignorable="d" 
+              d:DesignHeight="284.664" d:DesignWidth="496.486">
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
         <Grid Grid.Row="1">
-            <controls:MetroTabControl Background="#00252525" SelectionChanged="MetroTabControl_SelectionChanged">
+            <controls:MetroTabControl Background="#00171010" SelectionChanged="MetroTabControl_SelectionChanged">
                 <TabControl.Resources>
                     <Style TargetType="TabItem">
                         <Setter Property="Template">
@@ -43,14 +39,18 @@
                         </Setter>
                     </Style>
                 </TabControl.Resources>
-                <TabItem Header="Список серверов"  Background="Red" Height="37" Foreground="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="True" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
+                <TabItem Header="Список Серверов" Background="Red" Height="37" Foreground="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="True" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
                     <Grid>
-                        <local:BFHServerListView FontSize="11" FontWeight="Normal"/>
+                        <local:BFHServerListView Foreground="Black" FontSize="11" FontWeight="Normal" FontFamily="Verdana"/>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Одиночная игра"  Background="Red" Height="37" Foreground="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="True" FontSize="16" FontFamily="Verdana" FontWeight="Bold" Padding="0,2,6,2">
-                    <Grid>
-                        <local:BFHServerListView FontSize="11" FontWeight="Normal"/>
+                <TabItem Header="Одиночная игра" Background="#FFEE1313" Height="37" Foreground="White" BorderBrush="Black" BorderThickness="1" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
+                    <Grid Background="#CC000000">
+                        <Grid Margin="0" VerticalAlignment="Center">
+                            <controls:ProgressRing HorizontalAlignment="Center" Margin="188.491,60.001,189.495,31" VerticalAlignment="Center" Height="99.663" Width="98.5" VerticalContentAlignment="Center"/>
+                            <Label x:Name="___Label___ПЕРЕХОД_В_____" Content="ПЕРЕХОД В ОДИНОЧНУЮ ИГРУ" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontSize="36" Height="68.332" FontWeight="Bold" Foreground="White"/>
+                            <Label Content="Если ничего не происходит - проверьте диспетчер задач" VerticalAlignment="Bottom" FontSize="12" FontWeight="Normal" Height="26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White"/>
+                        </Grid>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Статистика" IsEnabled="False"  Background="Red" Height="37" Foreground="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="True" FontSize="16" FontFamily="Verdana" FontWeight="Bold" Visibility="Hidden">

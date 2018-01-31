@@ -82,7 +82,6 @@ namespace ZloGUILauncher.Views
                 {
                     case 1:
                         App.Client.JoinOfflineGame(Zlo.Extras.OfflinePlayModes.BFH_Single_Player);
-                        tc.SelectedIndex = 0;
                         break;
                     default:
                         break;

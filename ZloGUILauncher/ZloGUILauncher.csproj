@@ -102,7 +102,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Zlo">
-      <HintPath>..\packages\ZloApi\Zlo.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\Zlo.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -420,6 +420,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Media\restart.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="loading.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.2.3.22\build\Fody.targets" Condition="Exists('..\packages\Fody.2.3.22\build\Fody.targets')" />

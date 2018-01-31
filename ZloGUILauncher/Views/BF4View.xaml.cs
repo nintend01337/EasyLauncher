@@ -102,11 +102,9 @@ namespace ZloGUILauncher.Views
                 {
                     case 1:
                         App.Client.JoinOfflineGame(Zlo.Extras.OfflinePlayModes.BF4_Single_Player);
-                        tc.SelectedIndex = 0;
                         break;
                     case 2:
                         App.Client.JoinOfflineGame(Zlo.Extras.OfflinePlayModes.BF4_Test_Range);
-                        tc.SelectedIndex = 0;
                         break;
                     default:
                         break;

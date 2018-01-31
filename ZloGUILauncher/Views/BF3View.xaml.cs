@@ -53,8 +53,7 @@ namespace ZloGUILauncher.Views
                 switch (tc.SelectedIndex)
                 {
                     case 1:
-                      App.Client.JoinOfflineGame(Zlo.Extras.OfflinePlayModes.BF3_Single_Player);
-                        tc.SelectedIndex = 0;
+                        App.Client.JoinOfflineGame(Zlo.Extras.OfflinePlayModes.BF3_Single_Player);
                         break;
                     default:
                         break;

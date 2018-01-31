@@ -16,7 +16,7 @@
 
 
         <Grid Grid.Row="1">
-            <controls:MetroTabControl Background="#00252525" SelectionChanged="MetroTabControl_SelectionChanged">
+            <controls:MetroTabControl Background="#00171010" SelectionChanged="MetroTabControl_SelectionChanged">
                 <TabControl.Resources>
                     <Style TargetType="TabItem">
                         <Setter Property="Template">
@@ -44,19 +44,26 @@
                 </TabControl.Resources>
                 <TabItem Header="Список Серверов" Background="Red" Height="37" Foreground="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="True" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="161*"/>
-                            <ColumnDefinition Width="23*"/>
-                            <ColumnDefinition Width="313*"/>
-                        </Grid.ColumnDefinitions>
-                        <local:BF4ServerListView Foreground="Black" Grid.ColumnSpan="3" FontSize="11" FontWeight="Normal" FontFamily="Verdana"/>
+                        <local:BF4ServerListView Foreground="Black" FontSize="11" FontWeight="Normal" FontFamily="Verdana"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Одиночная игра" Background="#FFEE1313" Height="37" Foreground="White" BorderBrush="Black" BorderThickness="1" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
-                    <Grid/>
+                    <Grid Background="#CC000000">
+                        <Grid Margin="0" VerticalAlignment="Center">
+                            <controls:ProgressRing HorizontalAlignment="Center" Margin="188.491,60.001,189.495,31" VerticalAlignment="Center" Height="99.663" Width="98.5" VerticalContentAlignment="Center"/>
+                            <Label x:Name="___Label___ПЕРЕХОД_В_____" Content="ПЕРЕХОД В ОДИНОЧНУЮ ИГРУ" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontSize="36" Height="68.332" FontWeight="Bold" Foreground="White"/>
+                            <Label Content="Если ничего не происходит - проверьте диспетчер задач" VerticalAlignment="Bottom" FontSize="12" FontWeight="Normal" Height="26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White"/>
+                        </Grid>
+                    </Grid>
                 </TabItem>
                 <TabItem Header="Полигон" Background="#FFEA2D2D" Height="37" Foreground="White" BorderThickness="1" BorderBrush="Black" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
-                    <Grid/>
+                    <Grid Background="#CC000000">
+                        <Grid Height="190.664" Margin="10" VerticalAlignment="Center" Width="476.486" HorizontalAlignment="Center">
+                            <controls:ProgressRing HorizontalAlignment="Center" Margin="188.491,60.001,189.495,31" VerticalAlignment="Center" Height="99.663" Width="98.5" VerticalContentAlignment="Center"/>
+                            <Label Content="ПЕРЕХОД В ПОЛИГОН" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontSize="36" Height="68.332" FontWeight="Bold" Foreground="White"/>
+                            <Label Content="Если ничего не происходит - проверьте диспетчер задач" VerticalAlignment="Bottom" FontSize="12" FontWeight="Normal" Height="26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White"/>
+                        </Grid>
+                    </Grid>
                 </TabItem>
                 <!--<TabItem Header="Статистика" Background="#FFE60C0C" Height="37" Foreground="White" BorderBrush="Black" BorderThickness="1" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
                     <Grid>
@@ -73,7 +80,9 @@
                             <Button Grid.Column="1" Content="Чистый список" Click="StatsAsListButton_Click" IsEnabled="False"/>
                         </Grid>
                         <Grid Grid.Row="1">
-                            --><!--Stats Design go here--><!--
+                            -->
+                <!--Stats Design go here-->
+                <!--
                             <Button Margin="5" Content="Клик здесь и выпадет окно !!" Click="StatsAsWindowButton_Click"></Button>
                         </Grid>
                     </Grid>
