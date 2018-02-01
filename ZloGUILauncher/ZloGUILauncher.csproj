@@ -102,7 +102,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Zlo">
-      <HintPath>..\packages\ZloApi\Zlo.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\Zlo.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
