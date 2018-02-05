@@ -12,26 +12,28 @@ namespace ZloGUILauncher
    public class SettingsProvider
     {
         public string XMLPath = AppDomain.CurrentDomain.BaseDirectory + "Config.xml";
-        public string ZloPath = " ";
-        public bool Debug = true;
+        //public string ZloPath = " ";
+        //public bool Debug = true;
 
             SettingsProvider()
-             {}
+            {
+
+            }
 
         public void Write()
         {
-            XmlSerializer xser = new XmlSerializer(typeof(SettingsProvider));
+            XmlSerializer xser = new XmlSerializer(typeof(Settings));
                 TextWriter tw = new StreamWriter(XMLPath);
              xser.Serialize(tw, new SettingsProvider());
-          MessageBox.Show("Settings saved at" + XMLPath);
+          //("Settings saved at" + XMLPath);
         }
         
         public void Read()
         {
-            XmlSerializer xser = new XmlSerializer(typeof(SettingsProvider));
+            XmlSerializer xser = new XmlSerializer(typeof(Settings));
             TextReader reader = new StreamReader(XMLPath);
                 xser.Deserialize(reader);
-            reader.Close();
+                reader.Close();
         }
     }
 }
