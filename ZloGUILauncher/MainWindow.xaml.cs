@@ -261,14 +261,14 @@ Exit
 
         private void OnGameStarted()
         {
-            Banner.Visibility = Visibility.Visible;
-            MainTabControl.Visibility = Visibility.Hidden;
+            ///Banner.Visibility = Visibility.Visible;
+            //MainTabControl.Visibility = Visibility.Hidden;
         }
 
         private void OnGameClosed()
         {
-            MainTabControl.Visibility = Visibility.Visible;
-            Banner.Visibility = Visibility.Hidden;            
+            //MainTabControl.Visibility = Visibility.Visible;
+            //Banner.Visibility = Visibility.Hidden;            
         }
 
         private void CloseGameBtn_Click(object sender, RoutedEventArgs e)
@@ -279,12 +279,6 @@ Exit
             //proc[0].Kill();
         } // Надо это по красоте сделать
 
-        private void LogsGrid_MouseLeave(object sender, MouseEventArgs e) { LogGrid.Visibility = Visibility.Hidden; }
-
         #endregion
-
-        private void StatusBar_MouseDoubleClick(object sender, MouseButtonEventArgs e){LogGrid.Visibility = Visibility.Visible;}
-
-        private void LogGrid_MouseLeave(object sender, MouseEventArgs e){LogGrid.Visibility = Visibility.Hidden;}
     }            
 }
