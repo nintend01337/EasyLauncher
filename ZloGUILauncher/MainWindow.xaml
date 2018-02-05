@@ -7,7 +7,9 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="ZloGUILauncher.MainWindow"
                       Height="600" Width="1000" ResizeMode="CanMinimize" ShowSystemMenuOnRightClick="false"
                       GlowBrush="{DynamicResource AccentColorBrush}" ShowTitleBar="True" ShowIconOnTitleBar="true" Icon="icon.ico"
-
+                      Loaded="MetroWindow_Loaded"
+                      Activated="MetroWindow_Activated"
+                      Deactivated="MetroWindow_Deactivated"
                       WindowStartupLocation="CenterScreen" Foreground="Black">
 
     <Controls:MetroWindow.Resources>
@@ -16,7 +18,10 @@
 
 
         <Style TargetType="{x:Type ScrollViewer}">
-            <Setter Property="helpers:ScrollViewerCorrector.FixScrolling" Value="true"/>
+            <!--<Style.Setters>
+                <Setter Property="helpers:ScrollViewerCorrector.FixScrolling" Value="true"/>
+            </Style.Setters> Вот изза этой хуйни вылетал лог-->    
+            
         </Style>
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
             <Setter Property="Background" Value="LightGray"/>
@@ -147,21 +152,19 @@
                 </Grid>
             </TabItem>
             <TabItem Header="LOG" Margin="0,84.08,67,-93.08" HorizontalAlignment="Right" Width="53" FontWeight="Bold" FontFamily="Verdana">
-                
                 <Grid Margin="-11,0,0,0">
                     <Button Click="ClearButton_Click" Content="Очистить" Margin="0,523.74,-2,-0.04"/>
                     <RichTextBox x:Name="LogBox" VerticalScrollBarVisibility="Visible" BorderThickness="0" Background="#FF0D0D0D"
                        IsReadOnly="true" Margin="0,0,-2,25.26" BorderBrush="White">
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
-                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="Block.Margin" Value="0"/>
                             </Style>
                         </RichTextBox.Resources>
                         <FlowDocument x:Name="LogDocument"/>
                     </RichTextBox>
                 </Grid>
             </TabItem>
-
         </Controls:MetroAnimatedTabControl>
 
         <StatusBar x:Name="StatusBar" Grid.Row="2" Grid.ColumnSpan="2">

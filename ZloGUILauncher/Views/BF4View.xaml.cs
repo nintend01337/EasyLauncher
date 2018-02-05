@@ -60,8 +60,6 @@ namespace ZloGUILauncher.Views
             }
         }
 
-      
-
         private void StatsRefreshButton_Click(object sender , RoutedEventArgs e)
         {
            // App.Client.GetStats(Zlo.Extras.ZloGame.BF_4);

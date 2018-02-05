@@ -30,9 +30,12 @@
                 <Label Content="Directory ZlOrigin and ZClient"/>
 
                 <TextBox IsReadOnly="True"/>
-                <Button Content="Browse"/>
+                <Button Name="btn_browse" Content="Browse"/>
             </Grid>
-
+            <Button Name="btn_save" Content="Save" Click="WriteSettings"/>
+            <Button Name="btn_reset" Content="Reset" Click="btn_reset_Click"/>
+            <TextBox Text="Меню откладки "/>
+            <CheckBox Name="dbg"/>
         </StackPanel>
 
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical"/>
