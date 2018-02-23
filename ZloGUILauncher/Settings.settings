@@ -8,8 +8,5 @@
     <Setting Name="Config" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Theme" Type="MahApps.Metro.Controls.Theme" Scope="User">
-      <Value Profile="(Default)">Dark</Value>
-    </Setting>
   </Settings>
 </SettingsFile>
