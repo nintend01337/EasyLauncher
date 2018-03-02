@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 namespace ZloGUILauncher
 {
     [Serializable]
-    public class Params
+    public class Params 
     {
         public string AccentColor { get; set; }
         public string Theme { get; set; }
@@ -18,11 +19,13 @@ namespace ZloGUILauncher
         public bool autostartZclient { get; set; }
         public bool isMusicEnabled { get; set; }
         public Params() { }
+
     }
 
     [Serializable]
-    public class Config
+    public class Config : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         public Params config { get; set; }
         //public Theme theme { get; set; }
         //  internal string config = "Config.json";
@@ -36,7 +39,27 @@ namespace ZloGUILauncher
             config.UseExternalImage = false;
             config.ImagePath = "";
             config.autostartZclient = false;
-            config.isMusicEnabled = true;
+            config.isMusicEnabled = false;
         }
+
+        public bool isDebug
+        {
+            get { return config.isDebug; }
+
+            set
+            {
+                config.isDebug = value;
+                RaisePropertyChanged("isDebug");
+            }
+        }
+
+        public void RaisePropertyChanged(string propertyName)
+        {
+            // Если кто-то на него подписан, то вызывем его
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
     }
 }

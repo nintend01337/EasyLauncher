@@ -40,7 +40,7 @@ namespace ZloGUILauncher.Servers
         {
             get
             {
-                if (m_IP == null || BitConverter.ToUInt32(m_IP.GetAddressBytes() , 0) == raw.ServerIP)
+                if (m_IP == null || BitConverter.ToUInt32(m_IP.GetAddressBytes(), 0) == raw.ServerIP)
                 {
                     m_IP = new IPAddress(BitConverter.GetBytes(raw.ServerIP).Reverse().ToArray());
                 }
@@ -51,7 +51,7 @@ namespace ZloGUILauncher.Servers
         {
             get { return raw.ServerPort; }
         }
-        public int Ping { get; set; }
+        public string Ping { get; set; }
         public string Country { get; set; }
 
         public string ServerType
@@ -116,25 +116,32 @@ namespace ZloGUILauncher.Servers
             OPC(nameof(IsHasPW));
             OPC(nameof(IsHasPB));
             OPC(nameof(IsHasFF));
-            UpdatePing();
 
+            UpdatePing();
             Maps.Update();
             Players.Update();          
         }
 
         public void UpdatePing()
-        { 
+        {
             Task.Run((Action)(() =>
             {
-                try {
+                try
+                {
                     if (IP == null) return;
-                    PingReply pingReply = new System.Net.NetworkInformation.Ping().Send(raw.ServerIP.ToString(),500);
-                    if (pingReply.Status == IPStatus.Success) this.Ping = ((int)pingReply.RoundtripTime);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        PingReply pingReply = new System.Net.NetworkInformation.Ping().Send(raw.ServerIP.ToString(), 500);
+                        if (pingReply.Status == IPStatus.Success) this.Ping = ((int)pingReply.RoundtripTime).ToString();
+                        if (this.Ping == "0" || string.IsNullOrEmpty(this.Ping)) Ping = "TimeOut";
+                    }
                 }
-                catch (Exception ex){
-                    Ping = 666;
+                catch (Exception ex)
+                {
+                    Ping = "Timeout";
                     ex.Message.ToString(); // сообщение в случаи неудачи проверки пинга незнаю зачем :)
                 }
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Ping"));
             }));
         }
 

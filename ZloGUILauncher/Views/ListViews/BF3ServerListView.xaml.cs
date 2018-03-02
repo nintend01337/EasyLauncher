@@ -84,8 +84,6 @@ namespace ZloGUILauncher.Views
             {
                 var newserv = new BF3_GUI_Server(server);
                 BF3_GUI_Servers.Add(newserv);
-
-              //  AnimateRow(newserv);
             });
         }
 
