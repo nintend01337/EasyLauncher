@@ -16,31 +16,42 @@
             <ColumnDefinition Width="400*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
 
-        <StackPanel Grid.Row="3" Orientation="Vertical" Grid.ColumnSpan="2"/>
+        <!--<StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="2"/>-->
+        
 
-        <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Black" Opacity="0.6" Grid.ColumnSpan="2">
-            <Grid>
-                <Label Content="Directory ZlOrigin and ZClient"/>
-                <TextBox IsReadOnly="True"/>
-                <Button Name="btn_browse" Content="Browse"/>
-            </Grid>
-            <Button Name="btn_save" Content="Save" Click="WriteSettings"/>
-            <Button Name="btn_reset" Content="Reset" Click="btn_reset_Click"/>
+        <StackPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Black" Opacity="0.6" Grid.ColumnSpan="2">
+            <Button Name="btn_save" Content="Сохранить" Click="WriteSettings"/>
+            <Button Name="btn_reset" Content="Сбросить" Click="btn_reset_Click"/>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="2">
-            <Label Content="Меню откладки "/>
-            <Custom:ToggleSwitch Name="dbg" IsChecked="{Binding Source={x:Static settings:Settings.Default}, Path= Config.config.isDebug, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
-            <Label Content="Музыка"/>
-            <Custom:ToggleSwitch Name="music" IsChecked="{Binding Source={x:Static settings:Settings.Default}, Path= Config.config.isMusicEnabled, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+        <StackPanel Grid.Column="0" Grid.Row="2">
+            <Label Content="Меню откладки "  FontFamily="Tahoma" FontSize="20"/>
+            <Custom:ToggleSwitch Name="dbg" IsChecked="{Binding Source={x:Static settings:Settings.Default}, Path = Config.config.isDebug, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            <Label Content="Музыка"  FontFamily="Tahoma" FontSize="20"/>
+            <Custom:ToggleSwitch Name="music" IsChecked="{Binding Source={x:Static settings:Settings.Default}, Path = Config.config.isMusicEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <Label Content="Запускать Zclient при старте?"  FontFamily="Tahoma" FontSize="20"/>
+            <Custom:ToggleSwitch Name="runzclient"  FontFamily="Tahoma" FontSize="20" IsChecked="{Binding Source={x:Static settings:Settings.Default}, Path = Config.config.autostartZclient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Checked="Zclient_checked" />
+            
+            <StackPanel Orientation="Horizontal">
+                <TextBox  Name="zbox" Text="{Binding Source={x:Static settings:Settings.Default}, Path= Config.config.ZclientPath,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsReadOnly="True" MinWidth="256"/>
+                <Button Content="....." Click="Button_Click" Name="browsepath"/>
+            </StackPanel>
+            <Label Content="Разворачивать игру при запуске ?"  FontFamily="Tahoma" FontSize="20"/>
+            <Custom:ToggleSwitch Name="mazimize"  FontFamily="Tahoma" FontSize="20" IsChecked="{Binding Source={x:Static settings:Settings.Default}, Path = Config.config.MaximizeGameWindow, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
+            <Label Content="Заменить изображение?"  FontFamily="Tahoma" FontSize="20"/>
+            <Custom:ToggleSwitch Name="externalImage"  FontFamily="Tahoma" FontSize="20" IsChecked="{Binding Source={x:Static settings:Settings.Default}, Path = Config.config.UseExternalImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Checked="externalImage_Checked" Unchecked="externalImage_Unchecked"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox Name="ImagePathBox" Text="{Binding Source={x:Static settings:Settings.Default}, Path= Config.config.ImagePath,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsReadOnly="True" MinWidth="256" MaxWidth="300"/>
+                <Button Content="....." Click="BrowseImage_click" Name="imagepath"/>
+            </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical"/>
         <GroupBox Grid.Row="0" Header="Цвет оформления" HorizontalAlignment="Center" Height="62" Margin="10,28,10,0" Width="380" BorderBrush="{DynamicResource AccentColorBrush}" Background="{DynamicResource AccentColorBrush}" VerticalAlignment="Top">

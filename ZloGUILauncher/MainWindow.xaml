@@ -9,7 +9,7 @@
                       GlowBrush="{DynamicResource AccentColorBrush}" ShowTitleBar="True" ShowIconOnTitleBar="true" Icon="icon.ico"
                       Loaded="MetroWindow_Loaded"
                       Activated="MetroWindow_Activated"
-                      Deactivated="MetroWindow_Deactivated"
+                      Closing="MetroWindow_Closing"
                       WindowStartupLocation="CenterScreen" Foreground="Black">
 
     <Controls:MetroWindow.Resources>

@@ -18,8 +18,7 @@ namespace ZloGUILauncher
         public string ImagePath { get; set; }
         public bool autostartZclient { get; set; }
         public bool isMusicEnabled { get; set; }
-        public Params() { }
-
+        public string ZclientPath { get; set; }
     }
 
     [Serializable]
@@ -38,6 +37,7 @@ namespace ZloGUILauncher
             config.MaximizeGameWindow = false;
             config.UseExternalImage = false;
             config.ImagePath = "";
+            config.ZclientPath = "";
             config.autostartZclient = false;
             config.isMusicEnabled = false;
         }
@@ -50,6 +50,16 @@ namespace ZloGUILauncher
             {
                 config.isDebug = value;
                 RaisePropertyChanged("isDebug");
+            }
+        }
+
+        public bool isMusicEnabled
+        {
+            get { return config.isMusicEnabled; }
+            set
+            {
+                config.isMusicEnabled = value;
+                RaisePropertyChanged("isMusicEnabled");
             }
         }
 
