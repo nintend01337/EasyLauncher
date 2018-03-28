@@ -60,7 +60,7 @@
                     <Grid Background="#CC000000">
                         <Grid Height="190.664" Margin="10" VerticalAlignment="Center" Width="476.486" HorizontalAlignment="Center">
                             <controls:ProgressRing HorizontalAlignment="Center" Margin="188.491,60.001,189.495,31" VerticalAlignment="Center" Height="99.663" Width="98.5" VerticalContentAlignment="Center"/>
-                            <Label Content="ПЕРЕХОД В ПОЛИГОН" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontSize="36" Height="68.332" FontWeight="Bold" Foreground="White"/>
+                            <Label Content="ПЕРЕХОД НА ПОЛИГОН" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontSize="36" Height="68.332" FontWeight="Bold" Foreground="White"/>
                             <Label Content="Если ничего не происходит - проверьте диспетчер задач" VerticalAlignment="Bottom" FontSize="12" FontWeight="Normal" Height="26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White"/>
                         </Grid>
                     </Grid>

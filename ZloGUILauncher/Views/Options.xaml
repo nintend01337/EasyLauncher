@@ -53,6 +53,14 @@
                 <Button Content="....." Click="BrowseImage_click" Name="imagepath"/>
             </StackPanel>
         </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="2">
+
+            <Label Content="Записывать лог в файл?"  FontFamily="Tahoma" FontSize="20"/>
+            <Custom:ToggleSwitch Name="SaveLogSwitch"  FontFamily="Tahoma" FontSize="20" IsChecked="{Binding Source={x:Static settings:Settings.Default}, Path = Config.config.SaveLogInFile, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <Label Content="Проверять обновления при запуске?"  FontFamily="Tahoma" FontSize="20"/>
+            <Custom:ToggleSwitch Name="CheckUpdates"  FontFamily="Tahoma" FontSize="20" IsChecked="{Binding Source={x:Static settings:Settings.Default}, Path = Config.config.CheckUpdates, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+        </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical"/>
         <GroupBox Grid.Row="0" Header="Цвет оформления" HorizontalAlignment="Center" Height="62" Margin="10,28,10,0" Width="380" BorderBrush="{DynamicResource AccentColorBrush}" Background="{DynamicResource AccentColorBrush}" VerticalAlignment="Top">
             <ComboBox  x:Name="AccentSelector"

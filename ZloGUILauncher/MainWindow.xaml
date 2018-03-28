@@ -4,32 +4,31 @@
                       xmlns:views="clr-namespace:ZloGUILauncher.Views"
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:helpers="clr-namespace:ZloGUILauncher"
-                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="ZloGUILauncher.MainWindow"
-                      Height="600" Width="1000" ResizeMode="CanMinimize" ShowSystemMenuOnRightClick="false"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="ZloGUILauncher.MainWindow" ResizeMode="CanMinimize" ShowSystemMenuOnRightClick="false"
                       GlowBrush="{DynamicResource AccentColorBrush}" ShowTitleBar="True" ShowIconOnTitleBar="true" Icon="icon.ico"
                       Loaded="MetroWindow_Loaded"
                       Activated="MetroWindow_Activated"
                       Closing="MetroWindow_Closing"
-                      WindowStartupLocation="CenterScreen" Foreground="Black">
+                      WindowStartupLocation="CenterScreen" Foreground="Black" Width="1000" Height="600">
 
     <Controls:MetroWindow.Resources>
         <Color x:Key="TabSelectColor">#CC2C2C2C</Color>
         <SolidColorBrush x:Key="TabSelectColorBrush" Color="{StaticResource TabSelectColor}" Opacity="0.8" />
 
 
-        <Style TargetType="{x:Type ScrollViewer}">
-            <!--<Style.Setters>
+        <!--<Style TargetType="{x:Type ScrollViewer}">
+            --><!--<Style.Setters>
                 <Setter Property="helpers:ScrollViewerCorrector.FixScrolling" Value="true"/>
-            </Style.Setters> Вот изза этой хуйни вылетал лог-->    
+            </Style.Setters> Вот изза этой хуйни вылетал лог--><!--    
             
-        </Style>
+        </Style>-->
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
             <Setter Property="Background" Value="LightGray"/>
             <Setter Property="Foreground" Value="Black"/>
         </Style>
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.Background>
-        <ImageBrush ImageSource="{StaticResource background}" Stretch="UniformToFill"/>
+        <ImageBrush ImageSource="{StaticResource wallper}" Stretch="UniformToFill"/>
     </Controls:MetroWindow.Background>
 
     <Controls:MetroWindow.RightWindowCommands>
@@ -130,7 +129,28 @@
                     <views:BFHView x:Name="IbfhView"/>
                 </Grid>
             </TabItem>
-            <TabItem Margin="0,104,11,-113" HorizontalAlignment="Right" Width="56">
+            <TabItem HorizontalAlignment="Center" Width="56"  Margin="0,-8,0,0" >
+                <TabItem.Header>
+                    <StackPanel HorizontalAlignment="Center" Height="28" RenderTransformOrigin="0.5,0.5" Width="55" Margin="0,-5,0,-10">
+                        <StackPanel.Background>
+                            <ImageBrush ImageSource="Media/help.ico" Stretch="Uniform">
+                                <ImageBrush.RelativeTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleY="0.75" ScaleX="0.75"/>
+                                        <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                                        <RotateTransform CenterY="0.5" CenterX="0.5"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </ImageBrush.RelativeTransform>
+                            </ImageBrush>
+                        </StackPanel.Background>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <views:Journal Margin="-10,0,0,0"/>
+                </Grid>
+            </TabItem>
+            <TabItem Margin="0,85,11,-93" HorizontalAlignment="Right" Width="56">
                 <TabItem.Header>
                     <StackPanel HorizontalAlignment="Center" Height="28" RenderTransformOrigin="0.5,0.5" Width="55" Margin="0,-8">
                         <StackPanel.Background>
@@ -151,9 +171,10 @@
                     <views:Options/>
                 </Grid>
             </TabItem>
-            <TabItem Header="LOG" Margin="0,84.08,67,-93.08" HorizontalAlignment="Right" Width="53" FontWeight="Bold" FontFamily="Verdana">
-                <Grid Margin="-11,0,0,0">
-                    <Button Click="ClearButton_Click" Content="Очистить" Margin="0,523.74,-2,-0.04"/>
+            <TabItem Header="LOG" Margin="0,65,67,-75" HorizontalAlignment="Right" Width="53" FontWeight="Bold" FontFamily="Verdana">
+                <Grid Margin="-9,0,0,0">
+                    <Button Click="ClearButton_Click" Content="Очистить" Margin="0,523.74,-2,-0.04" MaxWidth="250" HorizontalAlignment="Center"/>
+                    <Button Name ="CreateLog" Content="Сохранить Лог в файл" Click="CreateLog_Click" Margin="731,523.74,-4,-0.04" MaxWidth="450" HorizontalAlignment="Center"/>
                     <RichTextBox x:Name="LogBox" VerticalScrollBarVisibility="Visible" BorderThickness="0" Background="#FF0D0D0D"
                        IsReadOnly="true" Margin="0,0,-2,25.26" BorderBrush="White">
                         <RichTextBox.Resources>
@@ -175,7 +196,7 @@
                Margin="0,0,0,3" Grid.Row="2" Foreground="White" Grid.Column="1" Height="15.96" Width="296.85" IsEnabled="False"/>
         <Grid x:Name="Banner" Height="548.04" Grid.RowSpan="2" Background="#CA000000" Margin="0,0.5" Grid.Column="1" Visibility="Hidden">
             <Label Content="ИГРА УЖЕ ЗАПУЩЕНА" Margin="0,151,0,316.04" Width="551" FontSize="48" FontWeight="Bold" HorizontalContentAlignment="Center" Foreground="White"/>
-            <Label Content="Закройте игру прежде чем продолджить" Margin="0,232,0,276.04" Width="551" FontSize="20" FontWeight="Bold" HorizontalContentAlignment="Center" Foreground="White"/>
+            <Label Content="Закройте игру прежде чем продолжить" Margin="0,232,0,276.04" Width="551" FontSize="20" FontWeight="Bold" HorizontalContentAlignment="Center" Foreground="White"/>
             <Button x:Name="CloseGameBtn" Content="ЗАКРЫТЬ" HorizontalAlignment="Center" Height="56" Margin="318,326,318,0" VerticalAlignment="Top" Width="249" Controls:ControlsHelper.ContentCharacterCasing="Upper" FontSize="22" Background="{x:Null}" BorderBrush="{DynamicResource AccentColorBrush}" Foreground="{DynamicResource AccentColorBrush}" Click="CloseGameBtn_Click"/>
         </Grid>
     </Grid>

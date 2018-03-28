@@ -1,21 +1,10 @@
 ﻿using MahApps.Metro;
-using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using ZloGUILauncher.Properties;
 
 namespace ZloGUILauncher.Views
 {
@@ -43,6 +32,10 @@ namespace ZloGUILauncher.Views
 
             //if (result == MessageDialogResult.Affirmative) { Settings.Default.Reset(); }
             Settings.Default.Reset();
+            var accent = ThemeManager.GetAccent(Settings.Default.Config.config.AccentColor);
+            var theme = ThemeManager.GetAppTheme(Settings.Default.Config.config.Theme);
+            ThemeManager.ChangeAppStyle(System.Windows.Application.Current, accent, theme);
+            Settings.Default.Save();
         }
       
         private void AccentSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -78,6 +71,11 @@ namespace ZloGUILauncher.Views
             if (string.IsNullOrEmpty(Settings.Default.Config.config.ZclientPath))
             {
                 BrowseZpath();
+                if (Settings.Default.Config.config.ZclientPath == "")
+                {
+                    Settings.Default.Config.config.autostartZclient = false;
+                    runzclient.IsChecked = false;
+                }
             }
         }
 
@@ -107,6 +105,10 @@ namespace ZloGUILauncher.Views
             openFileDialog.ShowDialog();
             Settings.Default.Config.config.ZclientPath = openFileDialog.FileName;
             zbox.Text = Settings.Default.Config.config.ZclientPath;
+            if (Settings.Default.Config.config.ZclientPath == "")
+            {
+                Settings.Default.Config.config.autostartZclient = false;
+            }
         }
 
         public void BrowseImagePath()

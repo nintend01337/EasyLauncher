@@ -18,25 +18,22 @@ using Newtonsoft.Json.Linq;
 
 namespace ZloGUILauncher.Views
 {
-    /// <summary>
-    /// Interaction logic for BF4Stats.xaml
-    /// </summary>
     public partial class BF4StatsWin : Window
     {
         public BF4StatsWin()
         {
             InitializeComponent();
             DataContext = BF4Stats;
-            App.Client.StatsReceived += Client_StatsReceived;
+          //  App.Client.StatsReceived += Client_StatsReceived;
         }
 
-        private void Client_StatsReceived(ZloGame Game , Dictionary<string , float> List)
-        {
-            if (Game == ZloGame.BF_4)
-            {
-                BF4Stats.UpdateObject();
-            }
-        }
+        //private void Client_StatsReceived(ZloGame Game , Dictionary<string , float> List)
+        //{
+        //    if (Game == ZloGame.BF_4)
+        //    {
+        //        BF4Stats.UpdateObject();
+        //    }
+        //}
 
         private void Window_Closing(object sender , CancelEventArgs e)
         {

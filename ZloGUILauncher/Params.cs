@@ -19,56 +19,59 @@ namespace ZloGUILauncher
         public bool autostartZclient { get; set; }
         public bool isMusicEnabled { get; set; }
         public string ZclientPath { get; set; }
+        public bool SaveLogInFile { get; set;}
+        public bool CheckUpdates { get; set; }
     }
 
     [Serializable]
-    public class Config : INotifyPropertyChanged
+    public class Config 
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         public Params config { get; set; }
-        //public Theme theme { get; set; }
-        //  internal string config = "Config.json";
+      
         public Config()
         {
             config  = new Params();
             config.AccentColor = "Cobalt";
             config.Theme = "BaseDark";
-            config.isDebug = false;
+            config.isDebug = true;
             config.MaximizeGameWindow = false;
             config.UseExternalImage = false;
             config.ImagePath = "";
             config.ZclientPath = "";
             config.autostartZclient = false;
             config.isMusicEnabled = false;
+            config.SaveLogInFile = false;
+            config.CheckUpdates = true;
+            
         }
 
-        public bool isDebug
-        {
-            get { return config.isDebug; }
+        //public bool isDebug
+        //{
+        //    get { return config.isDebug; }
 
-            set
-            {
-                config.isDebug = value;
-                RaisePropertyChanged("isDebug");
-            }
-        }
+        //    set
+        //    {
+        //        config.isDebug = value;
+        //        RaisePropertyChanged("isDebug");
+        //    }
+        //}
 
-        public bool isMusicEnabled
-        {
-            get { return config.isMusicEnabled; }
-            set
-            {
-                config.isMusicEnabled = value;
-                RaisePropertyChanged("isMusicEnabled");
-            }
-        }
+        //public bool isMusicEnabled
+        //{
+        //    get { return config.isMusicEnabled; }
+        //    set
+        //    {
+        //        config.isMusicEnabled = value;
+        //        RaisePropertyChanged("isMusicEnabled");
+        //    }
+        //}
 
-        public void RaisePropertyChanged(string propertyName)
-        {
-            // Если кто-то на него подписан, то вызывем его
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //public void RaisePropertyChanged(string propertyName)
+        //{
+        //    // Если кто-то на него подписан, то вызывем его
+        //    if (PropertyChanged != null)
+        //        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        //}
 
 
     }

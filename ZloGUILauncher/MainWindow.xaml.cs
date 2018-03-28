@@ -1,22 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.Controls;
 using Zlo.Extras;
@@ -43,9 +34,14 @@ namespace ZloGUILauncher
         #endregion
 
         public const string download_music_link = "https://dl.dropbox.com/s/r2cz0vk26aji58n/music.mp3?dl=0";
+        public const string remote_version_link = "https://dl.dropbox.com/s/aaw46c567xdtziy/version.txt?dl=0";
+        public const string download_launcher_link = "https://dl.dropbox.com/s/rydql8l6fi8o5ac/Easy%20Launcher.exe?dl=0";
+        public const string changelog_link = "https://dl.dropbox.com/s/81gigeh9dk9ekyx/changelog.txt?dl=0";
         public const string AssemblyName = "Easy Launcher";
+        public const string LauncherNew = "Easy_New.exe";
+        public const string Log = "Easy.log";
         public const string autor = "nintend01337";
-        public string version = "1.5.0 beta";
+        public string version = "1.5.2";
         public string ApiVersion;
         public string soldiername;
         public string soldierID;
@@ -56,8 +52,11 @@ namespace ZloGUILauncher
         public MainWindow()
         {
             InitializeComponent();
+            PrintDebug(DebugLevel.Info, "Инициализация компонентов завершена!");
             LoadImage();
+            CheckUpdates();
             CheckZclient();
+            
             App.Current.MainWindow = this;
             App.Client.ErrorOccured += Client_ErrorOccured;
             App.Client.UserInfoReceived += Client_UserInfoReceived;
@@ -65,15 +64,6 @@ namespace ZloGUILauncher
             App.Client.APIVersionReceived += Client_APIVersionReceived;
             App.Client.Disconnected += Client_Disconnected;
             App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
-
-            
-
-            var args = Environment.GetCommandLineArgs();
-            if (args.Length > 1 && args.Contains("debug"))
-            {
-                isDebug = true;
-                PrintDebug(DebugLevel.Warn, "Отладочные сообщения включены!");
-            }
 
             if (App.Client.Connect())
             {
@@ -83,21 +73,21 @@ namespace ZloGUILauncher
                     case ZloGame.BF_3:
                         MainTabControl.SelectedIndex = 0;
                
-                        App.Client.GetStats(ZloGame.BF_3);
+                        //App.Client.GetStats(ZloGame.BF_3);
                         break;
 
                     case ZloGame.BF_4:
                         MainTabControl.SelectedIndex = 1;
                   
-                        App.Client.GetStats(ZloGame.BF_4);
-                        App.Client.GetItems(ZloGame.BF_4);
+                        //App.Client.GetStats(ZloGame.BF_4);
+                        //App.Client.GetItems(ZloGame.BF_4);
                         break;
 
                     case ZloGame.BF_HardLine:
                         MainTabControl.SelectedIndex = 2;
                    
-                        App.Client.GetStats(ZloGame.BF_HardLine);
-                        App.Client.GetItems(ZloGame.BF_HardLine);
+                        //App.Client.GetStats(ZloGame.BF_HardLine);
+                        //App.Client.GetItems(ZloGame.BF_HardLine);
                         break;
                 }
             }                
@@ -130,6 +120,11 @@ namespace ZloGUILauncher
                         Level.Foreground = new SolidColorBrush(Colors.Red);
                         MessageText.Foreground = new SolidColorBrush(Colors.Red);
                         break;
+
+                    case DebugLevel.System:
+                        Level.Foreground = new SolidColorBrush(Colors.Cyan);
+                        MessageText.Foreground = new SolidColorBrush(Colors.Cyan);
+                        break;
                 }
 
                 Paragraph NewParagraph = new Paragraph();
@@ -149,16 +144,18 @@ namespace ZloGUILauncher
         {
             if (Settings.Default.Config.config.UseExternalImage)
             {
+                PrintDebug(DebugLevel.Warn, "Загружаю Изображение");
                 try
                 {
                     ImageBrush background = new ImageBrush();
                     background.ImageSource = new BitmapImage(new Uri(Settings.Default.Config.config.ImagePath));
                     System.Windows.Application.Current.MainWindow.Background = background;
+                    PrintDebug(DebugLevel.Warn, "Изображение Успешно Загружено!!!.");
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine(this.ToString());
-
+                    //Console.WriteLine(this.ToString());
+                    PrintDebug(DebugLevel.Error, string.Format($"Возникла ошибка при загрузке изображения \n {this.ToString()}"));
                 }
             }
         }
@@ -186,7 +183,7 @@ namespace ZloGUILauncher
 
         private void Client_UserInfoReceived(uint UserID, string UserName)
         {
-            PrintDebug(DebugLevel.Info,  $"Получение информации о пользователе : {UserName} ,  {UserID}");
+            PrintDebug(DebugLevel.Info,  $" Получение информации о пользователе : {UserName} ,  {UserID}");
             soldiername = UserName;
             soldierID = UserID.ToString();
         }
@@ -195,8 +192,8 @@ namespace ZloGUILauncher
         {
             Dispatcher.Invoke(async () =>
             {
-                await this.ShowMessageAsync("",$"Вылет по причине : {Reason}",MessageDialogStyle.Affirmative);
-                PrintDebug(DebugLevel.Error, $"Вылет по причине : {Reason}");
+                await this.ShowMessageAsync("",$" Вылет по причине : {Reason}",MessageDialogStyle.Affirmative);
+                PrintDebug(DebugLevel.Error, $" Вылет по причине : {Reason}");
             });
         }
 
@@ -212,16 +209,16 @@ namespace ZloGUILauncher
                             wc.DownloadFileCompleted += Wc_DownloadFileCompleted;
                             wc.DownloadFileAsync(new Uri(DownloadAdress), Newdll);
                         }
-                   }
+                    }
                 });
             }
             else {
                 Dispatcher.Invoke(() => {
                     ApiVersion = Current.ToString();
-                    Title = AssemblyName + " | " + version + " | " + "API version " + ApiVersion + " | " + (soldiername != null ? "WELCOME, " + soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
+                    Title = AssemblyName + " | " + version  +  " | " + "API version " + ApiVersion + " | " + (soldiername != null ? "WELCOME, " + soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
                 });
             }
-            PrintDebug(DebugLevel.Info, $"Получение информации о версиях API: \n Текущая : {Current}, Последняя : {Latest}, \n Требуется обновление ? : {IsNeedUpdate}");
+            PrintDebug(DebugLevel.Info, $"Получение информации о версиях API: \n Текущая : {Current}, Последняя : {Latest}, \n Требуется обновление API ? : {IsNeedUpdate}");
         }
 
         private void Wc_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
@@ -233,17 +230,23 @@ namespace ZloGUILauncher
                 //error occured
                 Client_ErrorOccured(e.Error, "Возникла ошибка при обновлении Zlo.dll");
                 Debug.Write(e.Error);
-                PrintDebug(DebugLevel.Error, string.Format("{0} \n {1} \n {2}","Возникла ошибка при обновлении Zlo.dll" + e.Error.ToString() + e.Error.StackTrace.ToString()));
+                PrintDebug(DebugLevel.Error, string.Format("{0} \n {1} \n {2}","Возникла ошибка при обновлении Zlo.dll" , e.Error.ToString() , e.Error.StackTrace.ToString()));
             }
             else
             {
                 //no errors
-                string executablePath = Directory.GetCurrentDirectory();
-                string Sourcedll = "Zlo.dll";
-                string Newdll = "Zlo_New.dll";
-                string Olddll = "Zlo_old.dll";
-                string BatchText =
-                   $@"
+                ApplyUpdate("Zlo.dll","Zlo_New.dll");
+            }
+        }
+
+        private void ApplyUpdate(string Src, string NewSrc)
+        {
+            string executablePath = Directory.GetCurrentDirectory();
+            string Source = Src;
+            string NewSource = NewSrc;
+            string Old = "old_".ToUpper() + Source;
+            string BatchText =
+               $@"
 @ECHO off
 SETLOCAL EnableExtensions
 set EXE={AppDomain.CurrentDomain.FriendlyName}
@@ -254,23 +257,22 @@ tasklist /FI ""IMAGENAME eq %EXE%"" 2>NUL | find /I /N ""%EXE%"">NUL
 if ""%ERRORLEVEL%""==""0"" goto LOOP
 echo Process %EXE% closed
 mkdir backup
-rename  ""{Sourcedll}"" ""{Olddll}""
-move /y ""{Olddll}"" backup
-move /y ""{Newdll}"" ""{Sourcedll}"" 
+rename  ""{Source}"" ""{Old}""
+move /y ""{Old}"" backup
+move /y ""{NewSource}"" ""{Source}"" 
 start """" ""{AppDomain.CurrentDomain.FriendlyName}"" ""done""
 Exit
 ";
-                var bat_path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UpdateBat.bat");
-                //create the bat file
-                File.WriteAllText(bat_path, BatchText);
-                ProcessStartInfo si = new ProcessStartInfo(bat_path);
-                si.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                Process.Start(si);
-                Dispatcher.Invoke(() => { System.Windows.Application.Current.Shutdown(); });
-            }
+            var bat_path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UpdateBat.bat");
+            //create the bat file
+            File.WriteAllText(bat_path, BatchText);
+            ProcessStartInfo si = new ProcessStartInfo(bat_path);
+            si.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            Process.Start(si);
+            Dispatcher.Invoke(() => { System.Windows.Application.Current.Shutdown(); });
         }
 
-            private async void Wc_DownloadMusicCompletedAsync(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        private async void Wc_DownloadMusicCompletedAsync(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
             {
                     PrintDebug(DebugLevel.Info, "Загрузка файла music.mp3 Завершена. Перезапуск");
                     await this.ShowMessageAsync("Загрузка", "Файлы загружены.. \n Лаунчер будет перезапущен", MessageDialogStyle.Affirmative);
@@ -282,7 +284,7 @@ Exit
         }
         #region Setup Events
 
-        private void Client_GameStateReceived(Zlo.Extras.ZloGame game, string type, string message)
+        private void Client_GameStateReceived(ZloGame game, string type, string message)
         {
             Dispatcher.Invoke(() =>
             {
@@ -311,7 +313,7 @@ Exit
 
                 if (type == "StateChanged") OnGameStarted(); //Это может тоже по красоте
                 if (type == "Alert") OnGameClosed();
-                if (message.Contains("State_GameLoading State_ClaimReservation")) MaximizeWindow(game);
+                if (message.Contains("State_GameLoading State_ClaimReservation") || message.Contains("State_GameLoading State_LaunchPlayground") || message.Contains("State_GameLoading State_ResumeCampaign")) MaximizeWindow(game);
                 
             });
         }
@@ -324,6 +326,7 @@ Exit
         
         private void RestartLauncherButton_Click(object sender, RoutedEventArgs e)
         {
+            SaveLogInFile();
             Dispatcher.Invoke(() => {
                 App.Client.Close();
                 Process.Start(System.Windows.Application.ResourceAssembly.Location);
@@ -361,6 +364,7 @@ Exit
         private void OfficialDiscordButton_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("https://discord.gg/FUk56Rc");
+            PrintDebug(DebugLevel.System, "Пошел в дискорд к разработчику !");
         }
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
@@ -460,16 +464,20 @@ Exit
 
         private void CheckZclient()
         {
-            if (Settings.Default.Config.config.autostartZclient)
-            {
+            PrintDebug(DebugLevel.Info, "Проверяю запущен ли Zclient");
+          
                var proc =  Process.GetProcessesByName("ZClient");
                 if (proc.Length == 0)
+            {
+                PrintDebug(DebugLevel.Error, "ZCLIENT НЕ ЗАПУЩЕН, влючите пункт в автозапуске либо запустите его вручную".ToUpper());
+                if (Settings.Default.Config.config.autostartZclient)
                 {
                     RunZClient();
                     PrintDebug(DebugLevel.Warn, "НЕ ЗАПУЩЕН ZCLIENT,ЗАПУСКАЮ!!!!");
-                    Thread.Sleep(10000);
+                    Thread.Sleep(10000);                //спим 10 сек на случай обновления Зшки
                 }
             }
+            
         }
 
         private void RunZClient()
@@ -497,6 +505,121 @@ Exit
         private void MetroWindow_Closing(object sender, CancelEventArgs e)
         {
             Settings.Default.Save();
+            SaveLogInFile();
         }
-    }            
+
+        #region  Updates
+        private  void CheckUpdates()
+        {
+            if (Settings.Default.Config.config.CheckUpdates)
+            {
+                string CurrentVersion = version.ToLower();
+                string RemoteVersion = "";
+                string Changelog = "";
+
+                var obj = new WebClient();
+
+                PrintDebug(DebugLevel.Warn, "Проверяю обновления Лаунчера");
+                
+                RemoteVersion = obj.DownloadString(new Uri(remote_version_link)).ToLower();
+            
+                if (string.IsNullOrEmpty(RemoteVersion))
+                {
+                    PrintDebug(DebugLevel.Error, "Невозможно проверить ОБНОВЛЕНИЯ");
+                }
+                
+
+                if (!string.Equals(RemoteVersion,CurrentVersion))
+                {
+                    PrintDebug(DebugLevel.System, "Доступно Обновление лаунчера !");
+                    obj.DownloadFile(new Uri(changelog_link), "changelog.txt");
+
+                    Changelog = File.ReadAllText("changelog.txt");
+                    if (Changelog == null || Changelog == string.Empty)
+                        Changelog = "АВТОР НЕ УКАЗАЛ";
+
+                    // byte[] bytes = Encoding.UTF8.GetBytes(Changelog);
+                    //Changelog = Encoding.UTF8.GetString(bytes);
+
+                    MessageBoxResult mbr = System.Windows.MessageBox.Show($"Текущая  версия Лаунчера : {version} \n Последняя  версия Лаунчера : {RemoteVersion}\n  \n Список Изменений : \n {Changelog} \n \n \n Обновить сейчас?", "Обновление Лаунчера", MessageBoxButton.YesNo);
+                    
+                    if(mbr == MessageBoxResult.Yes)
+                    {
+                        try
+                        {
+                            Dispatcher.InvokeAsync(() =>
+                            {
+                                DownloadUpdate();
+                            });
+                            PrintDebug(DebugLevel.System, "Пытаюсь Скачать обновление");
+                        }
+                        catch (Exception)
+                        {
+
+                            PrintDebug(DebugLevel.Error, string.Format("{0} \n {1}", "Что-то пошло не так.", this.ToString()));
+                        }
+                    }
+                }
+
+                else
+                {
+                    PrintDebug(DebugLevel.System, "ЛАУНЧЕР НЕ НУЖДАЕТСЯ В ОБНОВЛЕНИИ");
+                }
+            }
+        }
+
+
+        private void DownloadUpdate()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                using (WebClient wc = new WebClient())
+                {
+                    wc.DownloadFileAsync(new Uri(download_launcher_link), LauncherNew);
+                    wc.DownloadFileCompleted += Wc_Downloaded;
+                }
+            });
+        }
+
+        private void Wc_Downloaded(object sender, AsyncCompletedEventArgs e)
+        {
+            PrintDebug(DebugLevel.System, "Обновление Успешно Скачано. \n Применение...");
+            ApplyUpdate(AppDomain.CurrentDomain.FriendlyName, LauncherNew);
+        }
+        #endregion
+       
+        #region Logs
+        private void SaveLogInFile()
+        {
+            if (Settings.Default.Config.config.SaveLogInFile)
+            {
+                string Content = "";
+                LogBox.SelectAll();
+                LogBox.Copy();
+                Content += System.Windows.Clipboard.GetText().ToString();
+
+                if (!File.Exists(Log))
+                {
+                    File.WriteAllText(Log, string.Format($"Дата : {DateTime.Now} \n ___________________________________________________ \n {Content} \n "));
+                }
+                else
+                {
+                    string temp = File.ReadAllText(Log);
+                    File.WriteAllText(Log, string.Format($"{temp} \n \n Дата : {DateTime.Now} \n ___________________________________________________ \n {Content} \n "));
+                }
+                    GC.Collect();
+            }
+        }
+
+        private void CreateLog_Click(object sender, RoutedEventArgs e)
+        {
+            string filename = "Log__" + DateTime.Now.ToShortDateString() + ".log";
+            string Content = "";
+            LogBox.SelectAll();
+            LogBox.Copy();
+            Content += System.Windows.Clipboard.GetText().ToString();
+            File.WriteAllText(filename, string.Format($"Дата : {DateTime.Now} \n___________________________________________________ \n {Content} \n "));
+        }
+#endregion
+    }
 }
