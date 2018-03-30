@@ -17,7 +17,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BitmapImage x:Key="wallper" UriSource="/Media/bf4/wallper.png"/>
-            <BitmapImage x:Key="background" UriSource="/Media/imig.jpg"/>
             <BitmapImage x:Key="logo_discord" UriSource="/Media/discord_logo_white.PNG"/>
         </ResourceDictionary>
     </Application.Resources>

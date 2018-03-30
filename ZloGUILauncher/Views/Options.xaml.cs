@@ -20,7 +20,7 @@ namespace ZloGUILauncher.Views
             //await DialogManager.ShowMessageAsync(new MahApps.Metro.Controls.MetroWindow(), "Ура", "Настройки сохранены", MessageDialogStyle.Affirmative);
         }
 
-        private async void btn_reset_Click(object sender, RoutedEventArgs e)
+        private  void btn_reset_Click(object sender, RoutedEventArgs e)
         {
             //DialogManager.ShowMessageAsync(new MahApps.Metro.Controls.MetroWindow(),"СБРОС", $"Внимание сейчас сбросятся настройки. \n Продолжить?", MessageDialogStyle.AffirmativeAndNegative)
             //var mySettings = new MetroDialogSettings()
@@ -150,7 +150,7 @@ namespace ZloGUILauncher.Views
         private void externalImage_Unchecked(object sender, RoutedEventArgs e)
         {
             ImageBrush background = new ImageBrush();
-            object resource = System.Windows.Application.Current.TryFindResource("background");
+            object resource = System.Windows.Application.Current.TryFindResource("wallper");
             background.ImageSource = new BitmapImage(new Uri (resource.ToString()));
             System.Windows.Application.Current.MainWindow.Background = background;
         }

@@ -41,7 +41,7 @@ namespace ZloGUILauncher
         public const string LauncherNew = "Easy_New.exe";
         public const string Log = "Easy.log";
         public const string autor = "nintend01337";
-        public string version = "1.5.2";
+        public string version = "1.5.3";
         public string ApiVersion;
         public string soldiername;
         public string soldierID;
