@@ -53,7 +53,6 @@ namespace ZloGUILauncher.Views
             DataServersList.ServerUpdated += DataServersList_ServerUpdated;
             DataServersList.ServerRemoved += DataServersList_ServerRemoved;
             ViewSource.Source = BFH_GUI_Servers;
-
         }
         private void DataServersList_ServerRemoved(uint id, API_BFHServerBase server)
         {
@@ -118,58 +117,60 @@ namespace ZloGUILauncher.Views
         {
             var b = sender as Button;
             var server = (BFH_GUI_Server)b.DataContext;
+            if(server != null)
             App.Client.JoinOnlineGame(OnlinePlayModes.BFH_Multi_Player, server.ID);
         }
-        //string requestmsg = "Please Enter the server password : \nNote : If you are sure the server doesn't have a password, press done and leave the password box empty";
-        private void JoinSpectatorButton_Click(object sender, RoutedEventArgs e)
-        {
-            var b = sender as Button;
-            var server = (BFH_GUI_Server)b.DataContext;
-            App.Client.JoinOnlineGame(OnlinePlayModes.BFH_Spectator, server.ID);
-        }
-        private void JoinCommanderButton_Click(object sender, RoutedEventArgs e)
-        {
-            var b = sender as Button;
-            var server = (BFH_GUI_Server)b.DataContext;
-            App.Client.JoinOnlineGame(OnlinePlayModes.BFH_Commander, server.ID);
-        }
 
-        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if (sender.GetType() == typeof(ScrollViewer))
-            {
-                ScrollViewer scrollviewer = sender as ScrollViewer;
-                if (e.Delta > 0)
-                    scrollviewer.LineLeft();
-                else
-                    scrollviewer.LineRight();
-                e.Handled = true;
-            }
-            else
-            {
-                var d = sender as DependencyObject;
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
-                {
-                    if (VisualTreeHelper.GetChild(d, i) is ScrollViewer scroll)
-                    {
-                        if (e.Delta > 0)
-                            scroll.LineLeft();
-                        else
-                            scroll.LineRight();
-                        e.Handled = true;
-                    }
-                }
-            }
-        }
+        //private void JoinSpectatorButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var b = sender as Button;
+        //    var server = (BFH_GUI_Server)b.DataContext;
+        //    App.Client.JoinOnlineGame(OnlinePlayModes.BFH_Spectator, server.ID);
+        //}
+        //private void JoinCommanderButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var b = sender as Button;
+        //    var server = (BFH_GUI_Server)b.DataContext;
+        //    App.Client.JoinOnlineGame(OnlinePlayModes.BFH_Commander, server.ID);
+        //}
+
+        //private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        //{
+        //    if (sender.GetType() == typeof(ScrollViewer))
+        //    {
+        //        ScrollViewer scrollviewer = sender as ScrollViewer;
+        //        if (e.Delta > 0)
+        //            scrollviewer.LineLeft();
+        //        else
+        //            scrollviewer.LineRight();
+        //        e.Handled = true;
+        //    }
+        //    else
+        //    {
+        //        var d = sender as DependencyObject;
+        //        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
+        //        {
+        //            if (VisualTreeHelper.GetChild(d, i) is ScrollViewer scroll)
+        //            {
+        //                if (e.Delta > 0)
+        //                    scroll.LineLeft();
+        //                else
+        //                    scroll.LineRight();
+        //                e.Handled = true;
+        //            }
+        //        }
+        //    }
+        //}
         private void ServersDG_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.AddedItems != null && e.AddedItems.Count > 0)
-            {
-                if (e.AddedItems[0] is BFH_GUI_Server serv)
-                {
-                    serv.getCountry();
-                }
-            }
+            //if (e.AddedItems != null && e.AddedItems.Count > 0)
+            //{
+            //    if (e.AddedItems[0] is BFH_GUI_Server serv)
+            //    {
+            //        serv.getCountry();
+            //    }
+            //}
+            fly.IsOpen = true;
         }
     }
 }

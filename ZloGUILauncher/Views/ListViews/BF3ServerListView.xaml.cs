@@ -116,47 +116,53 @@ namespace ZloGUILauncher.Views
         {
             var b = sender as Button;
             var server = (BF3_GUI_Server)b.DataContext;
-            App.Client.JoinOnlineGame(OnlinePlayModes.BF3_Multi_Player, server.ID);
+
+            if(server != null)
+            {
+                App.Client.JoinOnlineGame(OnlinePlayModes.BF3_Multi_Player, server.ID);
+            }
+            
         }
 
-        private void ScrollViewer_PreviewMouseWheel(object sender , MouseWheelEventArgs e)
-        {
-            if (sender.GetType() == typeof(ScrollViewer))
-            {
-                ScrollViewer scrollviewer = sender as ScrollViewer;
-                if (e.Delta > 0)
-                    scrollviewer.LineLeft();
-                else
-                    scrollviewer.LineRight();
-                e.Handled = true;
-            }
-            else
-            {
-                var d = sender as DependencyObject;
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
-                {
-                    if (VisualTreeHelper.GetChild(d , i) is ScrollViewer)
-                    {
-                        ScrollViewer scroll = (ScrollViewer)(VisualTreeHelper.GetChild(d , i));
-                        if (e.Delta > 0)
-                            scroll.LineLeft();
-                        else
-                            scroll.LineRight();
-                        e.Handled = true;
-                    }
-                }
-            }
-        }
+        //private void ScrollViewer_PreviewMouseWheel(object sender , MouseWheelEventArgs e)
+        //{
+        //    if (sender.GetType() == typeof(ScrollViewer))
+        //    {
+        //        ScrollViewer scrollviewer = sender as ScrollViewer;
+        //        if (e.Delta > 0)
+        //            scrollviewer.LineLeft();
+        //        else
+        //            scrollviewer.LineRight();
+        //        e.Handled = true;
+        //    }
+        //    else
+        //    {
+        //        var d = sender as DependencyObject;
+        //        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
+        //        {
+        //            if (VisualTreeHelper.GetChild(d , i) is ScrollViewer)
+        //            {
+        //                ScrollViewer scroll = (ScrollViewer)(VisualTreeHelper.GetChild(d , i));
+        //                if (e.Delta > 0)
+        //                    scroll.LineLeft();
+        //                else
+        //                    scroll.LineRight();
+        //                e.Handled = true;
+        //            }
+        //        }
+        //    }
+        //}
 
         private void ServersDG_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.AddedItems != null && e.AddedItems.Count > 0)
-            {
-                if (e.AddedItems[0] is BF3_GUI_Server serv)
-                {
-                    serv.getCountry();
-                }
-            }
+            //if (e.AddedItems != null && e.AddedItems.Count > 0)
+            //{
+            //    if (e.AddedItems[0] is BF3_GUI_Server serv)
+            //    {
+            //        serv.getCountry();
+            //    }
+            //}
+            fly.IsOpen = true;
         }
     }
 }

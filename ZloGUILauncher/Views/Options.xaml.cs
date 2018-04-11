@@ -1,10 +1,12 @@
 ﻿using MahApps.Metro;
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using ZloGUILauncher.Addons;
 
 namespace ZloGUILauncher.Views
 {
@@ -32,7 +34,7 @@ namespace ZloGUILauncher.Views
 
             //if (result == MessageDialogResult.Affirmative) { Settings.Default.Reset(); }
             Settings.Default.Reset();
-            var accent = ThemeManager.GetAccent(Settings.Default.Config.config.AccentColor);
+            var accent = ThemeManager.GetAccent(Settings.Default.Config.config.AccentName);
             var theme = ThemeManager.GetAppTheme(Settings.Default.Config.config.Theme);
             ThemeManager.ChangeAppStyle(System.Windows.Application.Current, accent, theme);
             Settings.Default.Save();
@@ -46,7 +48,8 @@ namespace ZloGUILauncher.Views
                 var theme = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
                 ThemeManager.ChangeAppStyle(System.Windows.Application.Current, selectedAccent, theme.Item1);
                 System.Windows.Application.Current.MainWindow.Activate();
-                Settings.Default.Config.config.AccentColor = selectedAccent.Name;
+                Settings.Default.Config.config.AccentName = selectedAccent.Name;
+                Settings.Default.Config.config.AccentColorType = "accent".ToLower();         
                 Settings.Default.Save();
             }
         }
@@ -153,6 +156,30 @@ namespace ZloGUILauncher.Views
             object resource = System.Windows.Application.Current.TryFindResource("wallper");
             background.ImageSource = new BitmapImage(new Uri (resource.ToString()));
             System.Windows.Application.Current.MainWindow.Background = background;
+        }
+
+        private void btn_color_picker_Click(object sender, RoutedEventArgs e)
+        {
+            Color clr = new Color();
+            ColorDialog cdl = new ColorDialog();
+            cdl.ShowDialog();
+            clr.R = cdl.Color.R;
+            clr.B = cdl.Color.B;
+            clr.G = cdl.Color.G;
+            clr.A = cdl.Color.A;
+            var colorname = clr.ToString().Replace("#", string.Empty);
+
+            if (clr != null)
+            {
+                ThemeManagerHelper.CreateAppStyleBy(clr);
+                var resDictName = string.Format("ДОПЦВЕТ_{0}.xaml", clr.ToString().Replace("#", string.Empty));
+                var fileName = Path.Combine(Path.GetTempPath(), resDictName);
+                var theme = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
+                var accent = ThemeManager.GetAccent(resDictName);
+                ThemeManager.ChangeAppStyle(System.Windows.Application.Current, accent, theme.Item1);
+                Settings.Default.Config.config.clr = clr;
+                Settings.Default.Config.config.AccentColorType = "color".ToLower();
+            }
         }
     }
 }

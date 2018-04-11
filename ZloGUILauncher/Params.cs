@@ -4,14 +4,18 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using ZloGUILauncher.Properties;
 
 namespace ZloGUILauncher
 {
     [Serializable]
     public class Params 
     {
-        public string AccentColor { get; set; }
+        public string AccentName { get; set; }
+        public string AccentColorType { get; set; }
         public string Theme { get; set; }
+        public bool MoreColors { get; set; }
         public bool isDebug { get; set; }
         public bool MaximizeGameWindow { get; set; }
         public bool UseExternalImage { get; set; }
@@ -21,6 +25,7 @@ namespace ZloGUILauncher
         public string ZclientPath { get; set; }
         public bool SaveLogInFile { get; set;}
         public bool CheckUpdates { get; set; }
+        public   Color clr { get; set; } 
     }
 
     [Serializable]
@@ -31,9 +36,11 @@ namespace ZloGUILauncher
         public Config()
         {
             config  = new Params();
-            config.AccentColor = "Cobalt";
+            config.AccentName = "Cobalt";
+            config.AccentColorType = "accent".ToLower();
             config.Theme = "BaseDark";
             config.isDebug = true;
+            config.MoreColors = false;
             config.MaximizeGameWindow = false;
             config.UseExternalImage = false;
             config.ImagePath = "";
@@ -42,7 +49,6 @@ namespace ZloGUILauncher
             config.isMusicEnabled = false;
             config.SaveLogInFile = false;
             config.CheckUpdates = true;
-            
         }
 
         //public bool isDebug

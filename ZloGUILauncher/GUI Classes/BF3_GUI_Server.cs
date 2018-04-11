@@ -114,6 +114,7 @@ namespace ZloGUILauncher.Servers
             UpdatePing();
             Maps.Update();
             Players.Update();
+            getCountry();
         }
 
         public void UpdatePing()
@@ -138,30 +139,37 @@ namespace ZloGUILauncher.Servers
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Ping"));
             }));
         }
-
-        public void getCountry()
-        {
-            try{
-                string strFile = "Unknown";
-                using (var objClient = new System.Net.WebClient()) { strFile = objClient.DownloadString("http://freegeoip.net/xml/" + IP.ToString()); }
-                int firstlocation = strFile.IndexOf("<CountryName>") + "<CountryName>".Length;
-                int lastlocation = strFile.IndexOf("</", firstlocation);
-                string location = strFile.Substring(firstlocation, lastlocation - firstlocation);
-                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() => { Country = location; }));
-            }
-            catch{
-                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
-                {
-                    Country = "Неизвестно";
-                }));
-            }
-        }
-
+       
         public void OPC(string prop)
         {
             PropertyChanged?.Invoke(this , new PropertyChangedEventArgs(prop));
         }
-       
+
+        public void getCountry()
+        {
+            Task.Run((Action)(() =>
+            {
+                try
+                {
+                    string strFile = "Unknown";
+                    using (var objClient = new System.Net.WebClient()) { strFile = objClient.DownloadString("http://freegeoip.net/xml/" + IP.ToString()); }
+                    int firstlocation = strFile.IndexOf("<CountryName>") + "<CountryName>".Length;
+                    int lastlocation = strFile.IndexOf("</", firstlocation);
+                    string location = strFile.Substring(firstlocation, lastlocation - firstlocation);
+                    Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() => { Country = location; }));
+                }
+                catch
+                {
+                    Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
+                    {
+                        Country = "Неизвестно";
+                    }));
+                }
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Country"));
+            }));
+
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }

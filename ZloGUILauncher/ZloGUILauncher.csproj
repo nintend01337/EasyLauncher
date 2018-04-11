@@ -115,6 +115,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Addons\Help.cs" />
+    <Compile Include="Addons\ThemeManagerHelper.cs" />
     <Compile Include="Converters\AllConvs.cs" />
     <Compile Include="Debuging.cs" />
     <Compile Include="GUI Classes\BFH_GUI_Server.cs" />
@@ -440,6 +441,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Media\help.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Accents\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.2.3.22\build\Fody.targets" Condition="Exists('..\packages\Fody.2.3.22\build\Fody.targets')" />

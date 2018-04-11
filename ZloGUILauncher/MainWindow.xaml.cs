@@ -41,7 +41,7 @@ namespace ZloGUILauncher
         public const string LauncherNew = "Easy_New.exe";
         public const string Log = "Easy.log";
         public const string autor = "nintend01337";
-        public string version = "1.5.3";
+        public string version = "1.5.7";
         public string ApiVersion;
         public string soldiername;
         public string soldierID;
@@ -68,6 +68,11 @@ namespace ZloGUILauncher
             if (App.Client.Connect())
             {
                 PrintDebug(DebugLevel.Info, $"Подключились к ZLO ;)");
+
+
+                PrintDebug(DebugLevel.Warn, Settings.Default.Config.config.AccentName);
+                PrintDebug(DebugLevel.Warn, Settings.Default.Config.config.AccentColorType);
+                
                 switch (App.Client.SavedActiveServerListener)
                 {                   
                     case ZloGame.BF_3:
@@ -162,7 +167,7 @@ namespace ZloGUILauncher
 
         private void Settings_loaded(object sender, SettingsLoadedEventArgs e)
         {
-            PrintDebug(DebugLevel.Info, $"Загружены настройки: \n Тема: {Settings.Default.Config.config.AccentColor} Цвет: {Settings.Default.Config.config.ImagePath}");
+            PrintDebug(DebugLevel.Info, $"Загружены настройки: \n Тема: {Settings.Default.Config.config.AccentName} Цвет: {Settings.Default.Config.config.ImagePath}");
         }
 
         private void Client_ConnectionStateChanged(bool IsConnectedToZloClient)
