@@ -55,6 +55,7 @@ namespace ZloGUILauncher.Views
             DataServersList.ServerUpdated += DataServersList_ServerUpdated;
             DataServersList.ServerRemoved += DataServersList_ServerRemoved;
             ViewSource.Source = BF4_GUI_Servers;
+            fly.IsOpen = false;
         }       
         private void DataServersList_ServerRemoved(uint id , API_BF4ServerBase server)
         {

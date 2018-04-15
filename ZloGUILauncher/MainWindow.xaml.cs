@@ -77,7 +77,7 @@ namespace ZloGUILauncher
                 {                   
                     case ZloGame.BF_3:
                         MainTabControl.SelectedIndex = 0;
-               
+                    
                         //App.Client.GetStats(ZloGame.BF_3);
                         break;
 

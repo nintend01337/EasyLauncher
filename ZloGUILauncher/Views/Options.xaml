@@ -9,6 +9,10 @@
     xmlns:settings ="clr-namespace:ZloGUILauncher"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <Image x:Key="Color" Source="/Media/color.png"/>
+    </UserControl.Resources>
 
     <Grid Background="#2F000000">
         <Grid.ColumnDefinitions>
@@ -25,14 +29,16 @@
 
 
         <!--<StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="2"/>-->
-        
 
-        <StackPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Black" Opacity="0.6" Grid.ColumnSpan="2">
+        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" Background="Transparent">
+            <StackPanel  HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Transparent" Opacity="0.6" Grid.ColumnSpan="2" Margin="0,0,160,0">
             <Button Name="btn_save" Content="Сохранить" Click="WriteSettings"/>
             <Button Name="btn_reset" Content="Сбросить" Click="btn_reset_Click"/>
-            <Button Name="btn_color_picker" Content="Test" Click="btn_color_picker_Click"/>
         </StackPanel>
-        <StackPanel Grid.Column="0" Grid.Row="2">
+        <Button Name="btn_color_picker" Content="{StaticResource Color}" Click="btn_color_picker_Click" MaxHeight="64" MaxWidth="64"/>
+        </StackPanel>
+            <StackPanel Grid.Column="0" Grid.Row="2">
+           
             <Label Content="Меню откладки "  FontFamily="Tahoma" FontSize="20"/>
             <Custom:ToggleSwitch Name="dbg" IsChecked="{Binding Source={x:Static settings:Settings.Default}, Path = Config.config.isDebug, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             <Label Content="Музыка"  FontFamily="Tahoma" FontSize="20"/>

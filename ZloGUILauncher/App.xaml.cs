@@ -72,6 +72,7 @@ namespace ZloGUILauncher
                 else
                 {
                     var clr = Settings.Default.Config.config.clr;
+                    SolidColorBrush brush = new SolidColorBrush(Settings.Default.Config.config.clr);
                     ThemeManagerHelper.CreateAppStyleBy((Color)clr);
                     var resDictName = string.Format("ДОПЦВЕТ_{0}.xaml", clr.ToString().Replace("#", string.Empty));
                     var fileName = Path.Combine(Path.GetTempPath(), resDictName);

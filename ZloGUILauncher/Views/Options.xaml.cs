@@ -162,15 +162,15 @@ namespace ZloGUILauncher.Views
         {
             Color clr = new Color();
             ColorDialog cdl = new ColorDialog();
-            cdl.ShowDialog();
-            clr.R = cdl.Color.R;
-            clr.B = cdl.Color.B;
-            clr.G = cdl.Color.G;
-            clr.A = cdl.Color.A;
-            var colorname = clr.ToString().Replace("#", string.Empty);
 
-            if (clr != null)
+            if (cdl.ShowDialog() == DialogResult.OK)
             {
+                clr.R = cdl.Color.R;
+                clr.B = cdl.Color.B;
+                clr.G = cdl.Color.G;
+                clr.A = cdl.Color.A;
+                var colorname = clr.ToString().Replace("#", string.Empty);
+
                 ThemeManagerHelper.CreateAppStyleBy(clr);
                 var resDictName = string.Format("ДОПЦВЕТ_{0}.xaml", clr.ToString().Replace("#", string.Empty));
                 var fileName = Path.Combine(Path.GetTempPath(), resDictName);
@@ -179,6 +179,7 @@ namespace ZloGUILauncher.Views
                 ThemeManager.ChangeAppStyle(System.Windows.Application.Current, accent, theme.Item1);
                 Settings.Default.Config.config.clr = clr;
                 Settings.Default.Config.config.AccentColorType = "color".ToLower();
+
             }
         }
     }

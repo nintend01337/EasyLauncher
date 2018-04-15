@@ -7,7 +7,6 @@ using System.Windows.Data;
 using System.Windows.Media.Animation;
 using Zlo.Extras;
 using ZloGUILauncher.Servers;
-using System.Windows.Input;
 
 namespace ZloGUILauncher.Views
 {
@@ -46,6 +45,12 @@ namespace ZloGUILauncher.Views
             DataServersList.ServerUpdated += DataServersList_ServerUpdated;
             DataServersList.ServerRemoved += DataServersList_ServerRemoved;
             ViewSource.Source = BF3_GUI_Servers;
+            fly.IsOpen = false;
+
+            if (Settings.Default.Config.config.AccentColorType != "accent")
+            {
+                Application.Current.Resources["SelectionBrushColor"] = Settings.Default.Config.config.clr;
+            }
         }
 
         private void DataServersList_ServerRemoved(uint id , API_BF3ServerBase server)

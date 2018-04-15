@@ -10,6 +10,7 @@
              d:DesignHeight="278.914" d:DesignWidth="465.815">
     <FrameworkElement.Resources>
         <CollectionViewSource x:Key="ServersView"/>
+        <SolidColorBrush x:Key="SelectionBrushColor" Color="{DynamicResource AccentColor}"/>
     </FrameworkElement.Resources>
     <Grid Background="#7E000000">
         <DataGrid x:Name="ServersDG" ItemsSource="{Binding Source={StaticResource ServersView}}" 
@@ -34,6 +35,11 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{Binding Source={StaticResource SelectionBrush}}" />
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{DynamicResource AccentColor}"/>
             </DataGrid.Resources>
