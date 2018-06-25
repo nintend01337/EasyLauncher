@@ -26,6 +26,7 @@ namespace ZloGUILauncher
         public bool SaveLogInFile { get; set;}
         public bool CheckUpdates { get; set; }
         public   Color clr { get; set; } 
+        public bool ModSupport { get; set; }
     }
 
     [Serializable]
@@ -49,6 +50,7 @@ namespace ZloGUILauncher
             config.isMusicEnabled = false;
             config.SaveLogInFile = false;
             config.CheckUpdates = true;
+            config.ModSupport = false;
         }
 
         //public bool isDebug

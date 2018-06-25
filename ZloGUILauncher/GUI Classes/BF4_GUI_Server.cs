@@ -53,6 +53,15 @@ namespace ZloGUILauncher.Servers
         }
         public string Ping { get; set; }
         public string Country { get; set; }
+        public bool Moded {
+            get
+            {
+                if (Name.Contains("MOD"))
+                    return true;
+                else
+                    return false;
+            }
+        }
 
         public string ServerType
         {
@@ -82,6 +91,14 @@ namespace ZloGUILauncher.Servers
             else
                 return false;
         }
+        public string IsModed(bool Moded)
+        {
+            if (Moded)
+                return "Есть";
+            else
+                return "Нет";
+        }
+
         public bool IsHasPB
         {
             get {
@@ -116,7 +133,7 @@ namespace ZloGUILauncher.Servers
             OPC(nameof(IsHasPW));
             OPC(nameof(IsHasPB));
             OPC(nameof(IsHasFF));
-
+            OPC(nameof(Moded));
             UpdatePing();
             Maps.Update();
             Players.Update();

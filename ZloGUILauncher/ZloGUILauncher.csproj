@@ -442,9 +442,7 @@
   <ItemGroup>
     <Resource Include="Media\help.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Accents\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Media\color.png" />
   </ItemGroup>

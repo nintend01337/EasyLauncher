@@ -51,6 +51,7 @@
                 <DataGridTextColumn Binding="{Binding Path=Maps.CurrentActualMap.GameModeName,UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Game Mode" SortMemberPath="Maps.CurrentActualMap.GameModeName"/>
                 <!--<DataGridTextColumn Binding="{Binding Path=ServerType,UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Server Type" SortMemberPath="ServerType"/>-->
                 <DataGridTextColumn Binding="{Binding Path=Ping,UpdateSourceTrigger=PropertyChanged}" Width="auto" Header="Ping" SortMemberPath="Ping"/>
+                <DataGridTextColumn Binding="{Binding Path=Moded,UpdateSourceTrigger=PropertyChanged}" Width="auto" Header="MOD" SortMemberPath="Moded"/>
                 <!--<DataGridTextColumn Binding="{Binding Path=Country,UpdateSourceTrigger=PropertyChanged}" Width="auto" Header="Country" SortMemberPath="Country"/>-->
             </DataGrid.Columns>
         </DataGrid>

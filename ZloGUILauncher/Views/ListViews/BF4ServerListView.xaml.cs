@@ -3,6 +3,7 @@ using MahApps.Metro;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -119,8 +120,36 @@ namespace ZloGUILauncher.Views
         {
             var b = sender as Button;
             var server = (BF4_GUI_Server)b.DataContext;
-            if(server != null)
-            App.Client.JoinOnlineGame(OnlinePlayModes.BF4_Multi_Player , server.ID); 
+            if (server != null)
+            {
+                if (server.Moded && Settings.Default.Config.config.ModSupport)
+                {
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.Arguments = "-i";
+                    startInfo.FileName = "Mod.exe";
+                    
+                    var ModProc = Process.Start(startInfo);
+                    ModProc.WaitForExit();
+                    App.Client.JoinOnlineGame(OnlinePlayModes.BF4_Multi_Player, server.ID);
+                }
+
+                if (!server.Moded && Settings.Default.Config.config.ModSupport)
+                {
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.Arguments = "-u";
+                    startInfo.FileName = "Mod.exe";
+
+                    var ModProc = Process.Start(startInfo);
+                    ModProc.WaitForExit();
+                    App.Client.JoinOnlineGame(OnlinePlayModes.BF4_Multi_Player, server.ID);
+                }
+
+                else
+                {
+                    App.Client.JoinOnlineGame(OnlinePlayModes.BF4_Multi_Player, server.ID);
+                }
+            }
+            
          
         }
         private void JoinSpectatorButton_Click(object sender , RoutedEventArgs e)
