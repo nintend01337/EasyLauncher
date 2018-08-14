@@ -41,7 +41,7 @@ namespace ZloGUILauncher
         public const string LauncherNew = "Easy_New.exe";
         public const string Log = "Easy.log";
         public const string autor = "nintend01337";
-        public string version = "1.5.8";
+        public string version = "1.5.9.1";
         public string ApiVersion;
         public string soldiername;
         public string soldierID;
@@ -203,19 +203,27 @@ namespace ZloGUILauncher
         }
 
         private void Client_APIVersionReceived(Version Current, Version Latest, bool IsNeedUpdate, string DownloadAdress)
-        {            
-            if (IsNeedUpdate) {
-                Dispatcher.Invoke(async() =>
+        {
+            PrintDebug(DebugLevel.Info, $"Получение информации о версиях API: \n Текущая : {Current}, Последняя : {Latest}, \n Требуется обновление API ? : {IsNeedUpdate}");
+
+            if (IsNeedUpdate)
+            {
+                Dispatcher.Invoke(async () =>
                 {
-                    if ( await this.ShowMessageAsync("Обновление", $"Текущая dll версия : {Current}\n Последняя dll версия : {Latest}\n Обновить сейчас?", MessageDialogStyle.AffirmativeAndNegative)==MessageDialogResult.Affirmative){ 
+                    if (await this.ShowMessageAsync("Обновление", $"Текущая dll версия : {Current}\n Последняя dll версия : {Latest}\n Обновить сейчас?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    {
                         string Sourcedll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo.dll");
                         string Newdll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo_New.dll");
-                        using (WebClient wc = new WebClient()){
+                        using (WebClient wc = new WebClient())
+                        {
                             wc.DownloadFileCompleted += Wc_DownloadFileCompleted;
                             wc.DownloadFileAsync(new Uri(DownloadAdress), Newdll);
                         }
                     }
                 });
+                PrintDebug(DebugLevel.Warn, "Вы используете не последнюю версию API.Видимо Разработчик отключил автоматическое обновление API.");
+                ApiVersion = Current.ToString();
+                Title = AssemblyName + " | " + version + " | " + "API version " + ApiVersion + " | " + (soldiername != null ? "WELCOME, " + soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
             }
             else {
                 Dispatcher.Invoke(() => {
@@ -223,7 +231,6 @@ namespace ZloGUILauncher
                     Title = AssemblyName + " | " + version  +  " | " + "API version " + ApiVersion + " | " + (soldiername != null ? "WELCOME, " + soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
                 });
             }
-            PrintDebug(DebugLevel.Info, $"Получение информации о версиях API: \n Текущая : {Current}, Последняя : {Latest}, \n Требуется обновление API ? : {IsNeedUpdate}");
         }
 
         private void Wc_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
@@ -482,7 +489,7 @@ Exit
                     Thread.Sleep(10000);                //спим 10 сек на случай обновления Зшки
                 }
             }
-            
+            App.Client.ReConnect();
         }
 
         private void RunZClient()
@@ -511,6 +518,9 @@ Exit
         {
             Settings.Default.Save();
             SaveLogInFile();
+            App.Client.Close();
+            Process p = Process.GetCurrentProcess();
+            p.Kill();
         }
 
         #region  Updates

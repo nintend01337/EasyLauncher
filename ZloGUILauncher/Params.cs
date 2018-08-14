@@ -52,35 +52,5 @@ namespace ZloGUILauncher
             config.CheckUpdates = true;
             config.ModSupport = false;
         }
-
-        //public bool isDebug
-        //{
-        //    get { return config.isDebug; }
-
-        //    set
-        //    {
-        //        config.isDebug = value;
-        //        RaisePropertyChanged("isDebug");
-        //    }
-        //}
-
-        //public bool isMusicEnabled
-        //{
-        //    get { return config.isMusicEnabled; }
-        //    set
-        //    {
-        //        config.isMusicEnabled = value;
-        //        RaisePropertyChanged("isMusicEnabled");
-        //    }
-        //}
-
-        //public void RaisePropertyChanged(string propertyName)
-        //{
-        //    // Если кто-то на него подписан, то вызывем его
-        //    if (PropertyChanged != null)
-        //        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        //}
-
-
     }
 }
