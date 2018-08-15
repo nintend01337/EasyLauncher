@@ -99,28 +99,29 @@ namespace ZloGUILauncher.Servers
 
         public void UpdateAllProps()
         {
-            OPC(nameof(ID));
-            OPC(nameof(Name));
-            OPC(nameof(Current_Players));
-            OPC(nameof(Max_Players));
-            OPC(nameof(IP));
-            OPC(nameof(Port));
-            OPC(nameof(RepPlayers));            
-            OPC(nameof(Players));
-            OPC(nameof(Maps));
-            OPC(nameof(IsHasPW));
-            OPC(nameof(IsHasPB));
-            
-            UpdatePing();
-            Maps.Update();
-            Players.Update();
-            getCountry();
+            Task.Run((Action)(() =>
+            {
+                OPC(nameof(ID));
+                OPC(nameof(Name));
+                OPC(nameof(Current_Players));
+                OPC(nameof(Max_Players));
+                OPC(nameof(IP));
+                OPC(nameof(Port));
+                OPC(nameof(RepPlayers));
+                OPC(nameof(Players));
+                OPC(nameof(Maps));
+                OPC(nameof(IsHasPW));
+                OPC(nameof(IsHasPB));
+
+                UpdatePing();
+                Maps.Update();
+                Players.Update();
+                getCountry();
+            }));
         }
 
         public void UpdatePing()
         {
-            Task.Run((Action)(() =>
-            {
                 try
                 {
                     if (IP == null) return;
@@ -137,7 +138,6 @@ namespace ZloGUILauncher.Servers
                     ex.Message.ToString(); // сообщение в случаи неудачи проверки пинга незнаю зачем :)
                 }
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Ping"));
-            }));
         }
        
         public void OPC(string prop)
@@ -147,9 +147,7 @@ namespace ZloGUILauncher.Servers
 
         public void getCountry()
         {
-            Task.Run((Action)(() =>
-            {
-                try
+                /*try
                 {
                     string strFile = "Unknown";
                     using (var objClient = new System.Net.WebClient()) { strFile = objClient.DownloadString("http://freegeoip.net/xml/" + IP.ToString()); }
@@ -159,14 +157,13 @@ namespace ZloGUILauncher.Servers
                     Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() => { Country = location; }));
                 }
                 catch
-                {
+                {*/
                     Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
                     {
                         Country = "Неизвестно";
                     }));
-                }
+                //}
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Country"));
-            }));
 
         }
 

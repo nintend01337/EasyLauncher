@@ -42,12 +42,12 @@ namespace ZloGUILauncher.Views
       
         private void AccentSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedAccent = AccentSelector.SelectedItem as Accent;
-            if (selectedAccent != null)
+            if (AccentSelector.SelectedItem is Accent selectedAccent)
             {
                 var theme = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
                 ThemeManager.ChangeAppStyle(System.Windows.Application.Current, selectedAccent, theme.Item1);
-                System.Windows.Application.Current.MainWindow.Activate();
+                if (System.Windows.Application.Current.MainWindow != null)
+                    System.Windows.Application.Current.MainWindow.Activate();
                 Settings.Default.Config.config.AccentName = selectedAccent.Name;
                 Settings.Default.Config.config.AccentColorType = "accent".ToLower();         
                 Settings.Default.Save();
@@ -57,7 +57,8 @@ namespace ZloGUILauncher.Views
         {
             var theme = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
             ThemeManager.ChangeAppStyle(System.Windows.Application.Current, theme.Item2, ThemeManager.GetAppTheme("Base" + ((((System.Windows.Controls.ComboBox)sender).SelectedValue) as ListBoxItem).Content));
-            System.Windows.Application.Current.MainWindow.Activate();
+            if (System.Windows.Application.Current.MainWindow != null)
+                System.Windows.Application.Current.MainWindow.Activate();
             var newtheme = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
             Settings.Default.Config.config.Theme = newtheme.Item1.Name;
             Settings.Default.Save();
@@ -71,15 +72,11 @@ namespace ZloGUILauncher.Views
 
         private void Zclient_checked(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(Settings.Default.Config.config.ZclientPath))
-            {
-                BrowseZpath();
-                if (Settings.Default.Config.config.ZclientPath == "")
-                {
-                    Settings.Default.Config.config.autostartZclient = false;
-                    runzclient.IsChecked = false;
-                }
-            }
+            if (!string.IsNullOrEmpty(Settings.Default.Config.config.ZclientPath)) return;
+            BrowseZpath();
+            if (Settings.Default.Config.config.ZclientPath != "") return;
+            Settings.Default.Config.config.AutostartZclient = false;
+            runzclient.IsChecked = false;
         }
 
         private void BrowseImage_click(object sender, RoutedEventArgs e)
@@ -101,25 +98,29 @@ namespace ZloGUILauncher.Views
 
         public void BrowseZpath()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.AddExtension = true;
-            openFileDialog.Filter = "ZClient|ZClient.exe";
-            openFileDialog.Title = "Укажите расположение ZClient";
+            var openFileDialog = new OpenFileDialog
+            {
+                AddExtension = true,
+                Filter = @"ZClient|ZClient.exe",
+                Title = @"Укажите расположение ZClient"
+            };
             openFileDialog.ShowDialog();
             Settings.Default.Config.config.ZclientPath = openFileDialog.FileName;
             zbox.Text = Settings.Default.Config.config.ZclientPath;
             if (Settings.Default.Config.config.ZclientPath == "")
             {
-                Settings.Default.Config.config.autostartZclient = false;
+                Settings.Default.Config.config.AutostartZclient = false;
             }
         }
 
         public void BrowseImagePath()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.AddExtension = true;
-            openFileDialog.Filter = "Изображения|*.jpg;*.jpeg;*.png;*.bmp";
-            openFileDialog.Title = "Укажите расположение Изображения";
+            var openFileDialog = new OpenFileDialog
+            {
+                AddExtension = true,
+                Filter = @"Изображения|*.jpg;*.jpeg;*.png;*.bmp",
+                Title = @"Укажите расположение Изображения"
+            };
             openFileDialog.ShowDialog();
             Settings.Default.Config.config.ImagePath = openFileDialog.FileName;
             ImagePathBox.Text = Settings.Default.Config.config.ImagePath;
@@ -128,8 +129,11 @@ namespace ZloGUILauncher.Views
 
         public void ApplyImage()
         {
-                ImageBrush background = new ImageBrush();
-                background.ImageSource = new BitmapImage(new Uri(Settings.Default.Config.config.ImagePath));
+            var background = new ImageBrush
+            {
+                ImageSource = new BitmapImage(new Uri(Settings.Default.Config.config.ImagePath))
+            };
+            if (System.Windows.Application.Current.MainWindow != null)
                 System.Windows.Application.Current.MainWindow.Background = background;
         }
 
@@ -152,35 +156,32 @@ namespace ZloGUILauncher.Views
 
         private void externalImage_Unchecked(object sender, RoutedEventArgs e)
         {
-            ImageBrush background = new ImageBrush();
-            object resource = System.Windows.Application.Current.TryFindResource("wallper");
+            var background = new ImageBrush();
+            var resource = System.Windows.Application.Current.TryFindResource("wallper");
             background.ImageSource = new BitmapImage(new Uri (resource.ToString()));
-            System.Windows.Application.Current.MainWindow.Background = background;
+            if (System.Windows.Application.Current.MainWindow != null)
+                System.Windows.Application.Current.MainWindow.Background = background;
         }
 
         private void btn_color_picker_Click(object sender, RoutedEventArgs e)
         {
-            Color clr = new Color();
-            ColorDialog cdl = new ColorDialog();
+            var clr = new Color();
+            var cdl = new ColorDialog();
 
-            if (cdl.ShowDialog() == DialogResult.OK)
-            {
-                clr.R = cdl.Color.R;
-                clr.B = cdl.Color.B;
-                clr.G = cdl.Color.G;
-                clr.A = cdl.Color.A;
-                var colorname = clr.ToString().Replace("#", string.Empty);
+            if (cdl.ShowDialog() != DialogResult.OK) return;
+            clr.R = cdl.Color.R;
+            clr.B = cdl.Color.B;
+            clr.G = cdl.Color.G;
+            clr.A = cdl.Color.A;
 
-                ThemeManagerHelper.CreateAppStyleBy(clr);
-                var resDictName = string.Format("ДОПЦВЕТ_{0}.xaml", clr.ToString().Replace("#", string.Empty));
-                var fileName = Path.Combine(Path.GetTempPath(), resDictName);
-                var theme = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
-                var accent = ThemeManager.GetAccent(resDictName);
-                ThemeManager.ChangeAppStyle(System.Windows.Application.Current, accent, theme.Item1);
-                Settings.Default.Config.config.clr = clr;
-                Settings.Default.Config.config.AccentColorType = "color".ToLower();
-
-            }
+            ThemeManagerHelper.CreateAppStyleBy(clr);
+            var resDictName = $"ДОПЦВЕТ_{clr.ToString().Replace("#", string.Empty)}.xaml";
+            var combine = Path.Combine(Path.GetTempPath(), resDictName);
+            var theme = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
+            var accent = ThemeManager.GetAccent(resDictName);
+            ThemeManager.ChangeAppStyle(System.Windows.Application.Current, accent, theme.Item1);
+            Settings.Default.Config.config.Clr = clr;
+            Settings.Default.Config.config.AccentColorType = "color".ToLower();
         }
     }
 }

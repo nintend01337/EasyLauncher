@@ -2,10 +2,8 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Zlo;
 using ZloGUILauncher.Addons;
 
@@ -13,15 +11,15 @@ namespace ZloGUILauncher
 {
     public partial class App : Application
     {
-        App() : base()
+        App()
         {
             try
             {
                 var args = Environment.GetCommandLineArgs();
                 if (args.Length > 1 && args.Last().Trim('"') == "done")
                 {
-                    var bat_path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UpdateBat.bat");
-                    File.Delete(bat_path);
+                    var batPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UpdateBat.bat");
+                    File.Delete(batPath);
                 }
 
                 if (args.Length > 1 && args.Last().Trim('"') == "reset")
@@ -34,18 +32,9 @@ namespace ZloGUILauncher
                 MessageBox.Show(ex.ToString());
             }
         }
-        private static API_ZloClient m_Client;
-        public static API_ZloClient Client
-        {
-            get
-            {
-                if (m_Client == null)
-                {
-                    m_Client = new API_ZloClient();
-                }
-                return m_Client;
-            }
-        }
+        private static API_ZloClient _mClient;
+        public static API_ZloClient Client => _mClient ?? (_mClient = new API_ZloClient());
+
         protected override void OnStartup(StartupEventArgs e)
         {
             //  string config = "Config.json";
@@ -64,26 +53,26 @@ namespace ZloGUILauncher
             else
             {
                 var acc = Settings.Default.Config.config.AccentName;
-                var Theme = Settings.Default.Config.config.Theme.ToString();
+                var Theme = Settings.Default.Config.config.Theme;
 
                 if (Settings.Default.Config.config.AccentColorType == "accent".ToLower())
-                    ThemeManager.ChangeAppStyle(Current, ThemeManager.GetAccent(acc), ThemeManager.GetAppTheme(Theme.ToString()));
+                    ThemeManager.ChangeAppStyle(Current, ThemeManager.GetAccent(acc), ThemeManager.GetAppTheme(Theme));
                
                 else
                 {
-                    var clr = Settings.Default.Config.config.clr;
-                    SolidColorBrush brush = new SolidColorBrush(Settings.Default.Config.config.clr);
+                    var clr = Settings.Default.Config.config.Clr;
+                    SolidColorBrush brush = new SolidColorBrush(Settings.Default.Config.config.Clr);
                     ThemeManagerHelper.CreateAppStyleBy((Color)clr);
-                    var resDictName = string.Format("ДОПЦВЕТ_{0}.xaml", clr.ToString().Replace("#", string.Empty));
+                    var resDictName = $"ДОПЦВЕТ_{clr.ToString().Replace("#", string.Empty)}.xaml";
                     var fileName = Path.Combine(Path.GetTempPath(), resDictName);
-                    var theme = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
+                    var theme = ThemeManager.DetectAppStyle(Current);
                     var accent = ThemeManager.GetAccent(resDictName);
-                    ThemeManager.ChangeAppStyle(System.Windows.Application.Current, accent, theme.Item1);
+                    ThemeManager.ChangeAppStyle(Current, accent, theme.Item1);
                 }
             }
         }
 
-        private void SetupAccents()
+        private static void SetupAccents()
         {
             //Type col = (typeof(Colors));
             //var colors = col.GetProperties();
@@ -118,15 +107,13 @@ namespace ZloGUILauncher
 "#FF008080","#FFD8BFD8","#FFFF6347","#00FFFFFF","#FF40E0D0","#FFEE82EE","#FFF5DEB3","#FFFFFFFF","#FFF5F5F5","#FFFFFF00",
 "#FF9ACD32" };
 
-            if (Settings.Default.Config.config.MoreColors)
+            if (!Settings.Default.Config.config.MoreColors) return;
+            foreach (string v in colors)
             {
-                for (int i = 0; i < colors.Length; i++)
-                {
-                    var clr = ColorConverter.ConvertFromString(colors[i]);
-                    ThemeManagerHelper.CreateAppStyleBy((Color)clr);
-                }
+                var clr = ColorConverter.ConvertFromString(v);
+                if (clr != null) ThemeManagerHelper.CreateAppStyleBy((Color) clr);
             }
-           
+
         }
     }
 }

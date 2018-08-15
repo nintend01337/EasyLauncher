@@ -16,16 +16,16 @@ namespace ZloGUILauncher
         public string AccentColorType { get; set; }
         public string Theme { get; set; }
         public bool MoreColors { get; set; }
-        public bool isDebug { get; set; }
+        public bool IsDebug { get; set; }
         public bool MaximizeGameWindow { get; set; }
         public bool UseExternalImage { get; set; }
         public string ImagePath { get; set; }
-        public bool autostartZclient { get; set; }
-        public bool isMusicEnabled { get; set; }
+        public bool AutostartZclient { get; set; }
+        public bool IsMusicEnabled { get; set; }
         public string ZclientPath { get; set; }
         public bool SaveLogInFile { get; set;}
         public bool CheckUpdates { get; set; }
-        public   Color clr { get; set; } 
+        public Color Clr { get; set; } 
         public bool ModSupport { get; set; }
     }
 
@@ -36,21 +36,23 @@ namespace ZloGUILauncher
       
         public Config()
         {
-            config  = new Params();
-            config.AccentName = "Cobalt";
-            config.AccentColorType = "accent".ToLower();
-            config.Theme = "BaseDark";
-            config.isDebug = true;
-            config.MoreColors = false;
-            config.MaximizeGameWindow = false;
-            config.UseExternalImage = false;
-            config.ImagePath = "";
-            config.ZclientPath = "";
-            config.autostartZclient = false;
-            config.isMusicEnabled = false;
-            config.SaveLogInFile = false;
-            config.CheckUpdates = true;
-            config.ModSupport = false;
+            config = new Params
+            {
+                AccentName = "Cobalt",
+                AccentColorType = "accent".ToLower(),
+                Theme = "BaseDark",
+                IsDebug = true,
+                MoreColors = false,
+                MaximizeGameWindow = false,
+                UseExternalImage = false,
+                ImagePath = "",
+                ZclientPath = "",
+                AutostartZclient = false,
+                IsMusicEnabled = false,
+                SaveLogInFile = false,
+                CheckUpdates = true,
+                ModSupport = false
+            };
         }
     }
 }

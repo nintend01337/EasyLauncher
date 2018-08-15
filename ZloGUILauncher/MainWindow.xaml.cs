@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -15,7 +14,6 @@ using System.Configuration;
 using static ZloGUILauncher.Debuging;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 namespace ZloGUILauncher
 {
@@ -33,21 +31,21 @@ namespace ZloGUILauncher
         static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
         #endregion
 
-        public const string download_music_link = "https://dl.dropbox.com/s/r2cz0vk26aji58n/music.mp3?dl=0";
-        public const string remote_version_link = "https://dl.dropbox.com/s/aaw46c567xdtziy/version.txt?dl=0";
-        public const string download_launcher_link = "https://dl.dropbox.com/s/rydql8l6fi8o5ac/Easy%20Launcher.exe?dl=0";
-        public const string changelog_link = "https://dl.dropbox.com/s/81gigeh9dk9ekyx/changelog.txt?dl=0";
+        //public const string download_music_link = "https://dl.dropbox.com/s/r2cz0vk26aji58n/music.mp3?dl=0";
+        public const string RemoteVersionLink = "https://dl.dropbox.com/s/aaw46c567xdtziy/version.txt?dl=0";
+        public const string DownloadLauncherLink = "https://dl.dropbox.com/s/rydql8l6fi8o5ac/Easy%20Launcher.exe?dl=0";
+        public const string ChangelogLink = "https://dl.dropbox.com/s/81gigeh9dk9ekyx/changelog.txt?dl=0";
         public const string AssemblyName = "Easy Launcher";
         public const string LauncherNew = "Easy_New.exe";
         public const string Log = "Easy.log";
-        public const string autor = "nintend01337";
-        public string version = "1.5.9.1";
+        public const string Autor = "nintend01337";
+        public string Version = "1.5.9.1";
         public string ApiVersion;
-        public string soldiername;
-        public string soldierID;
-        public bool isDebug = Settings.Default.Config.config.isDebug;                    //enable-disable debugg messages
-        public bool isMusicEnabled = Settings.Default.Config.config.isMusicEnabled;
-        MediaPlayer player = new MediaPlayer();
+        public string Soldiername;
+        public string SoldierId;
+        public bool IsDebug = Settings.Default.Config.config.IsDebug;                    //enable-disable debugg messages
+        //public bool isMusicEnabled = Settings.Default.Config.config.isMusicEnabled;
+        //MediaPlayer player = new MediaPlayer();
 
         public MainWindow()
         {
@@ -55,47 +53,42 @@ namespace ZloGUILauncher
             PrintDebug(DebugLevel.Info, "Инициализация компонентов завершена!");
             LoadImage();
             CheckUpdates();
-            CheckZclient();
-            
-            App.Current.MainWindow = this;
+            /*CheckZclient();*/
+
+            //App.Current.MainWindow = this;
             App.Client.ErrorOccured += Client_ErrorOccured;
             App.Client.UserInfoReceived += Client_UserInfoReceived;
             App.Client.GameStateReceived += Client_GameStateReceived;
-            App.Client.APIVersionReceived += Client_APIVersionReceived;
+            //App.Client.APIVersionReceived += Client_APIVersionReceived;
             App.Client.Disconnected += Client_Disconnected;
             App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
 
             if (App.Client.Connect())
             {
                 PrintDebug(DebugLevel.Info, $"Подключились к ZLO ;)");
-
-
                 PrintDebug(DebugLevel.Warn, Settings.Default.Config.config.AccentName);
                 PrintDebug(DebugLevel.Warn, Settings.Default.Config.config.AccentColorType);
-                
+
                 switch (App.Client.SavedActiveServerListener)
-                {                   
+                {
                     case ZloGame.BF_3:
                         MainTabControl.SelectedIndex = 0;
-                    
                         //App.Client.GetStats(ZloGame.BF_3);
                         break;
 
                     case ZloGame.BF_4:
                         MainTabControl.SelectedIndex = 1;
-                  
                         //App.Client.GetStats(ZloGame.BF_4);
                         //App.Client.GetItems(ZloGame.BF_4);
                         break;
 
                     case ZloGame.BF_HardLine:
                         MainTabControl.SelectedIndex = 2;
-                   
                         //App.Client.GetStats(ZloGame.BF_HardLine);
                         //App.Client.GetItems(ZloGame.BF_HardLine);
                         break;
                 }
-            }                
+            }
         }
 
         public void PrintDebug(DebugLevel lvl, string message)
@@ -137,7 +130,7 @@ namespace ZloGUILauncher
                 NewParagraph.Inlines.Add(Level);
                 NewParagraph.Inlines.Add(MessageText);
 
-                if (isDebug)
+                if (IsDebug)
                 {
                     LogBox.Document.Blocks.Add(NewParagraph);
                 }
@@ -145,6 +138,7 @@ namespace ZloGUILauncher
 
         }
 
+        #region events
         public void LoadImage()
         {
             if (Settings.Default.Config.config.UseExternalImage)
@@ -170,65 +164,68 @@ namespace ZloGUILauncher
             PrintDebug(DebugLevel.Info, $"Загружены настройки: \n Тема: {Settings.Default.Config.config.AccentName} Цвет: {Settings.Default.Config.config.ImagePath}");
         }
 
-        private void Client_ConnectionStateChanged(bool IsConnectedToZloClient)
+        private void Client_ConnectionStateChanged(bool isConnectedToZloClient)
         {
             Dispatcher.Invoke(() =>
             {
-                if (IsConnectedToZloClient)
+                if (isConnectedToZloClient)
                 {
                     PrintDebug(DebugLevel.Info, "Подключен");
                 }
                 else
                 {
-                  PrintDebug(DebugLevel.Error, "Отключен");
-                  
+                    PrintDebug(DebugLevel.Error, "Отключен");
+
                 }
             });
         }
 
-        private void Client_UserInfoReceived(uint UserID, string UserName)
+        private void Client_UserInfoReceived(uint userId, string userName)
         {
-            PrintDebug(DebugLevel.Info,  $" Получение информации о пользователе : {UserName} ,  {UserID}");
-            soldiername = UserName;
-            soldierID = UserID.ToString();
+            PrintDebug(DebugLevel.Info, $" Получение информации о пользователе : {userName} ,  {userId}");
+            Soldiername = userName;
+            SoldierId = userId.ToString();
         }
 
-        private void Client_Disconnected(Zlo.Extras.DisconnectionReasons Reason)
+        private void Client_Disconnected(Zlo.Extras.DisconnectionReasons reason)
         {
             Dispatcher.Invoke(async () =>
             {
-                await this.ShowMessageAsync("",$" Вылет по причине : {Reason}",MessageDialogStyle.Affirmative);
-                PrintDebug(DebugLevel.Error, $" Вылет по причине : {Reason}");
+                await this.ShowMessageAsync("", $" Вылет по причине : {reason}", MessageDialogStyle.Affirmative);
+                PrintDebug(DebugLevel.Error, $" Вылет по причине : {reason}");
             });
         }
 
-        private void Client_APIVersionReceived(Version Current, Version Latest, bool IsNeedUpdate, string DownloadAdress)
+        private void Client_APIVersionReceived(Version current, Version latest, bool isNeedUpdate, string downloadAdress)
         {
-            PrintDebug(DebugLevel.Info, $"Получение информации о версиях API: \n Текущая : {Current}, Последняя : {Latest}, \n Требуется обновление API ? : {IsNeedUpdate}");
+            PrintDebug(DebugLevel.Info, $"Получение информации о версиях API: \n Текущая : {current}, Последняя : {latest}, \n Требуется обновление API ? : {isNeedUpdate}");
 
-            if (IsNeedUpdate)
+            if (isNeedUpdate)
             {
                 Dispatcher.Invoke(async () =>
                 {
-                    if (await this.ShowMessageAsync("Обновление", $"Текущая dll версия : {Current}\n Последняя dll версия : {Latest}\n Обновить сейчас?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    if (await this.ShowMessageAsync("Обновление", $"Текущая dll версия : {current}\n Последняя dll версия : {latest}\n Обновить сейчас?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
-                        string Sourcedll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo.dll");
-                        string Newdll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo_New.dll");
+                        string sourcedll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo.dll");
+                        string newdll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo_New.dll");
                         using (WebClient wc = new WebClient())
                         {
                             wc.DownloadFileCompleted += Wc_DownloadFileCompleted;
-                            wc.DownloadFileAsync(new Uri(DownloadAdress), Newdll);
+                            wc.DownloadFileAsync(new Uri(downloadAdress), newdll);
                         }
                     }
+                    Title = AssemblyName + " | " + Version + " | " + "API version " + ApiVersion + " | " + (Soldiername != null ? "WELCOME, " + Soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
                 });
                 PrintDebug(DebugLevel.Warn, "Вы используете не последнюю версию API.Видимо Разработчик отключил автоматическое обновление API.");
-                ApiVersion = Current.ToString();
-                Title = AssemblyName + " | " + version + " | " + "API version " + ApiVersion + " | " + (soldiername != null ? "WELCOME, " + soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
+                ApiVersion = current.ToString();
+
             }
-            else {
-                Dispatcher.Invoke(() => {
-                    ApiVersion = Current.ToString();
-                    Title = AssemblyName + " | " + version  +  " | " + "API version " + ApiVersion + " | " + (soldiername != null ? "WELCOME, " + soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
+            else
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    ApiVersion = current.ToString();
+                    Title = AssemblyName + " | " + Version + " | " + "API version " + ApiVersion + " | " + (Soldiername != null ? "WELCOME, " + Soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
                 });
             }
         }
@@ -242,22 +239,22 @@ namespace ZloGUILauncher
                 //error occured
                 Client_ErrorOccured(e.Error, "Возникла ошибка при обновлении Zlo.dll");
                 Debug.Write(e.Error);
-                PrintDebug(DebugLevel.Error, string.Format("{0} \n {1} \n {2}","Возникла ошибка при обновлении Zlo.dll" , e.Error.ToString() , e.Error.StackTrace.ToString()));
+                PrintDebug(DebugLevel.Error, string.Format("{0} \n {1} \n {2}", "Возникла ошибка при обновлении Zlo.dll", e.Error.ToString(), e.Error.StackTrace.ToString()));
             }
             else
             {
                 //no errors
-                ApplyUpdate("Zlo.dll","Zlo_New.dll");
+                ApplyUpdate("Zlo.dll", "Zlo_New.dll");
             }
         }
 
-        private void ApplyUpdate(string Src, string NewSrc)
+        private void ApplyUpdate(string src, string newSrc)
         {
             string executablePath = Directory.GetCurrentDirectory();
-            string Source = Src;
-            string NewSource = NewSrc;
-            string Old = "old_".ToUpper() + Source;
-            string BatchText =
+            string source = src;
+            string newSource = newSrc;
+            string old = "old_".ToUpper() + source;
+            string batchText =
                $@"
 @ECHO off
 SETLOCAL EnableExtensions
@@ -269,31 +266,35 @@ tasklist /FI ""IMAGENAME eq %EXE%"" 2>NUL | find /I /N ""%EXE%"">NUL
 if ""%ERRORLEVEL%""==""0"" goto LOOP
 echo Process %EXE% closed
 mkdir backup
-rename  ""{Source}"" ""{Old}""
-move /y ""{Old}"" backup
-move /y ""{NewSource}"" ""{Source}"" 
+rename  ""{source}"" ""{old}""
+move /y ""{old}"" backup
+move /y ""{newSource}"" ""{source}"" 
 start """" ""{AppDomain.CurrentDomain.FriendlyName}"" ""done""
 Exit
 ";
-            var bat_path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UpdateBat.bat");
+            var batPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UpdateBat.bat");
             //create the bat file
-            File.WriteAllText(bat_path, BatchText);
-            ProcessStartInfo si = new ProcessStartInfo(bat_path);
-            si.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            File.WriteAllText(batPath, batchText);
+            ProcessStartInfo si =
+                new ProcessStartInfo(batPath) {WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory};
             Process.Start(si);
             Dispatcher.Invoke(() => { System.Windows.Application.Current.Shutdown(); });
         }
 
         private async void Wc_DownloadMusicCompletedAsync(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            /*PrintDebug(DebugLevel.Info, "Загрузка файла music.mp3 Завершена. Перезапуск");
+            await this.ShowMessageAsync("Загрузка", "Файлы загружены.. \n Лаунчер будет перезапущен", MessageDialogStyle.Affirmative);
+            Dispatcher.Invoke(() =>
             {
-                    PrintDebug(DebugLevel.Info, "Загрузка файла music.mp3 Завершена. Перезапуск");
-                    await this.ShowMessageAsync("Загрузка", "Файлы загружены.. \n Лаунчер будет перезапущен", MessageDialogStyle.Affirmative);
-                    Dispatcher.Invoke(() => {
-                      App.Client.Close();
-                       Process.Start(System.Windows.Application.ResourceAssembly.Location);
-                        System.Windows.Application.Current.Shutdown();
-            });
+                App.Client.Close();
+                Process.Start(System.Windows.Application.ResourceAssembly.Location);
+                System.Windows.Application.Current.Shutdown();
+            });*/
         }
+
+        #endregion
+
         #region Setup Events
 
         private void Client_GameStateReceived(ZloGame game, string type, string message)
@@ -303,43 +304,44 @@ Exit
                 LatestGameStateTextBlock.Text = $"[{game}] [{type}] {message}";
 
                 var t = DateTime.Now;
-                Run DateText = new Run($"{t.ToShortTimeString()} : ");
-                DateText.Foreground = new SolidColorBrush(Colors.White);
+                Run dateText = new Run($"{t.ToShortTimeString()} : ");
+                dateText.Foreground = new SolidColorBrush(Colors.White);
 
-                Run GameText = new Run($"[{game}] ");
-                GameText.Foreground = new SolidColorBrush(Colors.LightGreen);
+                Run gameText = new Run($"[{game}] ");
+                gameText.Foreground = new SolidColorBrush(Colors.LightGreen);
 
-                Run TypeText = new Run($"[{type}] ");
-                TypeText.Foreground = new SolidColorBrush(Color.FromRgb(77, 188, 233));
+                Run typeText = new Run($"[{type}] ");
+                typeText.Foreground = new SolidColorBrush(Color.FromRgb(77, 188, 233));
 
-                Run MessageText = new Run($"{message}");
-                MessageText.Foreground = new SolidColorBrush(Colors.White);
+                Run messageText = new Run($"{message}");
+                messageText.Foreground = new SolidColorBrush(Colors.White);
 
-                Paragraph NewParagraph = new Paragraph();
-                NewParagraph.Inlines.Add(DateText);
-                NewParagraph.Inlines.Add(GameText);
-                NewParagraph.Inlines.Add(TypeText);
-                NewParagraph.Inlines.Add(MessageText);
+                Paragraph newParagraph = new Paragraph();
+                newParagraph.Inlines.Add(dateText);
+                newParagraph.Inlines.Add(gameText);
+                newParagraph.Inlines.Add(typeText);
+                newParagraph.Inlines.Add(messageText);
 
-                LogBox.Document.Blocks.Add(NewParagraph);                
+                LogBox.Document.Blocks.Add(newParagraph);
 
                 if (type == "StateChanged") OnGameStarted(); //Это может тоже по красоте
                 if (type == "Alert") OnGameClosed();
                 if (message.Contains("State_GameLoading State_ClaimReservation") || message.Contains("State_GameLoading State_LaunchPlayground") || message.Contains("State_GameLoading State_ResumeCampaign")) MaximizeWindow(game);
-                
+
             });
         }
 
-        private void Client_ErrorOccured(Exception Error, string CustomMessage)
+        private void Client_ErrorOccured(Exception error, string customMessage)
         {
-            string message = Error.ToString() + " " + CustomMessage;
+            string message = error.ToString() + " " + customMessage;
             PrintDebug(DebugLevel.Error, message);
         }
-        
+
         private void RestartLauncherButton_Click(object sender, RoutedEventArgs e)
         {
             SaveLogInFile();
-            Dispatcher.Invoke(() => {
+            Dispatcher.Invoke(() =>
+            {
                 App.Client.Close();
                 Process.Start(System.Windows.Application.ResourceAssembly.Location);
                 System.Windows.Application.Current.Shutdown();
@@ -348,13 +350,13 @@ Exit
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            Views.Options options = new Views.Options();
-            options.Visibility = Visibility.Visible;
+            Views.Options options = new Views.Options {Visibility = Visibility.Visible};
         }
 
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is System.Windows.Controls.TabControl tc){
+            if (sender is System.Windows.Controls.TabControl tc)
+            {
                 if (tc.SelectedIndex < 0) return;
                 switch (tc.SelectedIndex)
                 {
@@ -388,7 +390,7 @@ Exit
         {
             Banner.Visibility = Visibility.Visible;
             MainTabControl.Visibility = Visibility.Hidden;
-            player.Stop();
+            //player.Stop();
         }
 
         private void OnGameClosed()
@@ -396,8 +398,8 @@ Exit
             MainTabControl.Visibility = Visibility.Visible;
             Banner.Visibility = Visibility.Hidden;
             MainTabControl.SelectedIndex = 0;
-            if(Settings.Default.Config.config.isMusicEnabled)
-                player.Play();
+            //if (Settings.Default.Config.config.isMusicEnabled)
+            //player.Play();
         }
 
         private void MaximizeWindow(ZloGame game)
@@ -419,7 +421,7 @@ Exit
 
                     case ZloGame.BF_HardLine:
                         windowname = "Battlefield Hardline";
-                       break;
+                        break;
                 }
 
                 hWnd = FindWindow(null, windowname);
@@ -427,11 +429,10 @@ Exit
             }
         }
 
-
         private void CloseGameBtn_Click(object sender, RoutedEventArgs e)
         {
             OnGameClosed();
-           var  processes = Process.GetProcesses();
+            var processes = Process.GetProcesses();
             foreach (Process p in processes)
             {
                 if (p.ProcessName.Contains("bf3") || p.ProcessName.Contains("bf4") || p.ProcessName.Contains("bfh"))
@@ -445,7 +446,7 @@ Exit
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Settings.Default.Config.config.isMusicEnabled)
+            /*if (Settings.Default.Config.config.isMusicEnabled)
             {
                 if (!File.Exists("music.mp3"))
                 {
@@ -465,34 +466,64 @@ Exit
                 {
                     Dispatcher.Invoke(() =>
                     {
-                     player.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + "music.mp3", UriKind.RelativeOrAbsolute));
+                        player.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + "music.mp3", UriKind.RelativeOrAbsolute));
                         string uri = AppDomain.CurrentDomain.BaseDirectory + "music.mp3";
                         PrintDebug(DebugLevel.Info, "Включаю музыку :D");
                         player.Play();
                     });
                 }
-            }
+            }*/
         }
 
-        private void CheckZclient()
+        private void MetroWindow_Activated(object sender, EventArgs e)
         {
-            PrintDebug(DebugLevel.Info, "Проверяю запущен ли Zclient");
-          
-               var proc =  Process.GetProcessesByName("ZClient");
-                if (proc.Length == 0)
+            /*if (Settings.Default.Config.config.isMusicEnabled)
+            {
+                if (!File.Exists("music.mp3"))
+                {
+                    PrintDebug(DebugLevel.Warn, $"Отсутствует музыкальный файл music.mp3 \n Начинаю скачивать с {download_music_link}");
+                    string musicfile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "music.mp3");
+                    // Нет музыкального файла скачать
+                    Dispatcher.Invoke(() =>
+                    {
+                        using (WebClient wc = new WebClient())
+                        {
+                            wc.DownloadFileCompleted += Wc_DownloadMusicCompletedAsync;
+                            wc.DownloadFileAsync(new Uri(download_music_link), musicfile);
+                        }
+                    });
+                }
+                else
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        player.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + "music.mp3", UriKind.RelativeOrAbsolute));
+                        string uri = AppDomain.CurrentDomain.BaseDirectory + "music.mp3";
+                        PrintDebug(DebugLevel.Info, "Включаю музыку :D");
+                        player.Play();
+                    });
+                }
+            }*/
+        }
+
+        /*private void CheckZclient()
+        {
+            PrintDebug(DebugLevel.Info, "Проверяю запущен ли Zclient");          
+            var proc =  Process.GetProcessesByName("ZClient");
+            if (proc.Length == 0)
             {
                 PrintDebug(DebugLevel.Error, "ZCLIENT НЕ ЗАПУЩЕН, влючите пункт в автозапуске либо запустите его вручную".ToUpper());
                 if (Settings.Default.Config.config.autostartZclient)
                 {
                     RunZClient();
                     PrintDebug(DebugLevel.Warn, "НЕ ЗАПУЩЕН ZCLIENT,ЗАПУСКАЮ!!!!");
-                    Thread.Sleep(10000);                //спим 10 сек на случай обновления Зшки
+                    Thread.Sleep(10000);
                 }
             }
             App.Client.ReConnect();
-        }
+        }*/
 
-        private void RunZClient()
+        /*private void RunZClient()
         {
             if (!File.Exists(Settings.Default.Config.config.ZclientPath))
             {
@@ -505,14 +536,8 @@ Exit
                 Settings.Default.Config.config.ZclientPath = openFileDialog.FileName;
                 Settings.Default.Save();
             }
-
             Process.Start(Settings.Default.Config.config.ZclientPath);
-        }
-        private void MetroWindow_Activated(object sender, EventArgs e)
-        {
-            
-            //player.Open(new Uri("http://air2.radiorecord.ru:805/trap_320", UriKind.RelativeOrAbsolute));
-        }
+        }*/
 
         private void MetroWindow_Closing(object sender, CancelEventArgs e)
         {
@@ -524,54 +549,43 @@ Exit
         }
 
         #region  Updates
-        private  void CheckUpdates()
+        private void CheckUpdates()
         {
             if (Settings.Default.Config.config.CheckUpdates)
             {
-                string CurrentVersion = version.ToLower();
-                string RemoteVersion = "";
-                string Changelog = "";
-
+                string currentVersion = Version.ToLower();
+                string remoteVersion = "";
                 var obj = new WebClient();
-
                 PrintDebug(DebugLevel.Warn, "Проверяю обновления Лаунчера");
-                
-                RemoteVersion = obj.DownloadString(new Uri(remote_version_link)).ToLower();
-            
-                if (string.IsNullOrEmpty(RemoteVersion))
-                {
-                    PrintDebug(DebugLevel.Error, "Невозможно проверить ОБНОВЛЕНИЯ");
-                }
-                
+                remoteVersion = obj.DownloadString(new Uri(RemoteVersionLink)).ToLower();
 
-                if (!string.Equals(RemoteVersion,CurrentVersion))
+                if (string.IsNullOrEmpty(remoteVersion))
+                    PrintDebug(DebugLevel.Error, "Невозможно проверить ОБНОВЛЕНИЯ");
+
+                if (!string.Equals(remoteVersion, currentVersion))
                 {
                     PrintDebug(DebugLevel.System, "Доступно Обновление лаунчера !");
-                    obj.DownloadFile(new Uri(changelog_link), "changelog.txt");
+                    obj.DownloadFile(new Uri(ChangelogLink), "changelog.txt");
 
-                    Changelog = File.ReadAllText("changelog.txt");
-                    if (Changelog == null || Changelog == string.Empty)
-                        Changelog = "АВТОР НЕ УКАЗАЛ";
+                    var changelog = File.ReadAllText("changelog.txt");
+                    if (changelog == string.Empty)
+                        changelog = "АВТОР НЕ УКАЗАЛ";
 
-                    // byte[] bytes = Encoding.UTF8.GetBytes(Changelog);
+                    //byte[] bytes = Encoding.UTF8.GetBytes(Changelog);
                     //Changelog = Encoding.UTF8.GetString(bytes);
 
-                    MessageBoxResult mbr = System.Windows.MessageBox.Show($"Текущая  версия Лаунчера : {version} \n Последняя  версия Лаунчера : {RemoteVersion}\n  \n Список Изменений : \n {Changelog} \n \n \n Обновить сейчас?", "Обновление Лаунчера", MessageBoxButton.YesNo);
-                    
-                    if(mbr == MessageBoxResult.Yes)
+                    MessageBoxResult mbr = System.Windows.MessageBox.Show($"Текущая  версия Лаунчера : {Version} \n Последняя  версия Лаунчера : {remoteVersion}\n  \n Список Изменений : \n {changelog} \n \n \n Обновить сейчас?", "Обновление Лаунчера", MessageBoxButton.YesNo);
+
+                    if (mbr == MessageBoxResult.Yes)
                     {
                         try
                         {
-                            Dispatcher.InvokeAsync(() =>
-                            {
-                                DownloadUpdate();
-                            });
+                            Dispatcher.InvokeAsync(DownloadUpdate);
                             PrintDebug(DebugLevel.System, "Пытаюсь Скачать обновление");
                         }
                         catch (Exception)
                         {
-
-                            PrintDebug(DebugLevel.Error, string.Format("{0} \n {1}", "Что-то пошло не так.", this.ToString()));
+                            PrintDebug(DebugLevel.Error, $"Что-то пошло не так. \n {this.ToString()}");
                         }
                     }
                 }
@@ -590,7 +604,7 @@ Exit
             {
                 using (WebClient wc = new WebClient())
                 {
-                    wc.DownloadFileAsync(new Uri(download_launcher_link), LauncherNew);
+                    wc.DownloadFileAsync(new Uri(DownloadLauncherLink), LauncherNew);
                     wc.DownloadFileCompleted += Wc_Downloaded;
                 }
             });
@@ -602,7 +616,7 @@ Exit
             ApplyUpdate(AppDomain.CurrentDomain.FriendlyName, LauncherNew);
         }
         #endregion
-       
+
         #region Logs
         private void SaveLogInFile()
         {
@@ -622,7 +636,7 @@ Exit
                     string temp = File.ReadAllText(Log);
                     File.WriteAllText(Log, string.Format($"{temp} \n \n Дата : {DateTime.Now} \n ___________________________________________________ \n {Content} \n "));
                 }
-                    GC.Collect();
+                GC.Collect();
             }
         }
 
@@ -635,6 +649,6 @@ Exit
             Content += System.Windows.Clipboard.GetText().ToString();
             File.WriteAllText(filename, string.Format($"Дата : {DateTime.Now} \n___________________________________________________ \n {Content} \n "));
         }
-#endregion
+        #endregion
     }
 }

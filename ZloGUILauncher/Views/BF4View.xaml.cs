@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using Zlo.Extras;
 
@@ -34,32 +33,13 @@ namespace ZloGUILauncher.Views
         //    }
         //}
 
-        private static BF4StatsListWindow m_StatsListWin;
-        public static BF4StatsListWindow StatsListWin
-        {
-            get
-            {
-                if (m_StatsListWin == null)
-                {
-                    m_StatsListWin = new BF4StatsListWindow();
-                }
-                return m_StatsListWin;
-            }
-        }
+        private static BF4StatsListWindow _mStatsListWin;
+        public static BF4StatsListWindow StatsListWin => _mStatsListWin ?? (_mStatsListWin = new BF4StatsListWindow());
 
-        private static BF4StatsWin m_StatsWin;
-        public static BF4StatsWin StatsWin
-        {
-            get
-            {
-                if (m_StatsWin == null)
-                {
-                    m_StatsWin = new BF4StatsWin();                                   
-                }
-                return m_StatsWin;
-            }
-        }
-
+        private static BF4StatsWin _mStatsWin;
+        public static BF4StatsWin StatsWin => _mStatsWin ?? (_mStatsWin = new BF4StatsWin());
+        
+        
         private void StatsRefreshButton_Click(object sender , RoutedEventArgs e)
         {
            // App.Client.GetStats(Zlo.Extras.ZloGame.BF_4);
@@ -87,8 +67,7 @@ namespace ZloGUILauncher.Views
 
         private void StatsAsWindowButton_Click(object sender , RoutedEventArgs e)
         {
-            StatsWin.Show();
-            
+            StatsWin.Show();            
         }
 
         private void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -99,10 +78,10 @@ namespace ZloGUILauncher.Views
                 switch (tc.SelectedIndex)
                 {
                     case 1:
-                        App.Client.JoinOfflineGame(Zlo.Extras.OfflinePlayModes.BF4_Single_Player);
+                        App.Client.JoinOfflineGame(OfflinePlayModes.BF4_Single_Player);
                         break;
                     case 2:
-                        App.Client.JoinOfflineGame(Zlo.Extras.OfflinePlayModes.BF4_Test_Range);
+                        App.Client.JoinOfflineGame(OfflinePlayModes.BF4_Test_Range);
                         break;
                     default:
                         break;

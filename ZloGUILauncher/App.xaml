@@ -20,7 +20,7 @@
             <BitmapImage x:Key="wallper" UriSource="/Media/bf4/wallper.png"/>
             <BitmapImage x:Key="logo_discord" UriSource="/Media/discord_logo_white.PNG"/>
             <BitmapImage x:Key="color" UriSource="/Media/color.png"/>
-            <SolidColorBrush x:Key="SelectionBrush" Color="{Binding Source={x:Static settings:Settings.Default}, Path= Config.config.clr}"/>
+            <SolidColorBrush x:Key="SelectionBrush" Color="{Binding Source={x:Static settings:Settings.Default}, Path= Config.config.Clr}"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ZloGUILauncher.Addons;
 
 namespace ZloGUILauncher.Views
@@ -20,28 +8,15 @@ namespace ZloGUILauncher.Views
 
     public partial class Journal : UserControl
     {
-        public CollectionViewSource collectionViewSource
-        {
-            get { return TryFindResource("HelpGrid") as CollectionViewSource; }
-        }
+        public CollectionViewSource CollectionViewSource => TryFindResource("HelpGrid") as CollectionViewSource;
 
-        private ObservableCollection<Help> m_Helps;
-        public ObservableCollection<Help> Helps
-        {
-            get
-            {
-                if (m_Helps == null)
-                {
-                    m_Helps = new ObservableCollection<Help>();
-                }
-                return m_Helps;
-            }
-        }
+        private ObservableCollection<Help> _mHelps;
+        public ObservableCollection<Help> Helps => _mHelps ?? (_mHelps = new ObservableCollection<Help>());
 
         public Journal()
         {
             InitializeComponent();
-            collectionViewSource.Source = Helps;
+            CollectionViewSource.Source = Helps;
             Helps.Add(new Help { Code = " 5   1  -1 ", Params = "->", Description = "Ошибка х64 бит версии игры, использовать x86 ", });
             Helps.Add(new Help { Code = " 3   1  -1 ", Params = "->", Description = "Ошибка лицензии, удалить папку - C:\\ProgramData\\Electronic Arts (папка скрытая )", });
             Helps.Add(new Help { Code = " 0   4   x ", Params = "Game disconnected", Description = "Вас кикнул админ сервера  ", });

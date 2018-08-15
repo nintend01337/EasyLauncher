@@ -70,7 +70,8 @@ namespace ZloGUILauncher.Servers
         private GUI_PlayerList m_Players;
         public GUI_PlayerList Players
         {
-            get{
+            get
+            {
                 if (m_Players == null)
                     m_Players = new GUI_PlayerList(raw.Players);
                 return m_Players;
@@ -80,7 +81,8 @@ namespace ZloGUILauncher.Servers
         private GUI_MapRotation m_Maps;
         public GUI_MapRotation Maps
         {
-            get {
+            get
+            {
                 if (m_Maps == null)
                     m_Maps = new GUI_MapRotation(raw.MapRotation);
                 return m_Maps;
@@ -100,7 +102,8 @@ namespace ZloGUILauncher.Servers
         }
         public bool IsHasPB
         {
-            get{
+            get
+            {
                 if (raw.Attributes.ContainsKey("punkbuster"))
                     return YesNo(raw.Attributes["punkbuster"]);
                 else
@@ -109,7 +112,8 @@ namespace ZloGUILauncher.Servers
         }
         public bool IsHasFF
         {
-            get{
+            get
+            {
                 if (raw.Attributes.ContainsKey("fairfight"))
                     return YesNo(raw.Attributes["fairfight"]);
                 else
@@ -119,47 +123,48 @@ namespace ZloGUILauncher.Servers
 
         public void UpdateAllProps()
         {
-            OPC(nameof(ID));
-            OPC(nameof(Name));
-            OPC(nameof(Current_Players));
-            OPC(nameof(Max_Players));
-            OPC(nameof(IP));
-            OPC(nameof(Port));
-            OPC(nameof(RepPlayers));
-            OPC(nameof(ServerType));
-            OPC(nameof(Players));
-            OPC(nameof(Maps));
-            OPC(nameof(IsHasPW));
-            OPC(nameof(IsHasPB));
-            OPC(nameof(IsHasFF));
+            Task.Run((Action)(() =>
+            {
+                OPC(nameof(ID));
+                OPC(nameof(Name));
+                OPC(nameof(Current_Players));
+                OPC(nameof(Max_Players));
+                OPC(nameof(IP));
+                OPC(nameof(Port));
+                OPC(nameof(RepPlayers));
+                OPC(nameof(ServerType));
+                OPC(nameof(Players));
+                OPC(nameof(Maps));
+                OPC(nameof(IsHasPW));
+                OPC(nameof(IsHasPB));
+                OPC(nameof(IsHasFF));
 
-            UpdatePing();
-            Maps.Update();
-            Players.Update();
-            getCountry();
+                UpdatePing();
+                Maps.Update();
+                Players.Update();
+                getCountry();
+            }));
         }
 
         public void UpdatePing()
         {
-            Task.Run((Action)(() =>
+            try
             {
-                try
+                if (IP == null) return;
+                for (int i = 0; i < 3; i++)
                 {
-                    if (IP == null) return;
-                    for (int i = 0; i < 3; i++)
-                    {
-                        PingReply pingReply = new System.Net.NetworkInformation.Ping().Send(raw.ServerIP.ToString(), 500);
-                        if (pingReply.Status == IPStatus.Success) this.Ping = ((int)pingReply.RoundtripTime).ToString();
-                        if (this.Ping == "0" || string.IsNullOrEmpty(this.Ping)) Ping = "TimeOut";
-                    }
+                    PingReply pingReply = new System.Net.NetworkInformation.Ping().Send(raw.ServerIP.ToString(), 500);
+                    if (pingReply.Status == IPStatus.Success) this.Ping = ((int)pingReply.RoundtripTime).ToString();
+                    if (this.Ping == "0" || string.IsNullOrEmpty(this.Ping)) Ping = "TimeOut";
                 }
-                catch (Exception ex)
-                {
-                    Ping = "Timeout";
-                    ex.Message.ToString(); // сообщение в случаи неудачи проверки пинга незнаю зачем :)
-                }
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Ping"));
-            }));
+            }
+            catch (Exception ex)
+            {
+                Ping = "Timeout";
+                ex.Message.ToString(); // сообщение в случаи неудачи проверки пинга незнаю зачем :)
+            }
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Ping"));
+
         }
 
         public void OPC(string prop)
@@ -169,9 +174,8 @@ namespace ZloGUILauncher.Servers
 
         public void getCountry()
         {
-            Task.Run((Action)(() =>
-            {
-                try
+
+                /*try
                 {
                     string strFile = "Unknown";
                     using (var objClient = new System.Net.WebClient()) { strFile = objClient.DownloadString("http://freegeoip.net/xml/" + IP.ToString()); }
@@ -181,14 +185,13 @@ namespace ZloGUILauncher.Servers
                     Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() => { Country = location; }));
                 }
                 catch
+                {*/
+                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
                 {
-                    Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
-                    {
-                        Country = "Неизвестно";
-                    }));
-                }
+                    Country = "Неизвестно";
+                }));
+                //}
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Country"));
-            }));
 
         }
 

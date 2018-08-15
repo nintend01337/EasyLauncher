@@ -12,14 +12,16 @@ namespace ZloGUILauncher.Addons
         {
             // create a runtime accent resource dictionary
 
-            var resourceDictionary = new ResourceDictionary();
+            var resourceDictionary = new ResourceDictionary
+            {
+                {"HighlightColor", color},
+                {"AccentBaseColor", color},
+                {"AccentName", Color.FromArgb((byte) (204), color.R, color.G, color.B)},
+                {"AccentColor2", Color.FromArgb((byte) (153), color.R, color.G, color.B)},
+                {"AccentColor3", Color.FromArgb((byte) (102), color.R, color.G, color.B)},
+                {"AccentColor4", Color.FromArgb((byte) (51), color.R, color.G, color.B)}
+            };
 
-            resourceDictionary.Add("HighlightColor", color);
-            resourceDictionary.Add("AccentBaseColor", color);
-            resourceDictionary.Add("AccentName", Color.FromArgb((byte)(204), color.R, color.G, color.B));
-            resourceDictionary.Add("AccentColor2", Color.FromArgb((byte)(153), color.R, color.G, color.B));
-            resourceDictionary.Add("AccentColor3", Color.FromArgb((byte)(102), color.R, color.G, color.B));
-            resourceDictionary.Add("AccentColor4", Color.FromArgb((byte)(51), color.R, color.G, color.B));
 
             resourceDictionary.Add("HighlightBrush", GetSolidColorBrush((Color)resourceDictionary["HighlightColor"]));
             resourceDictionary.Add("AccentBaseColorBrush", GetSolidColorBrush((Color)resourceDictionary["AccentBaseColor"]));
@@ -37,7 +39,7 @@ namespace ZloGUILauncher.Addons
                     new GradientStop((Color)resourceDictionary["AccentColor3"], 1)
                 }),
                 // StartPoint="1.002,0.5" EndPoint="0.001,0.5"
-                startPoint: new Point(1.002, 0.5), endPoint: new Point(0.001, 0.5)));
+                new Point(1.002, 0.5), new Point(0.001, 0.5)));
 
             resourceDictionary.Add("CheckmarkFill", GetSolidColorBrush((Color)resourceDictionary["AccentName"]));
             resourceDictionary.Add("RightArrowFill", GetSolidColorBrush((Color)resourceDictionary["AccentName"]));
@@ -60,7 +62,7 @@ namespace ZloGUILauncher.Addons
 
             // applying theme to MahApps
 
-            var resDictName = string.Format("ДОПЦВЕТ_{0}.xaml", color.ToString().Replace("#", string.Empty));
+            var resDictName = $"ДОПЦВЕТ_{color.ToString().Replace("#", string.Empty)}.xaml";
             var fileName = Path.Combine(Path.GetTempPath(), resDictName);
             using (var writer = System.Xml.XmlWriter.Create(fileName, new System.Xml.XmlWriterSettings { Indent = true }))
             {
@@ -92,7 +94,7 @@ namespace ZloGUILauncher.Addons
         private static Color IdealTextColor(Color color)
         {
             const int nThreshold = 105;
-            var bgDelta = System.Convert.ToInt32((color.R * 0.299) + (color.G * 0.587) + (color.B * 0.114));
+            var bgDelta = Convert.ToInt32((color.R * 0.299) + (color.G * 0.587) + (color.B * 0.114));
             var foreColor = (255 - bgDelta < nThreshold) ? Colors.Black : Colors.White;
             return foreColor;
         }

@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.ComponentModel;
-using Zlo;
 using Zlo.Extras;
 using Newtonsoft.Json.Linq;
 
@@ -23,7 +14,7 @@ namespace ZloGUILauncher.Views
         public BF4StatsWin()
         {
             InitializeComponent();
-            DataContext = BF4Stats;
+            DataContext = Bf4Stats;
           //  App.Client.StatsReceived += Client_StatsReceived;
         }
 
@@ -41,18 +32,8 @@ namespace ZloGUILauncher.Views
             Hide();
         }
 
-        private static BF4StatsDataContext m_BF4Stats;
-        public static BF4StatsDataContext BF4Stats
-        {
-            get
-            {
-                if (m_BF4Stats == null)
-                {
-                    m_BF4Stats = new BF4StatsDataContext();
-                }
-                return m_BF4Stats;
-            }
-        }
+        private static BF4StatsDataContext _mBf4Stats;
+        public static BF4StatsDataContext Bf4Stats => _mBf4Stats ?? (_mBf4Stats = new BF4StatsDataContext());
 
         private void BackGroundViewer_MediaEnded(object sender, RoutedEventArgs e)
         {
@@ -70,61 +51,32 @@ namespace ZloGUILauncher.Views
             Hide();
         }
     }
+
     public class BF4StatsDataContext : INotifyPropertyChanged
     {
         public void UpdateObject()
         {
-            OPC(nameof(raw));
-            OPC(nameof(player));
-            OPC(nameof(CurrRankImage));
-            OPC(nameof(NextRankImage));
-            OPC(nameof(KDR));
+            Opc(nameof(Raw));
+            Opc(nameof(Player));
+            Opc(nameof(CurrRankImage));
+            Opc(nameof(NextRankImage));
+            Opc(nameof(Kdr));
         }
 
-        public JObject raw
-        {
-            get
-            {
-                return App.Client.BF4_Stats;
-            }
-        }
-        public JObject player
-        {
-            get
-            {
-                return (JObject)raw["player"];
-            }
-        }
+        public JObject Raw => App.Client.BF4_Stats;
 
-        public double KDR
-        {
-            get
-            {
-                return this.raw["stats"][(object)"kills"].ToObject<double>() / this.raw["stats"][(object)"deaths"].ToObject<double>();
-            }
-        }
+        public JObject Player => (JObject)Raw["player"];
 
+        public double Kdr => Raw["stats"]["kills"].ToObject<double>() / Raw["stats"]["deaths"].ToObject<double>();
 
-        public BitmapImage CurrRankImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Media/" + player["rank"]["imgLarge"]));
-            }
-        }
-        public BitmapImage NextRankImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Media/" + player["rank"]["next"]["imgLarge"]));
-            }
-        }
+        public BitmapImage CurrRankImage => new BitmapImage(new Uri("pack://application:,,,/Media/" + Player["rank"]["imgLarge"]));
 
-        public void OPC(string propname)
+        public BitmapImage NextRankImage => new BitmapImage(new Uri("pack://application:,,,/Media/" + Player["rank"]["next"]["imgLarge"]));
+
+        public void Opc(string propname)
         {
             PropertyChanged?.Invoke(this , new PropertyChangedEventArgs(propname));
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

@@ -13,30 +13,11 @@ namespace ZloGUILauncher.Views
   
     public partial class BF3ServerListView : UserControl
     {
-        public CollectionViewSource ViewSource
-        {
-            get { return TryFindResource("ServersView") as CollectionViewSource; }
-        }
-        private ObservableCollection<BF3_GUI_Server> m_BF3_Servers;
-        public ObservableCollection<BF3_GUI_Server> BF3_GUI_Servers
-        {
-            get
-            {
-                if (m_BF3_Servers == null)
-                {
-                    m_BF3_Servers = new ObservableCollection<BF3_GUI_Server>();
-                }
-                return m_BF3_Servers;
-            }
-        }
+        public CollectionViewSource ViewSource => TryFindResource("ServersView") as CollectionViewSource;
+        private ObservableCollection<BF3_GUI_Server> _mBf3Servers;
+        public ObservableCollection<BF3_GUI_Server> Bf3GuiServers => _mBf3Servers ?? (_mBf3Servers = new ObservableCollection<BF3_GUI_Server>());
 
-        public API_BF3ServersListBase DataServersList
-        {
-            get
-            {
-                return App.Client.BF3Servers;
-            }
-        }
+        public API_BF3ServersListBase DataServersList => App.Client.BF3Servers;
 
         public BF3ServerListView()
         {
@@ -44,12 +25,11 @@ namespace ZloGUILauncher.Views
             DataServersList.ServerAdded += DataServersList_ServerAdded;
             DataServersList.ServerUpdated += DataServersList_ServerUpdated;
             DataServersList.ServerRemoved += DataServersList_ServerRemoved;
-            ViewSource.Source = BF3_GUI_Servers;
+            ViewSource.Source = Bf3GuiServers;
             fly.IsOpen = false;
-
             if (Settings.Default.Config.config.AccentColorType != "accent")
             {
-                Application.Current.Resources["SelectionBrushColor"] = Settings.Default.Config.config.clr;
+                Application.Current.Resources["SelectionBrushColor"] = Settings.Default.Config.config.Clr;
             }
         }
 
@@ -60,10 +40,10 @@ namespace ZloGUILauncher.Views
                 Dispatcher.Invoke(() =>
                 {
                     //remove from current list
-                    var ser = BF3_GUI_Servers.Find(s => s.ID == id);
+                    var ser = Bf3GuiServers.Find(s => s.ID == id);
                     if (ser != null)
                     {
-                        BF3_GUI_Servers.Remove(ser);
+                        Bf3GuiServers.Remove(ser);
                     }                    
                 });
             }
@@ -73,7 +53,7 @@ namespace ZloGUILauncher.Views
         {
             Dispatcher.Invoke(() =>
             {
-                var equi = BF3_GUI_Servers.Find(x => x.raw == server);
+                var equi = Bf3GuiServers.Find(x => x.raw == server);
                 if (equi != null)
                 {
                     //notify the gui
@@ -88,7 +68,7 @@ namespace ZloGUILauncher.Views
             Dispatcher.Invoke(() =>
             {
                 var newserv = new BF3_GUI_Server(server);
-                BF3_GUI_Servers.Add(newserv);
+                Bf3GuiServers.Add(newserv);
             });
         }
 
@@ -99,7 +79,7 @@ namespace ZloGUILauncher.Views
 
 
 
-            ColorAnimation switchOnAnimation = new ColorAnimation
+            var switchOnAnimation = new ColorAnimation
             {
                 From = Colors.Transparent,
                 To = Colors.Lime ,
@@ -107,7 +87,7 @@ namespace ZloGUILauncher.Views
                 AutoReverse = true
             };
 
-            Storyboard blinkStoryboard = new Storyboard();
+            var blinkStoryboard = new Storyboard();
 
             blinkStoryboard.Children.Add(switchOnAnimation);
             Storyboard.SetTargetProperty(switchOnAnimation , new PropertyPath("Background.Color"));
