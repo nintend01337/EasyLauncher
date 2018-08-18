@@ -149,5 +149,10 @@ namespace ZloGUILauncher.Views
             //}
             fly.IsOpen = true;
         }
+
+        private void fly_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            fly.IsOpen = false;
+        }
     }
 }

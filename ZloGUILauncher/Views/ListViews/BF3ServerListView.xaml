@@ -11,16 +11,38 @@
     <UserControl.Resources>
         <CollectionViewSource x:Key="ServersView"/>
         <SolidColorBrush x:Key="SelectionBrushColor" Color="{DynamicResource AccentColor}"/>
+        <SolidColorBrush x:Key="FlyoutBrushColor" Color="#333333" Opacity="0.95"/>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="Transparent" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="2">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="OpacityMask">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#4C000000"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     <Grid Background="#7E000000">
-        <DataGrid x:Name="ServersDG" ItemsSource="{Binding Source={StaticResource ServersView}}" 
+
+        <DataGrid x:Name="ServersDG" 
                  Opacity="0.8"
                   SelectionMode="Single" SelectionUnit="FullRow"
                   IsSynchronizedWithCurrentItem="True" 
                   IsTextSearchEnabled="True" AutoGenerateColumns="False"                      
-                  IsReadOnly="True" ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}" SelectionChanged="ServersDG_SelectionChanged">
+                  IsReadOnly="True" SelectionChanged="ServersDG_SelectionChanged">
             <DataGrid.Resources>
-                <Style TargetType="DataGridColumnHeader">
+                <Style TargetType="{x:Type DataGridColumnHeader}">
                     <Setter Property="HorizontalContentAlignment"
                                         Value="Center" />
                 </Style>
@@ -28,7 +50,7 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                <Grid Background="{TemplateBinding Control.Background}">
+                                <Grid Background="{TemplateBinding Background}">
                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Grid>
                             </ControlTemplate>
@@ -42,79 +64,89 @@
                 </Style>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{DynamicResource AccentColor}"/>
             </DataGrid.Resources>
+            <DataGrid.ItemsSource>
+                <Binding Source="{StaticResource ServersView}"/>
+            </DataGrid.ItemsSource>
+            <DataGrid.ColumnHeaderStyle>
+                <StaticResource ResourceKey="MetroDataGridColumnHeader"/>
+            </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=ID,UpdateSourceTrigger=PropertyChanged}" Width="Auto"  Header="ID" SortMemberPath="ID"/>
-                <DataGridTextColumn Binding="{Binding Path=Name,UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Server Name" SortMemberPath="Name"/>
-                <DataGridTextColumn Binding="{Binding Path=RepPlayers,UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Players" SortMemberPath="Current_Players"/>
-                <DataGridTextColumn Binding="{Binding Path=Maps.CurrentActualMap.MapName,UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Map" SortMemberPath="Maps.CurrentActualMap.MapName"/>
-                <DataGridTextColumn Binding="{Binding Path=Maps.CurrentActualMap.GameModeName,UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Game Mode" SortMemberPath="Maps.CurrentActualMap.GameModeName"/>
-                <DataGridTextColumn Binding="{Binding Path=Ping,UpdateSourceTrigger=PropertyChanged}" Width="auto" Header="Ping" SortMemberPath="Ping"/>
+                <DataGridTextColumn Binding="{Binding ID, UpdateSourceTrigger=PropertyChanged}" Width="Auto"  Header="ID" SortMemberPath="ID"/>
+                <DataGridTextColumn Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Server Name" SortMemberPath="Name"/>
+                <DataGridTextColumn Binding="{Binding RepPlayers, UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Players" SortMemberPath="Current_Players"/>
+                <DataGridTextColumn Binding="{Binding Maps.CurrentActualMap.MapName, UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Map" SortMemberPath="Maps.CurrentActualMap.MapName"/>
+                <DataGridTextColumn Binding="{Binding Maps.CurrentActualMap.GameModeName, UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Game Mode" SortMemberPath="Maps.CurrentActualMap.GameModeName"/>
+                <DataGridTextColumn Binding="{Binding Ping, UpdateSourceTrigger=PropertyChanged}" Width="auto" Header="Ping" SortMemberPath="Ping"/>
             </DataGrid.Columns>
         </DataGrid>
-        
-        <controls:Flyout Header="" AllowDrop="True" Position="Bottom" IsOpen="False" Name="fly" Margin="0" >
 
-            <GroupBox VerticalAlignment="Top"
-                                      HorizontalAlignment="Stretch" 
-                                      Grid.Column="2" Margin="2"  Header="Базовая Информация" MaxHeight="110">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition  Width="auto" MinWidth="110"/>
-                        <ColumnDefinition  Width="auto"/>
-                        <ColumnDefinition  Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0">
-                        <DockPanel>
-                            <TextBlock Text="Тип сервера : "/>
-                            <TextBlock  DataContext="{Binding ElementName=ServersDG, Path = SelectedItem}" Text="ранговый скорее всего"/>
-                        </DockPanel>
+        <controls:Flyout Header="" AllowDrop="True" Position="Right" IsOpen="False" x:Name="fly" Margin="0,-37,0,0" MouseLeave="fly_MouseLeave" HorizontalContentAlignment="Right" Background="{DynamicResource FlyoutBrushColor}">
+            <Grid HorizontalAlignment="Right" Width="295.387">
+                <GroupBox VerticalAlignment="Top" HorizontalAlignment="Stretch"  Header="Базовая Информация" MaxHeight="99999" RenderTransformOrigin="0.5,0.656" Height="178.851" Margin="10,0,10,-25.333">
+                    <Grid Height="155.226" VerticalAlignment="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0*"/>
+                            <RowDefinition Height="68*"/>
+                            <RowDefinition Height="37*"/>
+                            <RowDefinition Height="43*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  Width="324.72"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Grid.RowSpan="2" Margin="0">
+                            <DockPanel>
+                                <TextBlock Text="Тип сервера : "/>
+                                <TextBlock  DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="ранговый скорее всего"/>
+                            </DockPanel>
 
-                        <!--<DockPanel>
+                            <!--<DockPanel>
                         <TextBlock Text="Пароль : "/>
                         <TextBlock  DataContext="{Binding ElementName=ServersDG, Path = SelectedItem}" Text="{Binding IsHasPW, UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>-->
 
-                        <DockPanel>
-                            <TextBlock Text="Punkbuster : "/>
-                            <TextBlock  DataContext="{Binding ElementName=ServersDG, Path = SelectedItem}" Text="{Binding Path=IsHasPB, UpdateSourceTrigger=PropertyChanged}"/>
-                        </DockPanel>
-                        <DockPanel>
-                            <TextBlock Text="FairFight : "/>
-                            <TextBlock DataContext="{Binding ElementName=ServersDG, Path = SelectedItem}" Text="БФ3"/>
-                        </DockPanel>
-                        <DockPanel>
-                            <TextBlock Text="Country : "/>
-                            <TextBlock DataContext="{Binding ElementName=ServersDG, Path = SelectedItem}" Text="{Binding Country,UpdateSourceTrigger=PropertyChanged}"/>
-                        </DockPanel>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1">
-                        <DockPanel Margin="40,0,0,0">
-                            <TextBlock Text="Текущая карта : "/>
-                            <TextBlock DataContext="{Binding ElementName=ServersDG, Path = SelectedItem}" Text="{Binding Path=Maps.CurrentActualMap.MapName,UpdateSourceTrigger=PropertyChanged}"/>
-                        </DockPanel>
+                            <DockPanel>
+                                <TextBlock Text="Punkbuster : "/>
+                                <TextBlock  DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding IsHasPB, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DockPanel>
+                            <DockPanel>
+                                <TextBlock Text="FairFight : "/>
+                                <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="БФ3"/>
+                            </DockPanel>
+                            <DockPanel>
+                                <TextBlock Text="Country : "/>
+                                <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding Country, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DockPanel>
+                        </StackPanel>
+                        <StackPanel Grid.Column="0" Grid.RowSpan="1" Grid.Row="2">
+                            <DockPanel>
+                                <TextBlock Text="Текущая карта : "/>
+                                <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding Maps.CurrentActualMap.MapName, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DockPanel>
 
-                        <DockPanel Margin="40,0,0,0">
-                            <TextBlock Text="Текущий режим : "/>
-                            <TextBlock DataContext="{Binding ElementName=ServersDG, Path = SelectedItem}" Text="{Binding Path=Maps.CurrentActualMap.GameModeName,UpdateSourceTrigger=PropertyChanged}"/>
-                        </DockPanel>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2">
-                        <DockPanel Margin="40,0,0,0">
-                            <TextBlock Text="След. карта : "/>
-                            <TextBlock DataContext="{Binding ElementName=ServersDG, Path = SelectedItem}" Text="{Binding Path=Maps.LogicalNextMap.MapName,UpdateSourceTrigger=PropertyChanged}"/>
-                        </DockPanel>
+                            <DockPanel>
+                                <TextBlock Text="Текущий режим : "/>
+                                <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding Maps.CurrentActualMap.GameModeName, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DockPanel>
+                        </StackPanel>
+                        <StackPanel Grid.RowSpan="1" Grid.Row="3" Margin="0">
+                            <DockPanel>
+                                <TextBlock Text="След. карта : "/>
+                                <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding Maps.LogicalNextMap.MapName, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DockPanel>
 
-                        <DockPanel Margin="40,0,0,0">
-                            <TextBlock Text="След. режим : "/>
-                            <TextBlock DataContext="{Binding ElementName=ServersDG, Path = SelectedItem}" Text="{Binding Path=Maps.LogicalNextMap.GameModeName,UpdateSourceTrigger=PropertyChanged}"/>
-                        </DockPanel>
-                    </StackPanel>
-                </Grid>
-            </GroupBox>
+                            <DockPanel>
+                                <TextBlock Text="След. режим : "/>
+                                <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding Maps.LogicalNextMap.GameModeName, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DockPanel>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+                <StackPanel Orientation="Vertical" MaxHeight="100" Margin="10,0,10,10" VerticalAlignment="Bottom" Height="43.293" >
+                    <Button Margin="0" x:Name="launch_btn" Click="JoinButton_Click" DataContext="{Binding SelectedItem, ElementName=ServersDG}" Foreground="{DynamicResource AccentColorBrush}" Content="ПОДКЛЮЧИТЬСЯ" Height="40" FontFamily="Verdana" FontWeight="Bold" Width="275"/>
+                </StackPanel>
+
+            </Grid>
 
         </controls:Flyout>
-        <StackPanel Orientation="Vertical" MaxHeight="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" >
-            <Button Margin="2" Name="launch_btn" Click="JoinButton_Click" DataContext="{Binding ElementName=ServersDG, Path = SelectedItem}"              Content="Подключиться"/>
-        </StackPanel>
     </Grid>
 </UserControl>

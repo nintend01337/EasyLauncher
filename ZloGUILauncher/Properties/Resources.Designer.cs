@@ -59,5 +59,75 @@ namespace ZloGUILauncher.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] _Engine_BuildInfo_Win32_retail {
+            get {
+                object obj = ResourceManager.GetObject("_Engine_BuildInfo_Win32_retail", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] _Engine_BuildInfo_Win64_retail {
+            get {
+                object obj = ResourceManager.GetObject("_Engine_BuildInfo_Win64_retail", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] Engine_BuildInfo_Win32_retail {
+            get {
+                object obj = ResourceManager.GetObject("Engine_BuildInfo_Win32_retail", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] Engine_BuildInfo_Win64_retail {
+            get {
+                object obj = ResourceManager.GetObject("Engine_BuildInfo_Win64_retail", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] winhttp {
+            get {
+                object obj = ResourceManager.GetObject("winhttp", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] ZUpdaterx32 {
+            get {
+                object obj = ResourceManager.GetObject("ZUpdaterx32", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] ZUpdaterx64 {
+            get {
+                object obj = ResourceManager.GetObject("ZUpdaterx64", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

@@ -55,7 +55,7 @@ namespace ZloGUILauncher
                 var acc = Settings.Default.Config.config.AccentName;
                 var Theme = Settings.Default.Config.config.Theme;
 
-                if (Settings.Default.Config.config.AccentColorType == "accent".ToLower())
+                if (Settings.Default.Config.config.AccentColorType == "accent".ToLower() && !acc.Contains("ДОПЦВЕТ")) 
                     ThemeManager.ChangeAppStyle(Current, ThemeManager.GetAccent(acc), ThemeManager.GetAppTheme(Theme));
                
                 else

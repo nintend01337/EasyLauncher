@@ -51,7 +51,7 @@ namespace ZloGUILauncher
                 IsMusicEnabled = false,
                 SaveLogInFile = false,
                 CheckUpdates = true,
-                ModSupport = false
+                ModSupport = false,
             };
         }
     }

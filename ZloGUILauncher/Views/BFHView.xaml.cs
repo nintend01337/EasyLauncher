@@ -68,13 +68,19 @@ namespace ZloGUILauncher.Views
                 if (tc.SelectedIndex < 0) return;
                 switch (tc.SelectedIndex)
                 {
-                    case 1:
-                        App.Client.JoinOfflineGame(Zlo.Extras.OfflinePlayModes.BFH_Single_Player);
-                        break;
                     default:
+                        LScr.Visibility = Visibility.Hidden;
+                        Btnscr.Visibility = Visibility.Visible;
                         break;
                 }
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            App.Client.JoinOfflineGame(Zlo.Extras.OfflinePlayModes.BFH_Single_Player);
+            LScr.Visibility = Visibility.Visible;
+            Btnscr.Visibility = Visibility.Hidden;
         }
 
         //private void SetterButton_Click(object sender, RoutedEventArgs e)

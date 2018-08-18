@@ -17,14 +17,63 @@
 
 
         <!--<Style TargetType="{x:Type ScrollViewer}">
-            --><!--<Style.Setters>
+            -->
+        <!--<Style.Setters>
                 <Setter Property="helpers:ScrollViewerCorrector.FixScrolling" Value="true"/>
-            </Style.Setters> Вот изза этой хуйни вылетал лог--><!--    
+            </Style.Setters> Вот изза этой хуйни вылетал лог-->
+        <!--    
             
         </Style>-->
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="LightGray"/>
-            <Setter Property="Foreground" Value="Black"/>
+        <Style x:Key="lol" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="Transparent" BorderThickness="2">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="OpacityMask">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#4C000000"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="kek" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="2">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="OpacityMask">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#4C000000"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="st" TargetType="{x:Type StackPanel}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="OpacityMask">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#4C000000"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Background>
@@ -36,17 +85,26 @@
             <StackPanel Orientation="Horizontal">
                 <Button Click="RestartLauncherButton_Click">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="Media/restart.ico" Stretch="Uniform" VerticalAlignment="Center"/>
+                        <Image Source="Media/restart.png" Stretch="Uniform" VerticalAlignment="Center"/>
                         <TextBlock VerticalAlignment="Center" FontWeight="Bold"><Run Text="Restart"/></TextBlock>
+                    </StackPanel>
+                </Button>
+                <TextBlock Text="    "/>
+                <Button Click="OnHelpButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Media/help.png" Stretch="Uniform" VerticalAlignment="Center"/>
+                        <TextBlock VerticalAlignment="Center" FontWeight="Bold"><Run Text="Help"/></TextBlock>
                     </StackPanel>
                 </Button>
                 <TextBlock Text="    "/>
                 <Button Click="OfficialDiscordButton_Click">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="Media/discord.ico" Stretch="Uniform" VerticalAlignment="Center"/>
+                        <Image Source="Media/discord.png" Stretch="Uniform" VerticalAlignment="Center"/>
                         <TextBlock VerticalAlignment="Center" FontWeight="Bold"><Run Text="Discord"/></TextBlock>
                     </StackPanel>
+
                 </Button>
+
             </StackPanel>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
@@ -62,7 +120,7 @@
         </Grid.RowDefinitions>
         <Rectangle HorizontalAlignment="Left" Height="548.04" VerticalAlignment="Top" Width="109" Grid.RowSpan="2">
             <Rectangle.Fill>
-                <DynamicResource ResourceKey="AccentColorBrush" />
+                <DynamicResource ResourceKey="AccentColorBrush"/>
             </Rectangle.Fill>
         </Rectangle>
         <controls:MetroAnimatedTabControl 
@@ -99,10 +157,13 @@
 
             <TabItem Height="140" Margin="0,0,11,0" >
                 <TabItem.Header>
-                    <StackPanel Width="110"  MinWidth="80" MinHeight="90" Height="139" Margin="-10,0,0,0" HorizontalAlignment="Center">
+                    <StackPanel Name="Bf3P" Width="110"  MinWidth="80" MinHeight="90" Height="139" Margin="-10,0,0,0" HorizontalAlignment="Center">
                         <StackPanel.Background>
-                            <ImageBrush ImageSource="Media/bf3.ico" TileMode="Tile" Stretch="Uniform"/>
+                            <ImageBrush ImageSource="Media/bf3.png" TileMode="Tile" Stretch="Uniform"/>
                         </StackPanel.Background>
+                        <StackPanel.Resources>
+                            <Style BasedOn="{StaticResource st}" TargetType="{x:Type StackPanel}" />
+                        </StackPanel.Resources>
                     </StackPanel>
                 </TabItem.Header>
                 <Grid Margin="-11,0,0,0">
@@ -111,10 +172,13 @@
             </TabItem>
             <TabItem Height="140" Margin="0,0,11,0">
                 <TabItem.Header>
-                    <StackPanel Width="110"  MinWidth="80" MinHeight="90" Height="139" Margin="-10,0,0,0" HorizontalAlignment="Center">
+                    <StackPanel Name="Bf4P" Width="110"  MinWidth="80" MinHeight="90" Height="139" Margin="-10,0,0,0" HorizontalAlignment="Center">
                         <StackPanel.Background>
-                            <ImageBrush ImageSource="Media/bf4.ico" TileMode="Tile" Stretch="Uniform"/>
+                            <ImageBrush ImageSource="Media/bf4.png" TileMode="Tile" Stretch="Uniform"/>
                         </StackPanel.Background>
+                        <StackPanel.Resources>
+                            <Style BasedOn="{StaticResource st}" TargetType="{x:Type StackPanel}" />
+                        </StackPanel.Resources>
                     </StackPanel>
                 </TabItem.Header>
                 <Grid Margin="-11,0,0,0">
@@ -123,64 +187,68 @@
             </TabItem>
             <TabItem Height="140" Margin="0,0,11,0">
                 <TabItem.Header>
-                    <StackPanel Width="110"  MinWidth="80" MinHeight="90" Height="139" Margin="-10,0,0,0" HorizontalAlignment="Center">
+                    <StackPanel Name="BfHP" Width="110"  MinWidth="80" MinHeight="90" Height="139" Margin="-10,0,0,0" HorizontalAlignment="Center">
                         <StackPanel.Background>
-                            <ImageBrush ImageSource="Media/bfh.ico" TileMode="Tile" Stretch="Uniform"/>
+                            <ImageBrush ImageSource="Media/bfh.png" TileMode="Tile" Stretch="Uniform"/>
                         </StackPanel.Background>
+                        <StackPanel.Resources>
+                            <Style BasedOn="{StaticResource st}" TargetType="{x:Type StackPanel}" />
+                        </StackPanel.Resources>
                     </StackPanel>
                 </TabItem.Header>
                 <Grid Margin="-11,0,0,0">
                     <views:BFHView x:Name="IbfhView"/>
                 </Grid>
             </TabItem>
-            <TabItem HorizontalAlignment="Center" Width="56"  Margin="0,-8,0,0" >
+            <TabItem Width="0" Height="0" Visibility="Hidden" >
                 <TabItem.Header>
-                    <StackPanel HorizontalAlignment="Center" Height="28" RenderTransformOrigin="0.5,0.5" Width="55" Margin="0,-5,0,-10">
-                        <StackPanel.Background>
-                            <ImageBrush ImageSource="Media/help.ico" Stretch="Uniform">
-                                <ImageBrush.RelativeTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleY="0.75" ScaleX="0.75"/>
-                                        <SkewTransform CenterY="0.5" CenterX="0.5"/>
-                                        <RotateTransform CenterY="0.5" CenterX="0.5"/>
-                                        <TranslateTransform/>
-                                    </TransformGroup>
-                                </ImageBrush.RelativeTransform>
-                            </ImageBrush>
-                        </StackPanel.Background>
+                    <StackPanel>
                     </StackPanel>
                 </TabItem.Header>
                 <Grid>
                     <views:Journal Margin="-10,0,0,0"/>
                 </Grid>
             </TabItem>
-            <TabItem Margin="0,85,11,-93" HorizontalAlignment="Right" Width="56">
+            <TabItem Margin="0,89,11.417,-89" HorizontalAlignment="Right" Width="50.5" Background="{x:Null}" BorderBrush="{x:Null}" Height="37">
                 <TabItem.Header>
-                    <StackPanel HorizontalAlignment="Center" Height="28" RenderTransformOrigin="0.5,0.5" Width="55" Margin="0,-8">
+                    <StackPanel x:Name="SettP" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0" VerticalAlignment="Center" Width="23" Height="23">
                         <StackPanel.Background>
-                            <ImageBrush ImageSource="Media/settings.ico" Stretch="Uniform">
+                            <ImageBrush ImageSource="settings.png" Stretch="Uniform">
                                 <ImageBrush.RelativeTransform>
                                     <TransformGroup>
-                                        <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleY="0.75" ScaleX="0.75"/>
-                                        <SkewTransform CenterY="0.5" CenterX="0.5"/>
-                                        <RotateTransform CenterY="0.5" CenterX="0.5"/>
+                                        <ScaleTransform CenterY="1" CenterX="1"/>
+                                        <SkewTransform CenterY="1" CenterX="1"/>
+                                        <RotateTransform CenterY="1" CenterX="1"/>
                                         <TranslateTransform/>
                                     </TransformGroup>
                                 </ImageBrush.RelativeTransform>
                             </ImageBrush>
                         </StackPanel.Background>
+                        <StackPanel.Resources>
+                            <Style BasedOn="{StaticResource st}" TargetType="{x:Type StackPanel}" />
+                        </StackPanel.Resources>
                     </StackPanel>
                 </TabItem.Header>
                 <Grid Margin="-10,0,0,0">
-                    <views:Options/>
+                    <views:Options Margin="-1,0,0,0"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="LOG" Margin="0,65,67,-75" HorizontalAlignment="Right" Width="53" FontWeight="Bold" FontFamily="Verdana">
-                <Grid Margin="-9,0,0,0">
-                    <Button Click="ClearButton_Click" Content="Очистить" Margin="0,523.74,-2,-0.04" MaxWidth="250" HorizontalAlignment="Center"/>
-                    <Button Name ="CreateLog" Content="Сохранить Лог в файл" Click="CreateLog_Click" Margin="731,523.74,-4,-0.04" MaxWidth="450" HorizontalAlignment="Center"/>
+            <TabItem Margin="0,52,65,-62.25" FontWeight="Bold" FontFamily="Verdana" HorizontalAlignment="Right" Width="55">
+                <TabItem.Header>
+                    <StackPanel x:Name="logP" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center" Width="23" Height="23">
+                        <StackPanel.Resources>
+                            <Style BasedOn="{StaticResource st}" TargetType="{x:Type StackPanel}" />
+                        </StackPanel.Resources>
+                        <StackPanel.Background>
+                            <ImageBrush Stretch="Uniform" ImageSource="log.png"/>
+                        </StackPanel.Background>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="-12,0,0,0">
+                    <Button Click="ClearButton_Click" Content="Очистить" Margin="656.516,523.7,151.97,0" MaxWidth="250" HorizontalAlignment="Center" Panel.ZIndex="1"/>
+                    <Button Name ="CreateLog" Content="Сохранить в файл" Click="CreateLog_Click" Margin="729.03,523.7,17.03,0" MaxWidth="450" HorizontalAlignment="Center" Panel.ZIndex="4"/>
                     <RichTextBox x:Name="LogBox" VerticalScrollBarVisibility="Visible" BorderThickness="0" Background="#FF0D0D0D"
-                       IsReadOnly="true" Margin="0,0,-2,25.26" BorderBrush="White">
+                       IsReadOnly="true" Margin="0,0,-2,-0.04" BorderBrush="White">
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
                                 <Setter Property="Block.Margin" Value="0"/>
@@ -192,16 +260,19 @@
             </TabItem>
         </controls:MetroAnimatedTabControl>
 
-        <StatusBar x:Name="StatusBar" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0">
+        <StatusBar x:Name="StatusBar" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" MouseDoubleClick="StatusBar_MouseDoubleClick">
             <TextBlock VerticalAlignment="Center" Text="Последнее событие : "/>
             <TextBlock x:Name="LatestGameStateTextBlock" VerticalAlignment="Center" Text="[Game] [type] state"/>
         </StatusBar>
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Text="Developed by nintend01337 | Design by ResupinePuma"
                Margin="0,0,0,3" Grid.Row="2" Foreground="White" Grid.Column="1" Height="15.96" Width="296.85" IsEnabled="False"/>
-        <Grid x:Name="Banner" Height="548.04" Grid.Row="0" Grid.RowSpan="2" Background="#CA000000" Margin="0,0.5" Grid.Column="1" Visibility="Hidden">
+        <Grid x:Name="Banner" Grid.Row="0" Grid.RowSpan="2" Background="#CA000000" Margin="108,1,0,0" Grid.ColumnSpan="2" Visibility="Hidden">
             <Label Content="ИГРА УЖЕ ЗАПУЩЕНА" Margin="0,151,0,316.04" Width="551" FontSize="48" FontWeight="Bold" HorizontalContentAlignment="Center" Foreground="White"/>
             <Label Content="Закройте игру прежде чем продолжить" Margin="0,232,0,276.04" Width="551" FontSize="20" FontWeight="Bold" HorizontalContentAlignment="Center" Foreground="White"/>
-            <Button x:Name="CloseGameBtn" Content="ЗАКРЫТЬ" HorizontalAlignment="Center" Height="56" Margin="318,326,318,0" VerticalAlignment="Top" Width="249" controls:ControlsHelper.ContentCharacterCasing="Upper" FontSize="22" Background="{x:Null}" BorderBrush="{DynamicResource AccentColorBrush}" Foreground="{DynamicResource AccentColorBrush}" Click="CloseGameBtn_Click"/>
+            <Button x:Name="CloseGameBtn" Style="{StaticResource kek}" Content="ЗАКРЫТЬ" HorizontalAlignment="Center" Height="56" Margin="318,326,318,0" VerticalAlignment="Top" Width="249" controls:ControlsHelper.ContentCharacterCasing="Upper" FontSize="22" Background="#00000000" BorderBrush="#FFFD0D0D" Foreground="{DynamicResource AccentColorBrush}" Click="CloseGameBtn_Click"/>
+            <Button Style="{StaticResource lol}" Margin="379,0,381,10.04" VerticalAlignment="Bottom" Height="26" Foreground="{x:Null}" Click="Button_Click" BorderBrush="{x:Null}">
+                <Label Content="СВЕРНУТЬ ПАНЕЛЬ" Margin="0" FontFamily="Verdana" FontWeight="Bold" Foreground="White" Opacity="0.5" FontStretch="SemiCondensed" TextOptions.TextFormattingMode="Display" BorderThickness="0,0,0,1" FontSize="10" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="White"/>
+            </Button>
         </Grid>
     </Grid>
 </controls:MetroWindow>

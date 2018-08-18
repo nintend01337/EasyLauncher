@@ -7,11 +7,31 @@
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
               d:DesignHeight="284.664" d:DesignWidth="496.486">
+    <FrameworkElement.Resources>
+        <SolidColorBrush x:Key="FlyoutBrushColor" Color="#333333" Opacity="0.85" />
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </FrameworkElement.Resources>
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Rectangle Fill="{DynamicResource FlyoutBrushColor}" Stroke="Black" Margin="0" Grid.RowSpan="2" VerticalAlignment="Top" Height="37"/>
         <Grid Grid.Row="1">
             <controls:MetroTabControl Background="#00171010" SelectionChanged="MetroTabControl_SelectionChanged">
                 <TabControl.Resources>
@@ -46,11 +66,12 @@
                 </TabItem>
                 <TabItem Header="Одиночная игра" Background="#FFEE1313" Height="37" Foreground="White" BorderBrush="Black" BorderThickness="1" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
                     <Grid Background="#CC000000">
-                        <Grid Margin="0" VerticalAlignment="Center">
+                        <Grid x:Name="LScr" Margin="0,10,0,47" VerticalAlignment="Center" Visibility="Hidden" d:IsHidden="True">
                             <controls:ProgressRing HorizontalAlignment="Center" Margin="188.491,60.001,189.495,31" VerticalAlignment="Center" Height="99.663" Width="98.5" VerticalContentAlignment="Center"/>
                             <Label x:Name="___Label___ПЕРЕХОД_В_____" Content="ПЕРЕХОД В ОДИНОЧНУЮ ИГРУ" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontSize="36" Height="68.332" FontWeight="Bold" Foreground="White"/>
                             <Label Content="Если ничего не происходит - проверьте диспетчер задач" VerticalAlignment="Bottom" FontSize="12" FontWeight="Normal" Height="26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White"/>
                         </Grid>
+                        <Button x:Name="Btnscr" Content="Нажмите в любое место чтобы запустить" Margin="0" Background="#00DDDDDD" BorderBrush="#00707070" Foreground="#C0FFFFFF" FontSize="9" Click="Button_Click"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Статистика" IsEnabled="False"  Background="Red" Height="37" Foreground="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="True" FontSize="16" FontFamily="Verdana" FontWeight="Bold" Visibility="Hidden">

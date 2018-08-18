@@ -1,20 +1,31 @@
 ﻿using MahApps.Metro;
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using ZloGUILauncher.Addons;
+using MessageBox = System.Windows.MessageBox;
+using MessageBoxOptions = System.Windows.Forms.MessageBoxOptions;
 
 namespace ZloGUILauncher.Views
 {
     public partial class Options 
     {
+        ClientSwitcher csw = new ClientSwitcher();
+        public bool GameisEa = false;
+        public string gPath = null;
         public Options()
         {
             InitializeComponent();
+            gPath = csw.FindGameInstallation();
+            GameisEa = csw.IsEALicense(gPath);
+            if (GameisEa)
+                Gswitch.Content = "Текущая версия игры: Лиц";
+            else Gswitch.Content = "Текущая версия игры: Zlo";
         }
         private  void WriteSettings(object sender,RoutedEventArgs e)
         {
@@ -183,6 +194,149 @@ namespace ZloGUILauncher.Views
             Settings.Default.Config.config.Clr = clr;
             Settings.Default.Config.config.AccentColorType = "color".ToLower();
         }
+
+        private void Gswitch_Click(object sender, RoutedEventArgs e)
+        {
+            switch (GameisEa)
+            {
+                case true:
+                    csw.SwitchToZlo(gPath);
+                    if (!csw.IsEALicense(gPath))
+                    {
+                        GameisEa = false;
+                        Gswitch.Content = "Текущая версия игры: Zlo";
+                    }
+                    break;
+                case false:
+                    csw.SwitchToEa(gPath);
+                    if (csw.IsEALicense(gPath))
+                    {
+                        GameisEa = true;
+                        Gswitch.Content = "Текущая версия игры: Лиц";
+                        MessageBox.Show("Не забудьте закрыть этот Лаунчер, ZLOrigin и ZClient!", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    break;
+            }            
+        }
+    }
+
+    public class ClientSwitcher
+    {
+        private readonly string[] _gFiles =
+        {
+            @"Core\winhttp.dll",
+            @"ZUpdaterx32.dll",
+            @"ZUpdaterx64.dll",
+            @"Engine.BuildInfo_Win32_retail.dll",
+            @"Engine.BuildInfo_Win64_retail.dll",
+            @"Engine_BuildInfo_Win32_retail.dll",
+            @"Engine_BuildInfo_Win64_retail.dll",
+            @"dinput8.dll"
+        };
+
+
+        public bool IsEALicense(string gamepath)
+        {
+            string[] zloFiles = { "ZUpdaterx32.dll", "ZUpdaterx64.dll", "dinput8.dll" };
+            var fileList = new DirectoryInfo(gamepath + @"\").GetFiles("*.dll", SearchOption.TopDirectoryOnly);
+            return !fileList.Any(file => zloFiles.Contains(file.Name));
+        }
+
+        public string FindGameInstallation()
+        {
+            const string registry_key = @"SOFTWARE\WOW6432Node\EA Games";
+            string Il = null;
+            using (Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(registry_key))
+            {
+                foreach (string subkey_name in key.GetSubKeyNames())
+                {
+                    using (Microsoft.Win32.RegistryKey subkey = key.OpenSubKey(subkey_name))
+                    {
+                        try
+                        {
+                            if (subkey != null && subkey.GetValue("DisplayName").ToString().Contains("Battlefield 4"))
+                                Il = subkey.GetValue("Install Dir").ToString();
+                        }
+                        catch { }
+                    }
+                }
+            }
+
+            return Il;
+        }
+
+        private void DeleteFiles(string gamepath)
+        {
+            DeleteLicenseFiles();
+            foreach (var file in _gFiles)
+            {
+                try
+                {
+                    File.Delete(gamepath + file);
+                }
+                catch (Exception ex) { }
+            }
+        }
+
+        public void SwitchToEa(string gamepath)
+        {
+            DeleteFiles(gamepath);
+            try
+            {
+                File.WriteAllBytes(gamepath + @"Engine.BuildInfo_Win32_retail.dll", Properties.Resources._Engine_BuildInfo_Win32_retail);
+                File.WriteAllBytes(gamepath + @"Engine.BuildInfo_Win64_retail.dll", Properties.Resources._Engine_BuildInfo_Win64_retail);
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+        }
+
+        public void SwitchToZlo(string gamepath)
+        {
+            DeleteFiles(gamepath);
+            try
+            {
+                File.WriteAllBytes(gamepath + @"Engine.BuildInfo_Win32_retail.dll", Properties.Resources.Engine_BuildInfo_Win32_retail);
+                File.WriteAllBytes(gamepath + @"Engine.BuildInfo_Win64_retail.dll", Properties.Resources.Engine_BuildInfo_Win64_retail);
+                File.WriteAllBytes(gamepath + @"ZUpdaterx32.dll", Properties.Resources.ZUpdaterx32);
+                File.WriteAllBytes(gamepath + @"ZUpdaterx64.dll", Properties.Resources.ZUpdaterx64);
+                File.WriteAllBytes(gamepath + @"Core\winhttp.dll", Properties.Resources.winhttp);
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+        }
+
+        private void DeleteLicenseFiles()
+        {
+            try
+            {
+                var fileList = new DirectoryInfo(@"C:\ProgramData\Electronic Arts\EA Services\License\").GetFiles("*.dlf", SearchOption.TopDirectoryOnly);
+                foreach (var file in fileList)
+                {
+                    var a = File.ReadAllBytes(file.FullName);
+                    var fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
+                    fs.Read(a, 30, 130);
+                    var aa = "45-14-00-A4-FB-A8-4D-C4-B7-88-A3-D8-39-83-73-62-F1-26-0B-18-D9-A8-AD-9F-B1-5A-C8-F1-74-80-BB-B8-EB-E7-76-4A-07-76-5A-D8-79-F6-3D-11-62-7C-26-59-5D-45-EB-53-4E-74-52-96-A1-31-34-E6-C9-9B-DF-24-AD-41-43-8E-56-52-FC-F3-FF-48-8B-F3-52-6F-81-79-F4-F6-59-F9-28-71-36-88-63-CD-28-C0-9E-C3-4D-49-2E-3D-3A-85-AA-48-67-8B-8C-FE-8F-AB-DE-F0-61-D9-4D-F1-D4-DA-3F-57-16-6C-A1-B5-81-A6-5E-B1-3F-67-3F-80-6C-5B-F1-C5-65-8E-8A-49-E1-8E-61-36-E4-A6-49-8A-AB-C2-A7-86-A0-30-93-C3-D1-AC-B4-B8-77-49-44-A1-BF-99-E3-2F-9B-A0-3B-C8-69-0C-BF-7F-A4-90";
+                    if (!BitConverter.ToString(ReadFully(fs)).Contains(aa)) continue;
+                    fs.Close();
+                    File.Delete(file.FullName);
+                }
+            }
+            catch (Exception ex) { }
+
+        }
+
+        private byte[] ReadFully(Stream input)
+        {
+            var buffer = new byte[16 * 1024];
+            using (var ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
+            }
+        }
+
     }
 }
 

@@ -77,16 +77,28 @@ namespace ZloGUILauncher.Views
                 if (tc.SelectedIndex < 0) return;
                 switch (tc.SelectedIndex)
                 {
-                    case 1:
-                        App.Client.JoinOfflineGame(OfflinePlayModes.BF4_Single_Player);
-                        break;
-                    case 2:
-                        App.Client.JoinOfflineGame(OfflinePlayModes.BF4_Test_Range);
-                        break;
                     default:
+                        LScr.Visibility = Visibility.Hidden;
+                        Btnscr.Visibility = Visibility.Visible;
+                        LScr2.Visibility = Visibility.Hidden;
+                        Btnscr2.Visibility = Visibility.Visible;
                         break;
                 }
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            App.Client.JoinOfflineGame(OfflinePlayModes.BF4_Single_Player);
+            LScr.Visibility = Visibility.Visible;
+            Btnscr.Visibility = Visibility.Hidden;
+        }
+
+        private void Button2_Click(object sender, RoutedEventArgs e)
+        {
+            App.Client.JoinOfflineGame(OfflinePlayModes.BF4_Test_Range);
+            LScr2.Visibility = Visibility.Visible;
+            Btnscr2.Visibility = Visibility.Hidden;
         }
     }
 }
