@@ -119,7 +119,7 @@
                 <Label Content="Автообновление API (zlo.dll)"  FontFamily="Verdana" FontSize="20" VerticalContentAlignment="Center" Margin="0"/>
                 <Custom:ToggleSwitch x:Name="ApiUpdate"  FontFamily="Verdana" FontSize="20" IsChecked="{Binding Config.config.AutoUpdateAPi, Mode=TwoWay, Source={x:Static settings:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="0" Width="120" DockPanel.Dock="Right" HorizontalAlignment="Right" HorizontalContentAlignment="Right"/>
             </DockPanel>
-            <GroupBox Header="Переключение между зло и лиц" Height="64" Margin="0,0,17,10" FontFamily="Verdana" FontSize="16">
+            <GroupBox Header="Переключение между зло и лиц  (BF4 только)" Height="64" Margin="0,0,17,10" FontFamily="Verdana" FontSize="16">
                 <Button x:Name="Gswitch" Content="Текущая версия игры: game" Height="42" Margin="-6,-5.833" Background="{DynamicResource AccentColorBrush}" VerticalAlignment="Center" Click="Gswitch_Click"/>
             </GroupBox>
         </StackPanel>

@@ -1,0 +1,1 @@
+call C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe ZloGUILauncher/ZloGUILauncher.csproj /p:Configuration=Release /p:Platform="x64" >Build.log
