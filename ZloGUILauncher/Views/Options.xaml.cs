@@ -267,7 +267,6 @@ namespace ZloGUILauncher.Views
 
         private void DeleteFiles(string gamepath)
         {
-            DeleteLicenseFiles();
             foreach (var file in _gFiles)
             {
                 try
@@ -302,26 +301,7 @@ namespace ZloGUILauncher.Views
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
-
-        private void DeleteLicenseFiles()
-        {
-            try
-            {
-                var fileList = new DirectoryInfo(@"C:\ProgramData\Electronic Arts\EA Services\License\").GetFiles("*.dlf", SearchOption.TopDirectoryOnly);
-                foreach (var file in fileList)
-                {
-                    var a = File.ReadAllBytes(file.FullName);
-                    var fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
-                    fs.Read(a, 30, 130);
-                    var aa = "45-14-00-A4-FB-A8-4D-C4-B7-88-A3-D8-39-83-73-62-F1-26-0B-18-D9-A8-AD-9F-B1-5A-C8-F1-74-80-BB-B8-EB-E7-76-4A-07-76-5A-D8-79-F6-3D-11-62-7C-26-59-5D-45-EB-53-4E-74-52-96-A1-31-34-E6-C9-9B-DF-24-AD-41-43-8E-56-52-FC-F3-FF-48-8B-F3-52-6F-81-79-F4-F6-59-F9-28-71-36-88-63-CD-28-C0-9E-C3-4D-49-2E-3D-3A-85-AA-48-67-8B-8C-FE-8F-AB-DE-F0-61-D9-4D-F1-D4-DA-3F-57-16-6C-A1-B5-81-A6-5E-B1-3F-67-3F-80-6C-5B-F1-C5-65-8E-8A-49-E1-8E-61-36-E4-A6-49-8A-AB-C2-A7-86-A0-30-93-C3-D1-AC-B4-B8-77-49-44-A1-BF-99-E3-2F-9B-A0-3B-C8-69-0C-BF-7F-A4-90";
-                    if (!BitConverter.ToString(ReadFully(fs)).Contains(aa)) continue;
-                    fs.Close();
-                    File.Delete(file.FullName);
-                }
-            }
-            catch (Exception ex) { }
-
-        }
+        
 
         private byte[] ReadFully(Stream input)
         {

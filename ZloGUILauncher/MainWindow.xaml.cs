@@ -33,6 +33,9 @@ namespace ZloGUILauncher
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32")]
+        public static extern int EnumWindows(MainWindow.CallBack x, int y);
         #endregion
 
         public const string download_music_link = "https://dl.dropbox.com/s/r2cz0vk26aji58n/music.mp3?dl=0";
@@ -43,7 +46,7 @@ namespace ZloGUILauncher
         public const string LauncherNew = "Easy_New.exe";
         public const string Log = "Easy.log";
         public const string Autor = "nintend01337";
-        public string Version = "1.5.9.1";
+        public string Version = "1.6";
         public string ApiVersion;
         public string Soldiername;
         public string SoldierId;
@@ -59,14 +62,13 @@ namespace ZloGUILauncher
             CheckUpdates();
             CheckZclient();
 
-            //App.Current.MainWindow = this;
             App.Client.ErrorOccured += Client_ErrorOccured;
             App.Client.UserInfoReceived += Client_UserInfoReceived;
             App.Client.GameStateReceived += Client_GameStateReceived;
-            App.Client.APIVersionReceived += Client_APIVersionReceived;
+            //App.Client.APIVersionReceived += Client_APIVersionReceived;
             App.Client.Disconnected += Client_Disconnected;
             App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
-            this.StateChanged += MainWindow_resize;
+                StateChanged += MainWindow_resize;
 
             if (!App.Client.Connect()) return;
             PrintDebug(DebugLevel.Info, "Подключились к ZLO ;)");
@@ -222,40 +224,33 @@ Exit
             PrintDebug(DebugLevel.Error, $" Вылет по причине : {reason}");
         }
 
-        private void Client_APIVersionReceived(Version current, Version latest, bool isNeedUpdate, string downloadAdress)
+        private void Client_APIVersionReceived(Version Current, Version Latest, bool IsNeedUpdate, string DownloadAdress)
         {
-            PrintDebug(DebugLevel.Info, $"Получение информации о версиях API: \n Текущая : {current}, Последняя : {latest}, \n Требуется обновление API ? : {isNeedUpdate}");
-            if (isNeedUpdate)
+            PrintDebug(DebugLevel.Info, $"Получение информации о версиях API: \n Текущая : {Current}, Последняя : {Latest}, \n Требуется обновление API ? : {IsNeedUpdate}");
+
+            if (IsNeedUpdate && Settings.Default.Config.config.AutoUpdateAPi)
             {
                 Dispatcher.Invoke(async () =>
                 {
-                    if (await this.ShowMessageAsync("Обновление API", $"Текущая версия: {current}\nПоследняя версия: {latest}\nОбновить сейчас?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    if (await this.ShowMessageAsync("Обновление", $"Текущая dll версия : {Current}\n Последняя dll версия : {Latest}\n Обновить сейчас?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
-                        var sourcedll = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo.dll");
-                        var newdll = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo_New.dll");
-                        using (var wc = new WebClient())
+                        string Sourcedll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo.dll");
+                        string Newdll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo_New.dll");
+                        using (WebClient wc = new WebClient())
                         {
                             wc.DownloadFileCompleted += Wc_DownloadFileCompleted;
-                            wc.DownloadFileAsync(new Uri(downloadAdress), newdll);
+                            wc.DownloadFileAsync(new Uri(DownloadAdress), Newdll);
                         }
                     }
-
                 });
                 PrintDebug(DebugLevel.Warn, "Вы используете не последнюю версию API.Видимо Разработчик отключил автоматическое обновление API.");
-                ApiVersion = current.ToString();
-                Dispatcher.Invoke(() =>
-                {
-                    Title = AssemblyName + " | " + Version + " | " + "API version " + ApiVersion + " | " +
-                            (Soldiername != null
-                                ? "WELCOME, " + Soldiername
-                                : "NOT CONNECTED") /*+"  ID : " + soldierID */; //soldier ID нужен ли ?
-                });
+                ApiVersion = Current.ToString();
+                Title = AssemblyName + " | " + Version + " | " + "API version " + ApiVersion + " | " + (Soldiername != null ? "WELCOME, " + Soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
             }
             else
             {
-                Dispatcher.Invoke(() =>
-                {
-                    ApiVersion = current.ToString();
+                Dispatcher.Invoke(() => {
+                    ApiVersion = Current.ToString();
                     Title = AssemblyName + " | " + Version + " | " + "API version " + ApiVersion + " | " + (Soldiername != null ? "WELCOME, " + Soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
                 });
             }
@@ -304,8 +299,15 @@ Exit
                     case "Alert":
                         OnGameClosed();
                         break;
+                    //case "State_Connecting":
+                    //    MaximizeWindow(game);
+                    //    break;
+                    //case "State_Game State_NA":
+                    //    OnGameClosed();
+                    //    break;
+
                 }
-                if (message.Contains("State_GameLoading State_ClaimReservation") || message.Contains("State_GameLoading State_LaunchPlayground") || message.Contains("State_GameLoading State_ResumeCampaign")) MaximizeWindow(game);
+                if (message.Contains("State_Connecting")|| message.Contains("State_GameLoading State_LaunchPlayground") || message.Contains("State_GameLoading State_ResumeCampaign")) MaximizeWindow(game);
             });
         }
 
@@ -333,7 +335,7 @@ Exit
             }
             catch (Exception)
             {
-                PrintDebug(DebugLevel.Error, string.Format($"Возникла ошибка при загрузке изображения \n {this.ToString()}"));
+                PrintDebug(DebugLevel.Error, string.Format($"Возникла ошибка при загрузке изображения \n {ToString()}"));
             }
         }
 
@@ -429,16 +431,10 @@ Exit
             PrintDebug(DebugLevel.System, "Пошел в дискорд к разработчику !");
         }
 
-        private void OnHelpButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainTabControl.SelectedIndex = 3;
-            MessageBox.Show("Kwe");
-        }
+        private void OnHelpButton_Click(object sender, RoutedEventArgs e) => MainTabControl.SelectedIndex = 3;
 
-        private void ClearButton_Click(object sender, RoutedEventArgs e)
-        {
-            LogBox.Document.Blocks?.Clear();
-        }
+        private void ClearButton_Click(object sender, RoutedEventArgs e) => LogBox.Document.Blocks?.Clear();
+
 
         private void CloseGameBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -676,6 +672,8 @@ Exit
             MainTabControl.Visibility = Visibility.Hidden;
             hideBanner = false;
         }
+
+        public delegate bool CallBack(int hwnd, int lParam);
     }
 
    
