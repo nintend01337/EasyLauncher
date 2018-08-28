@@ -27,6 +27,7 @@ namespace ZloGUILauncher
         public bool CheckUpdates { get; set; }
         public Color Clr { get; set; } 
         public bool ModSupport { get; set; }
+        public bool AutoUpdateAPi { get; set; }
     }
 
     [Serializable]
@@ -52,7 +53,8 @@ namespace ZloGUILauncher
                 SaveLogInFile = false,
                 CheckUpdates = true,
                 ModSupport = false,
-            };
+                AutoUpdateAPi = false,
+              };
         }
     }
 }

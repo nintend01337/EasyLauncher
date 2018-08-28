@@ -37,24 +37,17 @@ namespace ZloGUILauncher
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            //  string config = "Config.json";
             SetupAccents();
             base.OnStartup(e);
             if (Settings.Default.Config == null)
             {
                 Settings.Default.Config = new Config();
-                // Configuration cfg = Settings.Default;
-                //  cfg.GetSectionGroup("userSettings");
-                //  cfg.SaveAs(config);
-                //string defaultAccent = "Cobalt";
-                //string defaultTheme = "BaseDark";
-                //ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(defaultAccent), ThemeManager.GetAppTheme(defaultTheme));
+               
             }
             else
             {
                 var acc = Settings.Default.Config.config.AccentName;
                 var Theme = Settings.Default.Config.config.Theme;
-
                 if (Settings.Default.Config.config.AccentColorType == "accent".ToLower() && !acc.Contains("ДОПЦВЕТ")) 
                     ThemeManager.ChangeAppStyle(Current, ThemeManager.GetAccent(acc), ThemeManager.GetAppTheme(Theme));
                
@@ -74,22 +67,6 @@ namespace ZloGUILauncher
 
         private static void SetupAccents()
         {
-            //Type col = (typeof(Colors));
-            //var colors = col.GetProperties();
-
-            ////var values = Enum.GetValues(typeof(Colors));
-            //int i = 0;
-
-            //using (StreamWriter sw = new StreamWriter("colors.txt"))
-            //{
-            //    foreach (var c in colors)
-            //    {
-            //        sw.Write(string.Format($"\"{c.GetValue(c)}\","));
-            //        i++;
-            //        if (i == 10) { sw.WriteLine();i = 0; }
-            //    }
-            //}
-
             string[] colors = {
 "#FFF0F8FF","#FFFAEBD7","#FF00FFFF","#FF7FFFD4","#FFF0FFFF","#FFF5F5DC","#FFFFE4C4","#FF000000","#FFFFEBCD","#FF0000FF",
 "#FF8A2BE2","#FFA52A2A","#FFDEB887","#FF5F9EA0","#FF7FFF00","#FFD2691E","#FFFF7F50","#FF6495ED","#FFFFF8DC","#FFDC143C",

@@ -83,17 +83,14 @@
                                 <ColumnDefinition  Width="auto" MinWidth="110"/>
                                 <ColumnDefinition  Width="auto"/>
                                 <ColumnDefinition  Width="auto"/>
+                                <ColumnDefinition  Width="auto"/>
+                                <ColumnDefinition  Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0">
                                 <DockPanel>
                                     <TextBlock Text="Тип сервера : "/>
                                     <TextBlock  DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="ранговый скорее всего"/>
                                 </DockPanel>
-
-                                <!--<DockPanel>
-                        <TextBlock Text="Пароль : "/>
-                        <TextBlock  DataContext="{Binding ElementName=ServersDG, Path = SelectedItem}" Text="{Binding IsHasPW, UpdateSourceTrigger=PropertyChanged}"/>
-                    </DockPanel>-->
 
                                 <DockPanel>
                                     <TextBlock Text="Punkbuster : "/>
@@ -130,9 +127,19 @@
                                     <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding Maps.LogicalNextMap.GameModeName, UpdateSourceTrigger=PropertyChanged}"/>
                                 </DockPanel>
                             </StackPanel>
+                            <StackPanel>
+                                <DataGrid  Grid.Column="3" DataContext="{Binding SelectedItem,ElementName=ServersDG}" AutoGenerateColumns="False" ItemsSource="{Binding Path= Players}" IsReadOnly="True" SelectionMode="Single">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Binding="{Binding Path=Slot}" Header="Слот"/>
+                                        <DataGridTextColumn Binding="{Binding Path=Name}" Header="Никнейм"/>
+                                        <DataGridTextColumn Binding="{Binding Path=ID}" Header="ID"/>
+                                    </DataGrid.Columns>
+
+                                </DataGrid>
+                            </StackPanel>
                         </Grid>
                     </GroupBox>
-
+                    
                 </controls:Flyout>
 
 
