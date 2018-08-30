@@ -46,7 +46,7 @@ namespace ZloGUILauncher
         public const string LauncherNew = "Easy_New.exe";
         public const string Log = "Easy.log";
         public const string Autor = "nintend01337";
-        public string Version = "1.6";
+        public string Version = "1.6 exp";
         public string ApiVersion;
         public string Soldiername;
         public string SoldierId;
@@ -65,7 +65,7 @@ namespace ZloGUILauncher
             App.Client.ErrorOccured += Client_ErrorOccured;
             App.Client.UserInfoReceived += Client_UserInfoReceived;
             App.Client.GameStateReceived += Client_GameStateReceived;
-            //App.Client.APIVersionReceived += Client_APIVersionReceived;
+            App.Client.APIVersionReceived += Client_APIVersionReceived;
             App.Client.Disconnected += Client_Disconnected;
             App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
                 StateChanged += MainWindow_resize;

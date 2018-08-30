@@ -15,7 +15,7 @@ namespace ZloGUILauncher.Views
 {
     public partial class Options 
     {
-        ClientSwitcher csw = new ClientSwitcher();
+        public ClientSwitcher csw = new ClientSwitcher();
         public bool GameisEa = false;
         public string gPath = null;
         public Options()
@@ -23,9 +23,17 @@ namespace ZloGUILauncher.Views
             InitializeComponent();
             gPath = csw.FindGameInstallation();
             GameisEa = csw.IsEALicense(gPath);
-            if (GameisEa)
-                Gswitch.Content = "Текущая версия игры: Лиц";
-            else Gswitch.Content = "Текущая версия игры: Zlo";
+            if (gPath != null)
+            {
+                if (GameisEa)
+                    Gswitch.Content = "Текущая версия игры: Лиц";
+                else Gswitch.Content = "Текущая версия игры: Zlo";
+            }
+            else
+            {
+                Gswitch.Content = "БФ4 не найдена";
+                Gswitch.IsEnabled = false;
+            }
         }
         private  void WriteSettings(object sender,RoutedEventArgs e)
         {
@@ -216,7 +224,7 @@ namespace ZloGUILauncher.Views
                         MessageBox.Show("Не забудьте закрыть этот Лаунчер, ZLOrigin и ZClient!", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                     break;
-            }            
+            }           
         }
     }
 
@@ -246,21 +254,25 @@ namespace ZloGUILauncher.Views
         {
             const string registry_key = @"SOFTWARE\WOW6432Node\EA Games";
             string Il = null;
-            using (Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(registry_key))
+            try
             {
-                foreach (string subkey_name in key.GetSubKeyNames())
+                using (Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(registry_key))
                 {
-                    using (Microsoft.Win32.RegistryKey subkey = key.OpenSubKey(subkey_name))
+                    foreach (string subkey_name in key.GetSubKeyNames())
                     {
-                        try
+                        using (Microsoft.Win32.RegistryKey subkey = key.OpenSubKey(subkey_name))
                         {
-                            if (subkey != null && subkey.GetValue("DisplayName").ToString().Contains("Battlefield 4"))
-                                Il = subkey.GetValue("Install Dir").ToString();
+                            try
+                            {
+                                if (subkey != null && subkey.GetValue("DisplayName").ToString().Contains("Battlefield 4"))
+                                    Il = subkey.GetValue("Install Dir").ToString();
+                            }
+                            catch { }
                         }
-                        catch { }
                     }
                 }
             }
+            catch { }
 
             return Il;
         }
@@ -285,7 +297,7 @@ namespace ZloGUILauncher.Views
                 File.WriteAllBytes(gamepath + @"Engine.BuildInfo_Win32_retail.dll", Properties.Resources._Engine_BuildInfo_Win32_retail);
                 File.WriteAllBytes(gamepath + @"Engine.BuildInfo_Win64_retail.dll", Properties.Resources._Engine_BuildInfo_Win64_retail);
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            catch (Exception ex) { }
         }
 
         public void SwitchToZlo(string gamepath)
@@ -299,9 +311,9 @@ namespace ZloGUILauncher.Views
                 File.WriteAllBytes(gamepath + @"ZUpdaterx64.dll", Properties.Resources.ZUpdaterx64);
                 File.WriteAllBytes(gamepath + @"Core\winhttp.dll", Properties.Resources.winhttp);
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            catch (Exception ex) {}
         }
-        
+
 
         private byte[] ReadFully(Stream input)
         {
