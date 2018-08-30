@@ -65,7 +65,7 @@ namespace ZloGUILauncher
             App.Client.ErrorOccured += Client_ErrorOccured;
             App.Client.UserInfoReceived += Client_UserInfoReceived;
             App.Client.GameStateReceived += Client_GameStateReceived;
-            App.Client.APIVersionReceived += Client_APIVersionReceived;
+            //App.Client.APIVersionReceived += Client_APIVersionReceived;
             App.Client.Disconnected += Client_Disconnected;
             App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
                 StateChanged += MainWindow_resize;
