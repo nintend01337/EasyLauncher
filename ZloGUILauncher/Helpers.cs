@@ -16,20 +16,14 @@ namespace ZloGUILauncher
         public static T Find<T>(this ObservableCollection<T> Source , Predicate<T> predicate)
         {
             if (Source == null || predicate == null)
-            {
                 return default(T);
-            }
 
             int count = Source.Count;
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++){
                 var elem = Source[i];
-                try
-                {
+                try {
                     if (predicate(elem))
-                    {
                         return elem;
-                    }
                 }
                 catch { }
             }
@@ -38,18 +32,12 @@ namespace ZloGUILauncher
         public static void Remove<T>(this ObservableCollection<T> Source , Predicate<T> predicate)
         {
             if (Source == null || predicate == null)
-            {
                 return;
-            }
             var element = Source.Find(predicate);
             if (element == null)
-            {
                 return;
-            }
             else
-            {
                 Source.Remove(element);
-            }
         }
     }
     public class ScrollViewerCorrector
@@ -82,10 +70,8 @@ namespace ZloGUILauncher
         private static void HandlePreviewMouseWheel(object sender , MouseWheelEventArgs e)
         {
             var scrollControl = sender as ScrollViewer;
-            if (!e.Handled && sender != null && !_reentrantList.Contains(e))
-            {
-                var previewEventArg = new MouseWheelEventArgs(e.MouseDevice , e.Timestamp , e.Delta)
-                {
+            if (!e.Handled && sender != null && !_reentrantList.Contains(e)){
+                var previewEventArg = new MouseWheelEventArgs(e.MouseDevice , e.Timestamp , e.Delta){
                     RoutedEvent = UIElement.PreviewMouseWheelEvent ,
                     Source = sender
                 };
@@ -94,7 +80,6 @@ namespace ZloGUILauncher
                 originalSource.RaiseEvent(previewEventArg);
                 _reentrantList.Remove(previewEventArg);
                 // at this point if no one else handled the event in our children, we do our job
-
 
                 if (!previewEventArg.Handled && ((e.Delta > 0 && scrollControl.VerticalOffset == 0)
                     || (e.Delta <= 0 && scrollControl.VerticalOffset >= scrollControl.ExtentHeight - scrollControl.ViewportHeight)))

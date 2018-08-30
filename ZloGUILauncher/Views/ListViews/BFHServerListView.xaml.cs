@@ -22,29 +22,11 @@ namespace ZloGUILauncher.Views
     public partial class BFHServerListView : UserControl
     {
 
-        public CollectionViewSource ViewSource
-        {
-            get { return TryFindResource("ServersView") as CollectionViewSource; }
-        }
-        private ObservableCollection<BFH_GUI_Server> m_BFH_Servers;
-        public ObservableCollection<BFH_GUI_Server> BFH_GUI_Servers
-        {
-            get
-            {
-                if (m_BFH_Servers == null)
-                {
-                    m_BFH_Servers = new ObservableCollection<BFH_GUI_Server>();
-                }
-                return m_BFH_Servers;
-            }
-        }
-        public API_BFHServersListBase DataServersList
-        {
-            get
-            {
-                return App.Client.BFHServers;
-            }
-        }
+        public CollectionViewSource ViewSource => TryFindResource("ServersView") as CollectionViewSource;
+        private ObservableCollection<BFH_GUI_Server> _mBfhServers;
+        public ObservableCollection<BFH_GUI_Server> BfhGuiServers => _mBfhServers ?? (_mBfhServers = new ObservableCollection<BFH_GUI_Server>());
+
+        public API_BFHServersListBase DataServersList => App.Client.BFHServers;
 
         public BFHServerListView()
         {
@@ -52,34 +34,30 @@ namespace ZloGUILauncher.Views
             DataServersList.ServerAdded += DataServersList_ServerAdded;
             DataServersList.ServerUpdated += DataServersList_ServerUpdated;
             DataServersList.ServerRemoved += DataServersList_ServerRemoved;
-            ViewSource.Source = BFH_GUI_Servers;
-
+            ViewSource.Source = BfhGuiServers;
+            fly.IsOpen = false;
         }
         private void DataServersList_ServerRemoved(uint id, API_BFHServerBase server)
         {
-            if (server != null)
+            if (server == null) return;
+            Dispatcher.Invoke(() =>
             {
-                Dispatcher.Invoke(() =>
+                //remove from current list
+                var ser = BfhGuiServers.Find(s => s.ID == id);
+                if (ser != null)
                 {
-                    //remove from current list
-                    var ser = BFH_GUI_Servers.Find(s => s.ID == id);
-                    if (ser != null)
-                    {
-                        BFH_GUI_Servers.Remove(ser);
-                    }
-                });
-            }
+                    BfhGuiServers.Remove(ser);
+                }
+            });
         }
         private void DataServersList_ServerUpdated(uint id, API_BFHServerBase server)
         {
             Dispatcher.Invoke(() =>
             {
-                var equi = BFH_GUI_Servers.Find(x => x.raw == server);
-                if (equi != null)
-                {
-                    equi.UpdateAllProps();
-                    AnimateRow(equi);
-                }
+                var equi = BfhGuiServers.Find(x => x.raw == server);
+                if (equi == null) return;
+                equi.UpdateAllProps();
+                AnimateRow(equi);
             });
         }
         private void DataServersList_ServerAdded(uint id, API_BFHServerBase server)
@@ -87,7 +65,7 @@ namespace ZloGUILauncher.Views
             Dispatcher.Invoke(() =>
             {
                 var newserv = new BFH_GUI_Server(server);
-                BFH_GUI_Servers.Add(newserv);
+                BfhGuiServers.Add(newserv);
                 AnimateRow(newserv);
             });
         }
@@ -97,14 +75,14 @@ namespace ZloGUILauncher.Views
             var row = ServersDG.ItemContainerGenerator.ContainerFromItem(element) as DataGridRow;
             if (row == null) return;
 
-            ColorAnimation switchOnAnimation = new ColorAnimation
+            var switchOnAnimation = new ColorAnimation
             {
                 From = Colors.Transparent,
                 To = Colors.Lime,
                 Duration = TimeSpan.FromSeconds(0.75),
                 AutoReverse = true
             };
-            Storyboard blinkStoryboard = new Storyboard();
+            var blinkStoryboard = new Storyboard();
 
             blinkStoryboard.Children.Add(switchOnAnimation);
             Storyboard.SetTargetProperty(switchOnAnimation, new PropertyPath("Background.Color"));
@@ -116,60 +94,67 @@ namespace ZloGUILauncher.Views
 
         private void JoinButton_Click(object sender, RoutedEventArgs e)
         {
-            var b = sender as Button;
+            if (!(sender is Button b)) return;
             var server = (BFH_GUI_Server)b.DataContext;
-            App.Client.JoinOnlineGame(OnlinePlayModes.BFH_Multi_Player, server.ID);
-        }
-        //string requestmsg = "Please Enter the server password : \nNote : If you are sure the server doesn't have a password, press done and leave the password box empty";
-        private void JoinSpectatorButton_Click(object sender, RoutedEventArgs e)
-        {
-            var b = sender as Button;
-            var server = (BFH_GUI_Server)b.DataContext;
-            App.Client.JoinOnlineGame(OnlinePlayModes.BFH_Spectator, server.ID);
-        }
-        private void JoinCommanderButton_Click(object sender, RoutedEventArgs e)
-        {
-            var b = sender as Button;
-            var server = (BFH_GUI_Server)b.DataContext;
-            App.Client.JoinOnlineGame(OnlinePlayModes.BFH_Commander, server.ID);
+            if(server != null)
+                App.Client.JoinOnlineGame(OnlinePlayModes.BFH_Multi_Player, server.ID);
         }
 
-        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if (sender.GetType() == typeof(ScrollViewer))
-            {
-                ScrollViewer scrollviewer = sender as ScrollViewer;
-                if (e.Delta > 0)
-                    scrollviewer.LineLeft();
-                else
-                    scrollviewer.LineRight();
-                e.Handled = true;
-            }
-            else
-            {
-                var d = sender as DependencyObject;
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
-                {
-                    if (VisualTreeHelper.GetChild(d, i) is ScrollViewer scroll)
-                    {
-                        if (e.Delta > 0)
-                            scroll.LineLeft();
-                        else
-                            scroll.LineRight();
-                        e.Handled = true;
-                    }
-                }
-            }
-        }
+        //private void JoinSpectatorButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var b = sender as Button;
+        //    var server = (BFH_GUI_Server)b.DataContext;
+        //    App.Client.JoinOnlineGame(OnlinePlayModes.BFH_Spectator, server.ID);
+        //}
+        //private void JoinCommanderButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var b = sender as Button;
+        //    var server = (BFH_GUI_Server)b.DataContext;
+        //    App.Client.JoinOnlineGame(OnlinePlayModes.BFH_Commander, server.ID);
+        //}
+
+        //private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        //{
+        //    if (sender.GetType() == typeof(ScrollViewer))
+        //    {
+        //        ScrollViewer scrollviewer = sender as ScrollViewer;
+        //        if (e.Delta > 0)
+        //            scrollviewer.LineLeft();
+        //        else
+        //            scrollviewer.LineRight();
+        //        e.Handled = true;
+        //    }
+        //    else
+        //    {
+        //        var d = sender as DependencyObject;
+        //        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
+        //        {
+        //            if (VisualTreeHelper.GetChild(d, i) is ScrollViewer scroll)
+        //            {
+        //                if (e.Delta > 0)
+        //                    scroll.LineLeft();
+        //                else
+        //                    scroll.LineRight();
+        //                e.Handled = true;
+        //            }
+        //        }
+        //    }
+        //}
         private void ServersDG_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.AddedItems != null && e.AddedItems.Count > 0)
-            {
-                if (e.AddedItems[0] is BFH_GUI_Server serv)
-                {
-                    serv.getCountry();
-                }
-            }
+            //if (e.AddedItems != null && e.AddedItems.Count > 0)
+            //{
+            //    if (e.AddedItems[0] is BFH_GUI_Server serv)
+            //    {
+            //        serv.getCountry();
+            //    }
+            //}
+            fly.IsOpen = true;
+        }
+
+        private void fly_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            fly.IsOpen = false;
         }
     }
 }

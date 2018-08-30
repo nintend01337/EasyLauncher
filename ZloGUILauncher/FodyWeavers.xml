@@ -1,11 +1,8 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Weavers>
-  <Costura>
-      <IncludeAssemblies>
-       MahApps.Metro
-       Newtonsoft.Json
-       System.Windows.Interactivity
-       Zlo
-    </IncludeAssemblies>    
-  </Costura>
+  <Costura >
+    <!--<ExcludeAssemblies>
+    Zlo
+    </ExcludeAssemblies>-->  
+  </Costura >
 </Weavers>

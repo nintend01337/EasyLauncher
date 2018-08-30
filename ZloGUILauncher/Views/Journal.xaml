@@ -1,0 +1,31 @@
+﻿<UserControl  
+      x:Class="ZloGUILauncher.Views.Journal"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="1000">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <CollectionViewSource x:Key="HelpGrid"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid >
+        <StackPanel Orientation="Vertical">
+        <Label  Content="Коды Ошибок. Специально для Вас. Расшифровку брал из офф ZLO Дискорда" FontSize="20"/>
+            <DataGrid Name ="JournalDG"  ItemsSource="{Binding Source={StaticResource HelpGrid}, UpdateSourceTrigger=PropertyChanged}" 
+                      IsReadOnly="True" CanUserResizeRows="False" CanUserReorderColumns="False" 
+                      CanUserResizeColumns="False" SelectionMode="Single" 
+                      AutoGenerateColumns="False" Opacity="0.8">
+                <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Code}" Header="КОД ОШИБКИ"   Width="auto"/>
+                <DataGridTextColumn Binding="{Binding Path=Params}" Header="Дополнительно" Width="auto"/>
+                <DataGridTextColumn Binding="{Binding Path=Description}" Header="КОД ОПИСАНИЕ" Width="auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        </StackPanel>
+    </Grid>
+</UserControl>

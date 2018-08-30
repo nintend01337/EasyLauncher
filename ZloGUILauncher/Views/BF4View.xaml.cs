@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using Zlo.Extras;
 
@@ -13,63 +12,42 @@ namespace ZloGUILauncher.Views
         public BF4View()
         {
             InitializeComponent();
-            App.Client.StatsReceived += Client_StatsReceived;
-            App.Client.ItemsReceived += Client_ItemsReceived;
+            //App.Client.StatsReceived += Client_StatsReceived;
+            //App.Client.ItemsReceived += Client_ItemsReceived;
         }
 
-        private void Client_ItemsReceived(Zlo.Extras.ZloGame Game , Dictionary<string , API_Item> List)
-        {
-            if (Game == Zlo.Extras.ZloGame.BF_4)
-            {
-                Dispatcher.Invoke(() => { ItemsDG.ItemsSource = List; });
+        //private void Client_ItemsReceived(Zlo.Extras.ZloGame Game , Dictionary<string , API_Item> List)
+        //{
+        //    if (Game == Zlo.Extras.ZloGame.BF_4)
+        //    {
+        //        Dispatcher.Invoke(() => { ItemsDG.ItemsSource = List; });
 
-            }
-        }
+        //    }
+        //}
 
-        private void Client_StatsReceived(Zlo.Extras.ZloGame Game , Dictionary<string , float> List)
-        {
-            if (Game == ZloGame.BF_4)
-            {
-                Dispatcher.Invoke(() => { StatsListWin.StatsDG.ItemsSource = List; });
-            }
-        }
+        //private void Client_StatsReceived(Zlo.Extras.ZloGame Game , Dictionary<string , float> List)
+        //{
+        //    if (Game == ZloGame.BF_4)
+        //    {
+        //        Dispatcher.Invoke(() => { StatsListWin.StatsDG.ItemsSource = List; });
+        //    }
+        //}
 
-        private static BF4StatsListWindow m_StatsListWin;
-        public static BF4StatsListWindow StatsListWin
-        {
-            get
-            {
-                if (m_StatsListWin == null)
-                {
-                    m_StatsListWin = new BF4StatsListWindow();
-                }
-                return m_StatsListWin;
-            }
-        }
+        private static BF4StatsListWindow _mStatsListWin;
+        public static BF4StatsListWindow StatsListWin => _mStatsListWin ?? (_mStatsListWin = new BF4StatsListWindow());
 
-        private static BF4StatsWin m_StatsWin;
-        public static BF4StatsWin StatsWin
-        {
-            get
-            {
-                if (m_StatsWin == null)
-                {
-                    m_StatsWin = new BF4StatsWin();                                   
-                }
-                return m_StatsWin;
-            }
-        }
-
-      
-
+        private static BF4StatsWin _mStatsWin;
+        public static BF4StatsWin StatsWin => _mStatsWin ?? (_mStatsWin = new BF4StatsWin());
+        
+        
         private void StatsRefreshButton_Click(object sender , RoutedEventArgs e)
         {
-            App.Client.GetStats(Zlo.Extras.ZloGame.BF_4);
+           // App.Client.GetStats(Zlo.Extras.ZloGame.BF_4);
         }
 
         private void ItemsRefreshButton_Click(object sender , RoutedEventArgs e)
         {
-            App.Client.GetItems(Zlo.Extras.ZloGame.BF_4);
+          //  App.Client.GetItems(Zlo.Extras.ZloGame.BF_4);
         }
 
         private void JoinSinglePlayerButton_Click(object sender , RoutedEventArgs e)
@@ -89,8 +67,38 @@ namespace ZloGUILauncher.Views
 
         private void StatsAsWindowButton_Click(object sender , RoutedEventArgs e)
         {
-            StatsWin.Show();
-            
+            StatsWin.Show();            
+        }
+
+        private void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is TabControl tc)
+            {
+                if (tc.SelectedIndex < 0) return;
+                switch (tc.SelectedIndex)
+                {
+                    default:
+                        LScr.Visibility = Visibility.Hidden;
+                        Btnscr.Visibility = Visibility.Visible;
+                        LScr2.Visibility = Visibility.Hidden;
+                        Btnscr2.Visibility = Visibility.Visible;
+                        break;
+                }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            App.Client.JoinOfflineGame(OfflinePlayModes.BF4_Single_Player);
+            LScr.Visibility = Visibility.Visible;
+            Btnscr.Visibility = Visibility.Hidden;
+        }
+
+        private void Button2_Click(object sender, RoutedEventArgs e)
+        {
+            App.Client.JoinOfflineGame(OfflinePlayModes.BF4_Test_Range);
+            LScr2.Visibility = Visibility.Visible;
+            Btnscr2.Visibility = Visibility.Hidden;
         }
     }
 }

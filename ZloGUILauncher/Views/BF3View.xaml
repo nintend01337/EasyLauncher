@@ -4,42 +4,149 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ZloGUILauncher.Views"
-            xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignHeight="284.664" d:DesignWidth="496.486">
-    <Grid Background="{DynamicResource {x:Static SystemColors.WindowFrameColor}}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-           
-            <Grid Grid.Column="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" Orientation="Vertical" >
-                <Button Margin="10" Content="Одиночная игра" Grid.Column="2" Click="JoinSPButton_Click" Background="LightGray" Foreground="Black" />
-                <TextBlock Margin="10" Text="               " Grid.Column="2"/>
-                    
-                </StackPanel>
-              </Grid>
-        
-        </Grid>
+    <FrameworkElement.Resources>
+        <SolidColorBrush x:Key="FlyoutBrushColor" Color="#333333" Opacity="0.85" />
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </FrameworkElement.Resources>
+    <Grid Background="Transparent">
         <Grid Grid.Row="1">
-            <TabControl>
-                <TabItem Header="Список Серверов">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="12*"/>
+                <RowDefinition Height="83*"/>
+            </Grid.RowDefinitions>
+            <Rectangle Fill="{DynamicResource FlyoutBrushColor}" Stroke="Black" Margin="0" Grid.RowSpan="2" VerticalAlignment="Top" Height="37"/>
+            <controls:MetroTabControl Background="#00252525" SelectionChanged="SelectionChanged" Grid.RowSpan="2">
+                <controls:MetroTabControl.Resources>
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <Grid x:Name="Panel">
+                                        <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Panel" Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter TargetName="Panel" Property="Background" Value="Transparent" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </controls:MetroTabControl.Resources>
+                <TabItem Header="Список Серверов" Background="Red" Height="37" Foreground="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="True" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
                     <Grid>
-                        <local:BF3ServerListView />
+                        <local:BF3ServerListView Foreground="Black" Grid.ColumnSpan="3" FontSize="11" FontWeight="Normal" FontFamily="Verdana"/>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Статистика" IsEnabled="False">
+                <TabItem Header="Одиночная игра" Background="#FFEE1313" Height="37" Foreground="White" BorderBrush="Black" BorderThickness="1" FontSize="16" FontFamily="Verdana" FontWeight="Bold">
+                    <Grid Background="#CC000000">
+                        <Grid x:Name="LScr" Margin="0,10,0,47" VerticalAlignment="Center" Visibility="Hidden" d:IsHidden="True">
+                            <controls:ProgressRing HorizontalAlignment="Center" Margin="188.491,60.001,189.495,31" VerticalAlignment="Center" Height="99.663" Width="98.5" VerticalContentAlignment="Center"/>
+                            <Label x:Name="___Label___ПЕРЕХОД_В_____" Content="ПЕРЕХОД В ОДИНОЧНУЮ ИГРУ" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontSize="36" Height="68.332" FontWeight="Bold" Foreground="White"/>
+                            <Label Content="Если ничего не происходит - проверьте диспетчер задач" VerticalAlignment="Bottom" FontSize="12" FontWeight="Normal" Height="26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White"/>
+                        </Grid>
+                        <Button x:Name="Btnscr" Content="Нажмите в любое место чтобы запустить" Margin="0" Background="#00DDDDDD" BorderBrush="#00707070" Foreground="#C0FFFFFF" FontSize="9" Click="Button_Click"/>
+                    </Grid>
+                </TabItem>
+                <controls:Flyout Header="" AllowDrop="True" Position="Bottom" IsOpen="False" x:Name="fly" Margin="0" >
+                    <GroupBox VerticalAlignment="Top"
+                                      HorizontalAlignment="Stretch" 
+                                      Grid.Column="2" Margin="2"  Header="Базовая Информация" MaxHeight="110">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition  Width="auto" MinWidth="110"/>
+                                <ColumnDefinition  Width="auto"/>
+                                <ColumnDefinition  Width="auto"/>
+                                <ColumnDefinition  Width="auto"/>
+                                <ColumnDefinition  Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <DockPanel>
+                                    <TextBlock Text="Тип сервера : "/>
+                                    <TextBlock  DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="ранговый скорее всего"/>
+                                </DockPanel>
+
+                                <DockPanel>
+                                    <TextBlock Text="Punkbuster : "/>
+                                    <TextBlock  DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding IsHasPB, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="FairFight : "/>
+                                    <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="БФ3"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Country : "/>
+                                    <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding Country, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <DockPanel Margin="40,0,0,0">
+                                    <TextBlock Text="Текущая карта : "/>
+                                    <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding Maps.CurrentActualMap.MapName, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DockPanel>
+
+                                <DockPanel Margin="40,0,0,0">
+                                    <TextBlock Text="Текущий режим : "/>
+                                    <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding Maps.CurrentActualMap.GameModeName, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <DockPanel Margin="40,0,0,0">
+                                    <TextBlock Text="След. карта : "/>
+                                    <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding Maps.LogicalNextMap.MapName, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DockPanel>
+
+                                <DockPanel Margin="40,0,0,0">
+                                    <TextBlock Text="След. режим : "/>
+                                    <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding Maps.LogicalNextMap.GameModeName, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel>
+                                <DataGrid  Grid.Column="3" DataContext="{Binding SelectedItem,ElementName=ServersDG}" AutoGenerateColumns="False" ItemsSource="{Binding Path= Players}" IsReadOnly="True" SelectionMode="Single">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Binding="{Binding Path=Slot}" Header="Слот"/>
+                                        <DataGridTextColumn Binding="{Binding Path=Name}" Header="Никнейм"/>
+                                        <DataGridTextColumn Binding="{Binding Path=ID}" Header="ID"/>
+                                    </DataGrid.Columns>
+
+                                </DataGrid>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+                    
+                </controls:Flyout>
+
+
+
+
+
+                <!--<TabItem Header="Статистика" Background="#FFEA2D2D" Foreground="White" BorderThickness="1" BorderBrush="Black" FontSize="16" FontFamily="Verdana" FontWeight="Bold" Margin="0,0,0.99,1">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -54,17 +161,14 @@
                             <Button Grid.Column="0" Content="Обновить" Click="StatsRefreshButton_Click"/>
                         </Grid>
                         <DataGrid Grid.Row="1" x:Name="StatsDG"
-                                  SelectionMode="Single"
-                                  SelectionUnit="FullRow"
-                                  IsSynchronizedWithCurrentItem="True" 
-                                  IsTextSearchEnabled="True" AutoGenerateColumns="True" 
-                                  IsReadOnly="True"/>
+                                      SelectionMode="Single"
+                                      SelectionUnit="FullRow"
+                                      IsSynchronizedWithCurrentItem="True" 
+                                      IsTextSearchEnabled="True" AutoGenerateColumns="True" 
+                                      IsReadOnly="True"/>
                     </Grid>
-                </TabItem>
-                <Label Content="Label" Height="100" Width="100"/>
-
-
-            </TabControl>
+                </TabItem>-->
+            </controls:MetroTabControl>
         </Grid>
     </Grid>
 </UserControl>
