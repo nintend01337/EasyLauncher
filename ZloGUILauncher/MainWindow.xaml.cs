@@ -46,7 +46,7 @@ namespace ZloGUILauncher
         public const string LauncherNew = "Easy_New.exe";
         public const string Log = "Easy.log";
         public const string Autor = "nintend01337";
-        public string Version = "1.6 exp";
+        public string Version = "1.6";
         public string ApiVersion;
         public string Soldiername;
         public string SoldierId;
@@ -201,7 +201,7 @@ Exit
 
         #endregion
 
-        #region Events
+        #region API Events
         
         private void Client_ConnectionStateChanged(bool isConnectedToZloClient)
         {
@@ -385,8 +385,10 @@ Exit
                 player.Play();
         }
 
-        #region MetroWindow
-
+        /*
+                евенты окон обработчики событий 
+        */
+        #region MetroWindow events and listeners    
         private void RestartLauncherButton_Click(object sender, RoutedEventArgs e)
         {
             SaveLogInFile();
@@ -521,7 +523,27 @@ Exit
             p.Kill();
         }
 
-        #endregion
+        private void StatusBar_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            MainTabControl.SelectedIndex = 5;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            hideBanner = true;
+            MainTabControl.Visibility = Visibility.Visible;
+            Banner.Visibility = Visibility.Hidden;
+        }
+
+        private void MainWindow_resize(object sender, EventArgs e)
+        {
+            if (!hideBanner) return;
+            Banner.Visibility = Visibility.Visible;
+            MainTabControl.Visibility = Visibility.Hidden;
+            hideBanner = false;
+        }
+
+        #endregion                      //
 
         #region Logs
         public void PrintDebug(DebugLevel lvl, string message)
@@ -599,7 +621,7 @@ Exit
         }
         #endregion
 
-        #region Commented
+        #region Utils
 
         private void Settings_loaded(object sender, SettingsLoadedEventArgs e)
         {
@@ -652,26 +674,6 @@ Exit
         }
 
         #endregion
-
-        private void StatusBar_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            MainTabControl.SelectedIndex = 5;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            hideBanner = true;
-            MainTabControl.Visibility = Visibility.Visible;
-            Banner.Visibility = Visibility.Hidden;
-        }
-
-        private void MainWindow_resize(object sender, EventArgs e)
-        {
-            if (!hideBanner) return;
-            Banner.Visibility = Visibility.Visible;
-            MainTabControl.Visibility = Visibility.Hidden;
-            hideBanner = false;
-        }
 
         public delegate bool CallBack(int hwnd, int lParam);
     }
