@@ -230,7 +230,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <Grid Margin="-10,0,0,0">
-                    <views:Options Margin="-1,0,0,0"/>
+                    <!--<views:Options Margin="-1,0,0,0"/>-->
                 </Grid>
             </TabItem>
             <TabItem Margin="0,52,65,-62.25" FontWeight="Bold" FontFamily="Verdana" HorizontalAlignment="Right" Width="55">
