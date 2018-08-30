@@ -33,6 +33,9 @@ namespace ZloGUILauncher
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32")]
+        public static extern int EnumWindows(MainWindow.CallBack x, int y);
         #endregion
 
         public const string download_music_link = "https://dl.dropbox.com/s/r2cz0vk26aji58n/music.mp3?dl=0";
@@ -65,7 +68,7 @@ namespace ZloGUILauncher
             App.Client.APIVersionReceived += Client_APIVersionReceived;
             App.Client.Disconnected += Client_Disconnected;
             App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
-            this.StateChanged += MainWindow_resize;
+                StateChanged += MainWindow_resize;
 
             if (!App.Client.Connect()) return;
             PrintDebug(DebugLevel.Info, "Подключились к ZLO ;)");
@@ -296,8 +299,15 @@ Exit
                     case "Alert":
                         OnGameClosed();
                         break;
+                    //case "State_Connecting":
+                    //    MaximizeWindow(game);
+                    //    break;
+                    //case "State_Game State_NA":
+                    //    OnGameClosed();
+                    //    break;
+
                 }
-                if (message.Contains("State_Connecting") || message.Contains("State_GameLoading State_LaunchPlayground") || message.Contains("State_GameLoading State_ResumeCampaign")) MaximizeWindow(game);
+                if (message.Contains("State_Connecting")|| message.Contains("State_GameLoading State_LaunchPlayground") || message.Contains("State_GameLoading State_ResumeCampaign")) MaximizeWindow(game);
             });
         }
 
@@ -325,7 +335,7 @@ Exit
             }
             catch (Exception)
             {
-                PrintDebug(DebugLevel.Error, string.Format($"Возникла ошибка при загрузке изображения \n {this.ToString()}"));
+                PrintDebug(DebugLevel.Error, string.Format($"Возникла ошибка при загрузке изображения \n {ToString()}"));
             }
         }
 
@@ -421,16 +431,10 @@ Exit
             PrintDebug(DebugLevel.System, "Пошел в дискорд к разработчику !");
         }
 
-        private void OnHelpButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainTabControl.SelectedIndex = 3;
-            MessageBox.Show("Kwe");
-        }
+        private void OnHelpButton_Click(object sender, RoutedEventArgs e) => MainTabControl.SelectedIndex = 3;
 
-        private void ClearButton_Click(object sender, RoutedEventArgs e)
-        {
-            LogBox.Document.Blocks?.Clear();
-        }
+        private void ClearButton_Click(object sender, RoutedEventArgs e) => LogBox.Document.Blocks?.Clear();
+
 
         private void CloseGameBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -668,6 +672,8 @@ Exit
             MainTabControl.Visibility = Visibility.Hidden;
             hideBanner = false;
         }
+
+        public delegate bool CallBack(int hwnd, int lParam);
     }
 
    
