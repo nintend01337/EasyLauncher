@@ -6,10 +6,10 @@ This is the unofficial Launcher for Battlefield 3 , 4 , Hardline special for Zlo
 
 **How to use ?**
 
-1.Make Sure you are have ZloClient and logged in.
-2.Launch it from admin.
-3.Enjoy.
+1.  Make Sure you are have ZloClient and logged in.
+2.  Launch it from admin.
+3.  Enjoy.
 
 ZloAPI : 
 #Documentation and how to use  
-**https://github.com/bigworld12/ZloShared/wiki/Documentation**
+**[here](https://github.com/bigworld12/ZloShared/wiki/Documentation)**
