@@ -12,4 +12,4 @@ This is the unofficial Launcher for Battlefield 3 , 4 , Hardline special for Zlo
 
 ZloAPI : 
 #Documentation and how to use  
-**[here](https://github.com/bigworld12/ZloShared/wiki/Documentation)**
+**[here](https://gist.github.com/bigworld12/9eb609407859c571c02ad0c48251b767)**
