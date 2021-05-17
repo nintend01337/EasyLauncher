@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\John\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\John\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_ZloShared.1456987135.00" t="ExcludeRecursive" />
+    <e p="D:\VS\Easy Launcher" t="IncludeFlat">
+      <e p="Mod" t="IncludeRecursive">
+        <e p="app.config" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Mod.csproj" t="IncludeRecursive" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+      </e>
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="ZloGUILauncher" t="IncludeRecursive">
+        <e p="Addons" t="Include">
+          <e p="Help.cs" t="Include" />
+          <e p="ThemeManagerHelper.cs" t="Include" />
+        </e>
+        <e p="app.config" t="Include" />
+        <e p="App.xaml" t="Include" />
+        <e p="App.xaml.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="ClickableLabel.cs" t="Include" />
+        <e p="Converters" t="Include">
+          <e p="AllConvs.cs" t="Include" />
+        </e>
+        <e p="Debuging.cs" t="Include" />
+        <e p="FodyWeavers.xml" t="Include" />
+        <e p="GUI Classes" t="Include">
+          <e p="BF3_GUI_Server.cs" t="Include" />
+          <e p="BF4_GUI_Server.cs" t="Include" />
+          <e p="BFH_GUI_Server.cs" t="Include" />
+          <e p="GUI_Lists.cs" t="Include" />
+          <e p="GUI_Map.cs" t="Include" />
+          <e p="GUI_Player.cs" t="Include" />
+        </e>
+        <e p="Helpers.cs" t="Include" />
+        <e p="icon.ico" t="Include" />
+        <e p="log.png" t="Include" />
+        <e p="MainWindow.xaml" t="Include" />
+        <e p="MainWindow.xaml.cs" t="Include" />
+        <e p="Media" t="Include">
+          <e p="bf3.png" t="Include" />
+          <e p="bf4" t="Include">
+            <e p="wallper.png" t="Include" />
+          </e>
+          <e p="bf4.png" t="Include" />
+          <e p="bfh.png" t="Include" />
+          <e p="discord.png" t="Include" />
+          <e p="help.png" t="Include" />
+          <e p="pallete.png" t="Include" />
+          <e p="restart.png" t="Include" />
+          <e p="settings.png" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="App.g.cs" t="Include" />
+            <e p="GeneratedInternalTypeHelper.g.cs" t="Include" />
+            <e p="MainWindow.g.cs" t="Include" />
+            <e p="Views" t="Include">
+              <e p="BF3View.g.cs" t="Include" />
+              <e p="BF4StatsWin.g.cs" t="Include" />
+              <e p="BF4View.g.cs" t="Include" />
+              <e p="BFHView.g.cs" t="Include" />
+              <e p="InputBox.g.cs" t="Include" />
+              <e p="Journal.g.cs" t="Include" />
+              <e p="ListViews" t="Include">
+                <e p="BF3ServerListView.g.cs" t="Include" />
+                <e p="BF4ServerListView.g.cs" t="Include" />
+                <e p="BF4StatsListWindow.g.cs" t="Include" />
+                <e p="BFHServerListView.g.cs" t="Include" />
+              </e>
+              <e p="Options.g.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="packages.config" t="Include" />
+        <e p="Params.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+          <e p="Resources.Designer.cs" t="Include" />
+          <e p="Resources.resx" t="Include" />
+          <e p="Settings.Designer.cs" t="Include" />
+          <e p="Settings.settings" t="Include" />
+        </e>
+        <e p="Resources" t="Include">
+          <e p="^Engine.BuildInfo_Win32_retail.dll" t="Include" />
+          <e p="^Engine.BuildInfo_Win64_retail.dll" t="Include" />
+          <e p="Engine.BuildInfo_Win32_retail.dll" t="Include" />
+          <e p="Engine.BuildInfo_Win64_retail.dll" t="Include" />
+          <e p="winhttp.dll" t="Include" />
+          <e p="ZUpdaterx32.dll" t="Include" />
+          <e p="ZUpdaterx64.dll" t="Include" />
+        </e>
+        <e p="Settings.cs" t="Include" />
+        <e p="Settings.Designer.cs" t="Include" />
+        <e p="settings.png" t="Include" />
+        <e p="Settings.settings" t="Include" />
+        <e p="SolidColor.cs" t="Include" />
+        <e p="Views" t="Include">
+          <e p="BF3View.xaml" t="Include" />
+          <e p="BF3View.xaml.cs" t="Include" />
+          <e p="BF4StatsWin.xaml" t="Include" />
+          <e p="BF4StatsWin.xaml.cs" t="Include" />
+          <e p="BF4View.xaml" t="Include" />
+          <e p="BF4View.xaml.cs" t="Include" />
+          <e p="BFHView.xaml" t="Include" />
+          <e p="BFHView.xaml.cs" t="Include" />
+          <e p="InputBox.xaml" t="Include" />
+          <e p="InputBox.xaml.cs" t="Include" />
+          <e p="Journal.xaml" t="Include" />
+          <e p="Journal.xaml.cs" t="Include" />
+          <e p="ListViews" t="Include">
+            <e p="BF3ServerListView.xaml" t="Include" />
+            <e p="BF3ServerListView.xaml.cs" t="Include" />
+            <e p="BF4ServerListView.xaml" t="Include" />
+            <e p="BF4ServerListView.xaml.cs" t="Include" />
+            <e p="BF4StatsListWindow.xaml" t="Include" />
+            <e p="BF4StatsListWindow.xaml.cs" t="Include" />
+            <e p="BFHServerListView.xaml" t="Include" />
+            <e p="BFHServerListView.xaml.cs" t="Include" />
+          </e>
+          <e p="Options.xaml" t="Include" />
+          <e p="Options.xaml.cs" t="Include" />
+          <e p="pallete.png" t="Include" />
+        </e>
+        <e p="ZloGUILauncher.csproj" t="IncludeRecursive" />
+      </e>
+      <e p="ZloShared.sln" t="IncludeFlat" />
+    </e>
+  </component>
+</project>

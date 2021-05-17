@@ -40,7 +40,7 @@
                   SelectionMode="Single" SelectionUnit="FullRow"
                   IsSynchronizedWithCurrentItem="True" 
                   IsTextSearchEnabled="True" AutoGenerateColumns="False"                      
-                  IsReadOnly="True" SelectionChanged="ServersDG_SelectionChanged">
+                  IsReadOnly="True" SelectionChanged="ServersDG_SelectionChanged" MouseLeftButtonDown="ServersDG_MouseLeftButtonDown">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
                     <Setter Property="HorizontalContentAlignment"
@@ -72,9 +72,9 @@
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding ID, UpdateSourceTrigger=PropertyChanged}" Width="Auto"  Header="ID" SortMemberPath="ID"/>
-                <DataGridTextColumn Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Server Name" SortMemberPath="Name"/>
+                <DataGridTextColumn Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Width="Auto" Header="Server Name" SortMemberPath="Name"/>
                 <DataGridTextColumn Binding="{Binding RepPlayers, UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Players" SortMemberPath="Current_Players"/>
-                <DataGridTextColumn Binding="{Binding Maps.CurrentActualMap.MapName, UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Map" SortMemberPath="Maps.CurrentActualMap.MapName"/>
+                <DataGridTextColumn Binding="{Binding Maps.CurrentActualMap.MapName, UpdateSourceTrigger=PropertyChanged}" Width="Auto" Header="Map" SortMemberPath="Maps.CurrentActualMap.MapName"/>
                 <DataGridTextColumn Binding="{Binding Maps.CurrentActualMap.GameModeName, UpdateSourceTrigger=PropertyChanged}" Width="*" Header="Game Mode" SortMemberPath="Maps.CurrentActualMap.GameModeName"/>
                 <DataGridTextColumn Binding="{Binding Ping, UpdateSourceTrigger=PropertyChanged}" Width="auto" Header="Ping" SortMemberPath="Ping"/>
             </DataGrid.Columns>
@@ -96,13 +96,8 @@
                         <StackPanel Grid.Column="0" Grid.RowSpan="2" Margin="0">
                             <DockPanel>
                                 <TextBlock Text="Тип сервера : "/>
-                                <TextBlock  DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="ранговый скорее всего"/>
+                                <TextBlock  DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="ранговый?!"/>
                             </DockPanel>
-
-                            <!--<DockPanel>
-                        <TextBlock Text="Пароль : "/>
-                        <TextBlock  DataContext="{Binding ElementName=ServersDG, Path = SelectedItem}" Text="{Binding IsHasPW, UpdateSourceTrigger=PropertyChanged}"/>
-                    </DockPanel>-->
 
                             <DockPanel>
                                 <TextBlock Text="Punkbuster : "/>
@@ -141,6 +136,10 @@
                         </StackPanel>
                     </Grid>
                 </GroupBox>
+                <Button Margin="0,0,0,70" x:Name="info_btn" Click="InfoButton_Click" DataContext="{Binding SelectedItem, ElementName=ServersDG}" Foreground="{DynamicResource AccentColorBrush}" Content="Подробнее" Height="40" FontFamily="Verdana" FontWeight="Bold" Width="275"/>
+                <!--<StackPanel Orientation="Vertical" MaxHeight="100" Margin="10,0,10,60" VerticalAlignment="Bottom" Height="43.293" >
+                    <Button Margin="0" x:Name="info_btn" Click="InfoButton_Click" DataContext="{Binding SelectedItem, ElementName=ServersDG}" Foreground="{DynamicResource AccentColorBrush}" Content="Подробнее" Height="40" FontFamily="Verdana" FontWeight="Bold" Width="275"/>
+                </StackPanel>-->
                 <StackPanel Orientation="Vertical" MaxHeight="100" Margin="10,0,10,10" VerticalAlignment="Bottom" Height="43.293" >
                     <Button Margin="0" x:Name="launch_btn" Click="JoinButton_Click" DataContext="{Binding SelectedItem, ElementName=ServersDG}" Foreground="{DynamicResource AccentColorBrush}" Content="ПОДКЛЮЧИТЬСЯ" Height="40" FontFamily="Verdana" FontWeight="Bold" Width="275"/>
                 </StackPanel>

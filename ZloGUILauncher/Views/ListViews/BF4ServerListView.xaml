@@ -7,7 +7,7 @@
              xmlns:servers="clr-namespace:ZloGUILauncher.Servers"
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
-             d:DesignHeight="278.914" d:DesignWidth="465.815">
+             d:DesignHeight="280" d:DesignWidth="465">
     <FrameworkElement.Resources>
         <CollectionViewSource x:Key="ServersView"/>
         <SolidColorBrush x:Key="SelectionBrushColor" Color="{DynamicResource AccentColor}"/>
@@ -39,7 +39,7 @@
                   SelectionMode="Single" SelectionUnit="FullRow"
                   IsSynchronizedWithCurrentItem="True" 
                   IsTextSearchEnabled="True" AutoGenerateColumns="False"                     
-                  IsReadOnly="True"  ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}" SelectionChanged="ServersDG_SelectionChanged">
+                  IsReadOnly="True"  ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}" SelectionChanged="ServersDG_SelectionChanged" MouseLeftButtonDown="ServersDG_MouseLeftButtonDown">
             <DataGrid.Resources>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="Control.HorizontalContentAlignment" Value="Center" />
@@ -94,7 +94,7 @@
                         <StackPanel Grid.Column="0" Grid.RowSpan="2" Margin="0">
                             <DockPanel>
                                 <TextBlock Text="Тип сервера : "/>
-                                <TextBlock  DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="ранговый скорее всего"/>
+                                <TextBlock  DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding ServerType,UpdateSourceTrigger=PropertyChanged }"/>
                             </DockPanel>
 
                             <!--<DockPanel>
@@ -108,7 +108,7 @@
                             </DockPanel>
                             <DockPanel>
                                 <TextBlock Text="FairFight : "/>
-                                <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="БФ3"/>
+                                <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding IsHasFF,UpdateSourceTrigger=PropertyChanged}"/>
                             </DockPanel>
                             <DockPanel>
                                 <TextBlock Text="Country : "/>
@@ -138,6 +138,7 @@
                         </StackPanel>
                     </Grid>
                 </GroupBox>
+                <Button Margin="0,0,0,70" x:Name="info_btn" Click="InfoButton_Click" DataContext="{Binding SelectedItem, ElementName=ServersDG}" Foreground="{DynamicResource AccentColorBrush}" Content="Подробнее" Height="40" FontFamily="Verdana" FontWeight="Bold" Width="275"/>
                 <Grid MaxHeight="100" Margin="0" VerticalAlignment="Bottom" Height="82" >
                     <Button Margin="0,2,10,0" Click="JoinCommanderButton_Click" DataContext="{Binding SelectedItem, ElementName=ServersDG}" Foreground="{DynamicResource AccentColorBrush}"     Content="КОМАНДОР" Height="25" VerticalAlignment="Top" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Width="110" FontFamily="Verdana"/>
                     <Button Margin="10,2,0,0" Click="JoinSpectatorButton_Click" DataContext="{Binding SelectedItem, ElementName=ServersDG}" Foreground="{DynamicResource AccentColorBrush}"     Content="НАБЛЮДАТЕЛЬ" Height="25" VerticalAlignment="Top" Width="110" HorizontalAlignment="Left" FontFamily="Verdana"/>

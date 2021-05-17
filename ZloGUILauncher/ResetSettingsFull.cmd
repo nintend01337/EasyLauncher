@@ -1,0 +1,1 @@
+rd %localappdata%\nintend01337  /s /q

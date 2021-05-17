@@ -27,7 +27,8 @@ namespace ZloGUILauncher
         public bool CheckUpdates { get; set; }
         public Color Clr { get; set; } 
         public bool ModSupport { get; set; }
-        public bool AutoUpdateAPi { get; set; }
+        public bool DiscordRPCEnabled { get; set; }
+        public bool UseExternalShaders { get; set; }
     }
 
     [Serializable]
@@ -39,21 +40,22 @@ namespace ZloGUILauncher
         {
             config = new Params
             {
-                AccentName = "Cobalt",
+                AccentName = "Crimson",
                 AccentColorType = "accent".ToLower(),
                 Theme = "BaseDark",
                 IsDebug = true,
                 MoreColors = false,
-                MaximizeGameWindow = false,
+                MaximizeGameWindow = true,
                 UseExternalImage = false,
                 ImagePath = "",
-                ZclientPath = "",
-                AutostartZclient = false,
-                IsMusicEnabled = false,
+                ZclientPath = "..",
+                AutostartZclient = true,
+                IsMusicEnabled = true,
                 SaveLogInFile = false,
                 CheckUpdates = true,
                 ModSupport = false,
-                AutoUpdateAPi = false,
+                DiscordRPCEnabled = true,
+                UseExternalShaders = false,
               };
         }
     }

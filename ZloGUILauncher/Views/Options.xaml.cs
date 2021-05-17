@@ -21,6 +21,7 @@ namespace ZloGUILauncher.Views
         public Options()
         {
             InitializeComponent();
+            zbox.Text = Settings.Default.Config.config.ZclientPath;
             gPath = csw.FindGameInstallation();
             GameisEa = csw.IsEALicense(gPath);
             if (gPath != null)
@@ -31,6 +32,7 @@ namespace ZloGUILauncher.Views
             }
             else
             {
+                gbox.Visibility = Visibility.Hidden;
                 Gswitch.Content = "БФ4 не найдена";
                 Gswitch.IsEnabled = false;
             }
@@ -88,7 +90,6 @@ namespace ZloGUILauncher.Views
             BrowseZpath();
         }
 
-
         private void Zclient_checked(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrEmpty(Settings.Default.Config.config.ZclientPath)) return;
@@ -117,15 +118,20 @@ namespace ZloGUILauncher.Views
 
         public void BrowseZpath()
         {
+              
             var openFileDialog = new OpenFileDialog
             {
                 AddExtension = true,
                 Filter = @"ZClient|ZClient.exe",
                 Title = @"Укажите расположение ZClient"
             };
-            openFileDialog.ShowDialog();
-            Settings.Default.Config.config.ZclientPath = openFileDialog.FileName;
-            zbox.Text = Settings.Default.Config.config.ZclientPath;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Settings.Default.Config.config.ZclientPath = openFileDialog.FileName;
+                zbox.Text = Settings.Default.Config.config.ZclientPath;
+            }
+
             if (Settings.Default.Config.config.ZclientPath == "")
             {
                 Settings.Default.Config.config.AutostartZclient = false;
@@ -225,6 +231,27 @@ namespace ZloGUILauncher.Views
                     }
                     break;
             }           
+        }
+
+        private void DiscordRPCToogle_Checked(object sender, RoutedEventArgs e)
+        {
+            App.Client.IsEnableDiscordRPC = true;
+        }
+
+        private void DiscordRPCToogle_Unchecked(object sender, RoutedEventArgs e)
+        {
+            App.Client.IsEnableDiscordRPC = false;
+            
+        }
+
+        private void BF3FX_Checked(object sender, RoutedEventArgs e)
+        {
+            ShaderManager.Install();
+        }
+
+        private void BF3FX_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ShaderManager.Remove();
         }
     }
 
@@ -328,7 +355,6 @@ namespace ZloGUILauncher.Views
                 return ms.ToArray();
             }
         }
-
     }
 }
 

@@ -43,7 +43,7 @@ namespace ZloGUILauncher.Views
 
         private void RefreshBorder_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            App.Client.GetStats(ZloGame.BF_4);
+            App.Client.GetStats(ZloBFGame.BF_4);
         }
 
         private void CloseBorder_MouseDown(object sender, MouseButtonEventArgs e)

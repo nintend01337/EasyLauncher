@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Mod
@@ -114,9 +111,10 @@ namespace Mod
                 if (reg != null)
                 {
                     var val = reg.GetValue("Install Dir", null) as string;
-                   path =  val;
+                    path =  val;
+                    return path;
                 }
-                return path;
+                return "Игра не установлена исправте это !!!";
             }
         }
 
@@ -124,34 +122,34 @@ namespace Mod
         static void Main(string[] args)
         {
             Draw();
-
-        Console.Title = "mod install tool";
-      
+            Console.Title = "mod install tool";
             var p = InstallPath();
-            Console.WriteLine($"Путь по которому установлена игра : {p}");
-        
-            try
+            Console.WriteLine($"Путь по которому установлена игра : \n {p} \n");
+
+            // parse args using switch
+            if (args.Length > 0)
             {
-                if (args[0] == "-i")
+                switch (args[0])
                 {
-                    Install();
-                }
-
-                if (args[0] == "-u")
-                {
-                    UnInstall();
-
-                }
+                    case "-i":
+                        Install();
+                        break;
+                    case "-u":
+                        UnInstall();
+                        break;
+                    default:
+                        Console.WriteLine("Неверные входящие аргументы  -i для установки -u для удаления!");
+                        break;
+                }    
             }
-            catch (Exception e )
+            else
             {
-                Console.WriteLine("Отсутствуют входящие аргументы  -i для установки -u для удаления! либо возникла другая ошибка");
-                File.WriteAllText("error.log",e.StackTrace);
+                Console.WriteLine("Отсутствуют входящие аргументы, запустите программу с параметром -i для установки -u для удаления!");
             }
-
+            
                 
-                //Console.ReadKey();
-            Console.WriteLine("Закройте нахер это окно, иначе не запустится игра.");
+            
+            //    Console.WriteLine("Закройте это окно, иначе не запустится игра.");
             Console.ReadKey();
         }
     }

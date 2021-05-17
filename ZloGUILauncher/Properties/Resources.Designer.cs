@@ -83,6 +83,16 @@ namespace ZloGUILauncher.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] BF3FX {
+            get {
+                object obj = ResourceManager.GetObject("BF3FX", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] Engine_BuildInfo_Win32_retail {
             get {
                 object obj = ResourceManager.GetObject("Engine_BuildInfo_Win32_retail", resourceCulture);

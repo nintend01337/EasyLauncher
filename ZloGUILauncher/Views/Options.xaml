@@ -109,17 +109,25 @@
             </DockPanel>
             <DockPanel x:Name="ModP" Height="39" LastChildFill="False" Margin="0,0,10,10">
                 <Label Content="Поддержка модов BF4"  FontFamily="Verdana" FontSize="20" VerticalContentAlignment="Center" Margin="0"/>
-                <Custom:ToggleSwitch x:Name="ModSupport"  FontFamily="Verdana" FontSize="20" IsChecked="{Binding Config.config.ModSupport, Mode=TwoWay, Source={x:Static settings:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="0" Width="120" DockPanel.Dock="Right" HorizontalAlignment="Right" HorizontalContentAlignment="Right"/>
+                <Custom:ToggleSwitch x:Name="ModSupport"  FontFamily="Verdana" FontSize="20" IsChecked="{Binding Config.config.ModSupport, Mode=TwoWay, Source={x:Static settings:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="0" Width="120" DockPanel.Dock="Right" HorizontalAlignment="Right" HorizontalContentAlignment="Right" IsEnabled="False"/>
             </DockPanel>
             <DockPanel x:Name="LauP" Height="39" LastChildFill="False" Margin="0,0,10,10">
                 <Label Content="Обновления лаунчера"  FontFamily="Verdana" FontSize="20" VerticalContentAlignment="Center" Margin="0"/>
                 <Custom:ToggleSwitch x:Name="CheckUpdates"  FontFamily="Verdana" FontSize="20" IsChecked="{Binding Config.config.CheckUpdates, Mode=TwoWay, Source={x:Static settings:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="0" Width="120" DockPanel.Dock="Right" HorizontalContentAlignment="Right" HorizontalAlignment="Right"/>
             </DockPanel>
-            <DockPanel x:Name="ApiP" Height="39" LastChildFill="False" Margin="0,0,10,10">
+            <!--<DockPanel x:Name="ApiP" Height="39" LastChildFill="False" Margin="0,0,10,10">
                 <Label Content="Автообновление API (zlo.dll)"  FontFamily="Verdana" FontSize="20" VerticalContentAlignment="Center" Margin="0"/>
                 <Custom:ToggleSwitch x:Name="ApiUpdate"  FontFamily="Verdana" FontSize="20" IsChecked="{Binding Config.config.AutoUpdateAPi, Mode=TwoWay, Source={x:Static settings:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="0" Width="120" DockPanel.Dock="Right" HorizontalAlignment="Right" HorizontalContentAlignment="Right"/>
+            </DockPanel>-->
+            <DockPanel x:Name="Discord" Height="39" LastChildFill="False" Margin="0,0,10,10">
+                <Label Content="Discord СТАТУС"  FontFamily="Verdana" FontSize="20" VerticalContentAlignment="Center" Margin="0"/>
+                <Custom:ToggleSwitch x:Name="DiscordRPCToogle"  FontFamily="Verdana" FontSize="20" IsChecked="{Binding Config.config.DiscordRPCEnabled, Mode=TwoWay, Source={x:Static settings:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="0" Width="120" DockPanel.Dock="Right" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Checked="DiscordRPCToogle_Checked" Unchecked="DiscordRPCToogle_Unchecked"/>
             </DockPanel>
-            <GroupBox Header="Переключение между зло и лиц  (BF4 только)" Height="64" Margin="0,0,17,10" FontFamily="Verdana" FontSize="16">
+            <DockPanel x:Name="BF3FX" Height="39" LastChildFill="False" Margin="0,0,10,10">
+                <Label Content="Удалить синий фильтр (BF3)"  FontFamily="Verdana" FontSize="20" VerticalContentAlignment="Center" Margin="0"/>
+                <Custom:ToggleSwitch x:Name="ShadersSwitcher"  FontFamily="Verdana" FontSize="20" IsChecked="{Binding Config.config.UseExternalShaders, Mode=TwoWay, Source={x:Static settings:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="0" Width="120" DockPanel.Dock="Right" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Checked="BF3FX_Checked" Unchecked="BF3FX_Unchecked"/>
+            </DockPanel>
+            <GroupBox x:Name="gbox" Header="Переключение между зло и лиц (BF4)" Height="64" Margin="0,0,17,10" FontFamily="Verdana" FontSize="16">
                 <Button x:Name="Gswitch" Content="Текущая версия игры: game" Height="42" Margin="-6,-5.833" Background="{DynamicResource AccentColorBrush}" VerticalAlignment="Center" Click="Gswitch_Click"/>
             </GroupBox>
         </StackPanel>

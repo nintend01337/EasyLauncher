@@ -1,0 +1,166 @@
+﻿<controls:MetroWindow 
+x:Class="ZloGUILauncher.Views.ServerInfoViewer"
+xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+xmlns:local="clr-namespace:ZloGUILauncher.Views"
+mc:Ignorable="d"
+Title="ServerInfoViewer" Height="400" Width="600"
+ResizeMode="NoResize"
+ShowSystemMenuOnRightClick="False"
+WindowStartupLocation="CenterScreen"
+ShowIconOnTitleBar="true"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+
+        <!--INFORMATION-->
+        <GroupBox
+                        Grid.ColumnSpan="2"
+                        Margin="2"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Header="Basic Info">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+
+                    <TextBlock Text="ID : " />
+                    <TextBlock Text="Название : " />
+                    <TextBlock Text="Страна : " />
+                    <TextBlock Text="IP адрес : " />
+                    <TextBlock Text="Порт : " />
+                    <TextBlock Text="Игроки : " />
+                    <TextBlock Text="Пинг : " />
+                    <TextBlock Text="Punkbuster : " />
+                    <TextBlock Text="FairFight : "/>
+
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="{Binding Path=ID}" />
+                    <TextBlock Text="{Binding Path=Name}" />
+                    <TextBlock Text="{Binding Path=Country}" />
+                    <TextBlock Text="{Binding Path=IP}" />
+                    <TextBlock Text="{Binding Path=Port}" />
+                    <TextBlock Text="{Binding Path=RepPlayers}" />
+                    <TextBlock Text="{Binding Path=Ping}" />
+                    <TextBlock Text="{Binding Path=IsHasPB}" />
+                    <TextBlock Text="{Binding Path=IsHasFF}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Текущая карта : " />
+                    <TextBlock Text="Режим : " />
+
+                    <TextBlock Text=""/>
+
+                    <TextBlock Text="Следующая карта : " />
+                    <TextBlock Text="Режим : " />
+                </StackPanel>
+
+                <StackPanel Grid.Column="3">
+                    <TextBlock Text="{Binding Path=Maps.CurrentActualMap.MapName}" />
+                    <TextBlock Text="{Binding Path=Maps.CurrentActualMap.GameModeName}" />
+                    
+                    <TextBlock Text=""/>
+                    
+                    <TextBlock Text="{Binding Path=Maps.LogicalNextMap.MapName}" />
+                    <TextBlock Text="{Binding Path=Maps.LogicalNextMap.GameModeName}"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+
+        <!--Maps-->
+        <DataGrid x:Name="Maps_DG"
+                            Grid.Row="1"           
+                            Grid.Column="0"
+                            Margin="2"
+                            AutoGenerateColumns="False"
+                            IsReadOnly="True"       
+                            Style="{StaticResource MetroDataGrid}"
+                            ItemsSource="{Binding Path=Maps, UpdateSourceTrigger=PropertyChanged}"
+                            PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            SelectionMode="Single" 
+                            IsEnabled="True" 
+                            Width="250" Height="150"
+                            CanUserResizeColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=MapName}" Header="Карта" />
+                <DataGridTextColumn Binding="{Binding Path=GameModeName}" Header="Режим" />
+            </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsNextInRotation, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                            <Setter Property="Background" Value="Orange" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=IsCurrentInRotation, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                            <Setter Property="Background" Value="LimeGreen" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+        
+        <!--Players-->
+                <DataGrid
+                            Name="Players_DG"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="2,2,2,2"
+                            AutoGenerateColumns="False"
+                            ColumnWidth="Auto"
+                            Style="{StaticResource MetroDataGrid}"
+                            IsReadOnly="True"
+                            IsSynchronizedWithCurrentItem="True"
+                            ItemsSource="{Binding Path=Players, UpdateSourceTrigger=PropertyChanged}"
+                            PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            SelectionMode="Single" Width="280" Height="150"
+                            CanUserResizeColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Slot}" Header="Слот" />
+                <DataGridTextColumn Binding="{Binding Path=Name}" Header="Имя игрока" />
+                <DataGridTextColumn Binding="{Binding Path=ID}" Header="ID" />
+            </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsCurrent}" Value="True">
+                            <Setter Property="Background" Value="Lime" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <!--<DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Style.Triggers>
+                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemParameters.BorderKey}}" />
+                            <Setter Property="Foreground" Value="#FF1DEA1D"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>-->
+                </DataGrid>
+    </Grid>
+</controls:MetroWindow>

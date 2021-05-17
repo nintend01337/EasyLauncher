@@ -11,8 +11,6 @@ namespace ZloGUILauncher.Views
         public BF3View()
         {
             InitializeComponent();
-
-            // App.Client.StatsReceived += Client_StatsReceived;
         }
 
         //private void Client_StatsReceived(Zlo.Extras.ZloGame Game , Dictionary<string , float> List)

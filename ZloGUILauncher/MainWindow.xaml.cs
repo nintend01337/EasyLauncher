@@ -18,6 +18,9 @@ using System.Runtime.InteropServices;
 using ZloGUILauncher.Views;
 using Microsoft.Win32;
 using System.Threading;
+using System.Text;
+using System.Threading.Tasks;
+using ZloGUILauncher.Addons;
 
 namespace ZloGUILauncher
 {
@@ -46,13 +49,15 @@ namespace ZloGUILauncher
         public const string LauncherNew = "Easy_New.exe";
         public const string Log = "Easy.log";
         public const string Autor = "nintend01337";
-        public string Version = "1.6";
-        public string ApiVersion;
-        public string Soldiername;
-        public string SoldierId;
+        public string Version = "1.6.4";
+        public string ApiVersion { get; set; }
+        public string Soldiername { get; set; }
+        public string SoldierId { get; set; }
         public bool IsDebug = Settings.Default.Config.config.IsDebug;   //enable-disable debugg messages
         public bool IsMusicEnabled = Settings.Default.Config.config.IsMusicEnabled;
         MediaPlayer player = new MediaPlayer();
+  
+        protected ManualResetEvent _resetEvent = new ManualResetEvent(false);   //ждун
 
         public MainWindow()
         {
@@ -61,45 +66,50 @@ namespace ZloGUILauncher
             LoadImage();
             CheckUpdates();
             CheckZclient();
-
+            
             App.Client.ErrorOccured += Client_ErrorOccured;
             App.Client.UserInfoReceived += Client_UserInfoReceived;
             App.Client.GameStateReceived += Client_GameStateReceived;
-            //App.Client.APIVersionReceived += Client_APIVersionReceived;
-            App.Client.Disconnected += Client_Disconnected;
             App.Client.ConnectionStateChanged += Client_ConnectionStateChanged;
-                StateChanged += MainWindow_resize;
+            App.Client.Connect();
+            StateChanged += MainWindow_resize;
 
-            if (!App.Client.Connect()) return;
+            
+            PrintDebug(DebugLevel.Info, $"API ВЕРСИЯ : {App.Client.CurrentApiVersion}");
             PrintDebug(DebugLevel.Info, "Подключились к ZLO ;)");
+            PrintDebug(DebugLevel.Info,$"Подключен  к Zclient ? {App.Client.IsConnectedToZCLient}");
             PrintDebug(DebugLevel.Warn, Settings.Default.Config.config.AccentName);
             PrintDebug(DebugLevel.Warn, Settings.Default.Config.config.AccentColorType);
+            Settings.Default.Config.config.DiscordRPCEnabled = App.Client.IsEnableDiscordRPC;
 
-            switch (App.Client.SavedActiveServerListener)
-            {
-                case ZloGame.BF_3:
-                    MainTabControl.SelectedIndex = 0;
-                    //App.Client.GetStats(ZloGame.BF_3);
-                    break;
 
-                case ZloGame.BF_4:
-                    MainTabControl.SelectedIndex = 1;
-                    //App.Client.GetStats(ZloGame.BF_4);
-                    //App.Client.GetItems(ZloGame.BF_4);
-                    break;
+        #region deprecated         
+        //switch (App.Client.SavedActiveServerListener)
+        //{
+        //    case ZloBFGame.BF_3:
+        //        MainTabControl.SelectedIndex = 0;
+        //        //App.Client.GetStats(ZloGame.BF_3);
+        //        break;
 
-                case ZloGame.BF_HardLine:
-                    MainTabControl.SelectedIndex = 2;
-                    //App.Client.GetStats(ZloGame.BF_HardLine);
-                    //App.Client.GetItems(ZloGame.BF_HardLine);
-                    break;
-                case ZloGame.None:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        
+        //    case ZloBFGame.BF_4:
+        //        MainTabControl.SelectedIndex = 1;
+        //        //App.Client.GetStats(ZloGame.BF_4);
+        //        //App.Client.GetItems(ZloGame.BF_4);
+        //        break;
+
+        //    case ZloBFGame.BF_HardLine:
+        //        MainTabControl.SelectedIndex = 2;
+        //        //App.Client.GetStats(ZloGame.BF_HardLine);
+        //        //App.Client.GetItems(ZloGame.BF_HardLine);
+        //        break;
+        //    case ZloBFGame.None:
+        //        break;
+        //    default:
+        //        throw new ArgumentOutOfRangeException();
+        //}
+        #endregion
+    }
+
         #region Launcher update
 
         private void ApplyUpdate(string src, string newSrc)
@@ -156,9 +166,6 @@ Exit
                     if (changelog == string.Empty)
                         changelog = "АВТОР НЕ УКАЗАЛ";
 
-                    //byte[] bytes = Encoding.UTF8.GetBytes(Changelog);
-                    //Changelog = Encoding.UTF8.GetString(bytes);
-
                     var mbr = MessageBox.Show(
                         $"Текущая  версия Лаунчера : {Version} \n Последняя  версия Лаунчера : {remoteVersion}\n  \n Список Изменений : \n {changelog} \n \n \n Обновить сейчас?",
                         "Обновление Лаунчера", MessageBoxButton.YesNo);
@@ -202,20 +209,28 @@ Exit
         #endregion
 
         #region API Events
-        
+
         private void Client_ConnectionStateChanged(bool isConnectedToZloClient)
         {
             if (isConnectedToZloClient)
+            {
                 PrintDebug(DebugLevel.Info, "Подключен");
+                ChangeWindowHeader(string.Join(string.Empty, AssemblyName, " | ", Version, " | ", "API version ", ApiVersion, " | ", Soldiername, "   CONNECTED"));
+            }
             else
+            {
                 PrintDebug(DebugLevel.Error, "Отключен");
+                ChangeWindowHeader(string.Join(string.Empty, AssemblyName, " | ", Version, " | ", "API version ", ApiVersion, " | ", "   DISCONNECTED"));
+            }
         }
-
         private void Client_UserInfoReceived(uint userId, string userName)
         {
             PrintDebug(DebugLevel.Info, $" Получение информации о пользователе : {userName} ,  {userId}");
             Soldiername = userName;
             SoldierId = userId.ToString();
+            ApiVersion = App.Client.CurrentApiVersion.ToString();
+            _resetEvent.Set();
+            ChangeWindowHeader(string.Join(string.Empty, AssemblyName , " | " ,   Version ,   " | " , "API version " , ApiVersion , " | " , Soldiername , "   CONNECTED"));
         }
 
         private void Client_Disconnected(DisconnectionReasons reason)
@@ -223,59 +238,61 @@ Exit
             this.ShowMessageAsync("", $" Вылет по причине : {reason}");
             PrintDebug(DebugLevel.Error, $" Вылет по причине : {reason}");
         }
+        #region Deprecated
 
-        private void Client_APIVersionReceived(Version Current, Version Latest, bool IsNeedUpdate, string DownloadAdress)
-        {
-            PrintDebug(DebugLevel.Info, $"Получение информации о версиях API: \n Текущая : {Current}, Последняя : {Latest}, \n Требуется обновление API ? : {IsNeedUpdate}");
+        //private void Client_APIVersionReceived(Version Current, Version Latest, bool IsNeedUpdate, string DownloadAdress)
+        //{
+        //    PrintDebug(DebugLevel.Info, $"Получение информации о версиях API: \n Текущая : {Current}, Последняя : {Latest}, \n Требуется обновление API ? : {IsNeedUpdate}");
+        //    _resetEvent.WaitOne();
 
-            if (IsNeedUpdate && Settings.Default.Config.config.AutoUpdateAPi)
-            {
-                Dispatcher.Invoke(async () =>
-                {
-                    if (await this.ShowMessageAsync("Обновление", $"Текущая dll версия : {Current}\n Последняя dll версия : {Latest}\n Обновить сейчас?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
-                    {
-                        string Sourcedll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo.dll");
-                        string Newdll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo_New.dll");
-                        using (WebClient wc = new WebClient())
-                        {
-                            wc.DownloadFileCompleted += Wc_DownloadFileCompleted;
-                            wc.DownloadFileAsync(new Uri(DownloadAdress), Newdll);
-                        }
-                    }
-                });
-                PrintDebug(DebugLevel.Warn, "Вы используете не последнюю версию API.Видимо Разработчик отключил автоматическое обновление API.");
-                ApiVersion = Current.ToString();
-                Title = AssemblyName + " | " + Version + " | " + "API version " + ApiVersion + " | " + (Soldiername != null ? "WELCOME, " + Soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
-            }
-            else
-            {
-                Dispatcher.Invoke(() => {
-                    ApiVersion = Current.ToString();
-                    Title = AssemblyName + " | " + Version + " | " + "API version " + ApiVersion + " | " + (Soldiername != null ? "WELCOME, " + Soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
-                });
-            }
-        }
+        //    if (IsNeedUpdate && Settings.Default.Config.config.AutoUpdateAPi)
+        //    {
+        //        Dispatcher.Invoke(async () =>
+        //        {
+        //            if (await this.ShowMessageAsync("Обновление", $"Текущая dll версия : {Current}\n Последняя dll версия : {Latest}\n Обновить сейчас?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+        //            {
+        //                string Sourcedll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo.dll");
+        //                string Newdll = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Zlo_New.dll");
+        //                using (WebClient wc = new WebClient())
+        //                {
+        //                    wc.DownloadFileCompleted += Wc_DownloadFileCompleted;
+        //                    wc.DownloadFileAsync(new Uri(DownloadAdress), Newdll);
+        //                }
+        //            }
+        //        });
+        //        PrintDebug(DebugLevel.Warn, "Вы используете не последнюю версию API.Видимо Разработчик отключил автоматическое обновление API.");
+        //        ApiVersion = Current.ToString();
+        //        Title = AssemblyName + " | " + Version + " | " + "API version " + ApiVersion + " | " + ( Soldiername!= null ? "WELCOME, " + Soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
+        //    }
+        //    else
+        //    {
+        //        Dispatcher.Invoke(() => {
+        //            ApiVersion = Current.ToString();
+        //            Title = AssemblyName + " | " + Version + " | " + "API version " + ApiVersion + " | " + (Soldiername != null ? "WELCOME, " + Soldiername : "NOT CONNECTED") /*+"  ID : " + soldierID */;     //soldier ID нужен ли ?
+        //        });
+        //    }
+        //}
 
-        private void Wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            PrintDebug(DebugLevel.Info, "Загрузка Завершена!!!");
-            //Zlo.dll completed
-            if (e.Error == null)
-            {
-                //no errors
-                ApplyUpdate("Zlo.dll", "Zlo_New.dll");
-            }
-            else
-            {
-                //error occured
-                Client_ErrorOccured(e.Error, "Возникла ошибка при обновлении Zlo.dll");
-                Debug.Write(e.Error);
-                PrintDebug(DebugLevel.Error,
-                    $"Возникла ошибка при обновлении Zlo.dll \n {e.Error} \n {e.Error.StackTrace}");
-            }
-        }
-        
-        private void Client_GameStateReceived(ZloGame game, string type, string message)
+        //private void Wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        //{
+        //    PrintDebug(DebugLevel.Info, "Загрузка Завершена!!!");
+        //    //Zlo.dll completed
+        //    if (e.Error == null)
+        //    {
+        //        //no errors
+        //        ApplyUpdate("Zlo.dll", "Zlo_New.dll");
+        //    }
+        //    else
+        //    {
+        //        //error occured
+        //        Client_ErrorOccured(e.Error, "Возникла ошибка при обновлении Zlo.dll");
+        //        Debug.Write(e.Error);
+        //        PrintDebug(DebugLevel.Error,
+        //            $"Возникла ошибка при обновлении Zlo.dll \n {e.Error} \n {e.Error.StackTrace}");
+        //    }
+        //}
+        #endregion
+        private void Client_GameStateReceived(ZloBFGame game, string type, string message)
         {
             Dispatcher.Invoke(() =>
             {
@@ -299,12 +316,12 @@ Exit
                     case "Alert":
                         OnGameClosed();
                         break;
-                    //case "State_Connecting":
-                    //    MaximizeWindow(game);
-                    //    break;
-                    //case "State_Game State_NA":
-                    //    OnGameClosed();
-                    //    break;
+                    case "State_GameLoading":
+                        MaximizeWindow(game);
+                        break;
+                    case "State_Game State_NA":
+                        OnGameClosed();
+                        break;
 
                 }
                 if (message.Contains("State_Connecting")|| message.Contains("State_GameLoading State_LaunchPlayground") || message.Contains("State_GameLoading State_ResumeCampaign")) MaximizeWindow(game);
@@ -339,7 +356,7 @@ Exit
             }
         }
 
-        private void MaximizeWindow(ZloGame game)
+        private void MaximizeWindow(ZloBFGame game)
         {
             IntPtr hWnd;
             var windowname = string.Empty;
@@ -347,18 +364,19 @@ Exit
             if (!Settings.Default.Config.config.MaximizeGameWindow) return;
             switch (game)
             {
-                case ZloGame.BF_3:
-                    windowname = "Battlefield 3";
+                case ZloBFGame.BF_3:
+                    windowname = "Battlefield 3™";
                     break;
 
-                case ZloGame.BF_4:
-                    windowname = "Battlefield 4";
+
+                case ZloBFGame.BF_4:
+                    windowname = "Battlefield 4™";
                     break;
 
-                case ZloGame.BF_HardLine:
+                case ZloBFGame.BF_HardLine:
                     windowname = "Battlefield Hardline";
                     break;
-                case ZloGame.None:
+                case ZloBFGame.None:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(game), game, null);
@@ -373,7 +391,7 @@ Exit
         {
             Banner.Visibility = Visibility.Visible;
             MainTabControl.Visibility = Visibility.Hidden;
-            player.Stop();
+            player.Pause();
         }
 
         private void OnGameClosed()
@@ -394,7 +412,6 @@ Exit
             SaveLogInFile();
             Dispatcher.Invoke(() =>
             {
-                App.Client.Close();
                 Process.Start(Application.ResourceAssembly.Location);
                 Application.Current.Shutdown();
             });
@@ -413,13 +430,13 @@ Exit
                 switch (tc.SelectedIndex)
                 {
                     case 0:
-                        App.Client.SubToServerList(ZloGame.BF_3);
+                        App.Client.SubToServerList(ZloBFGame.BF_3);
                         break;
                     case 1:
-                        App.Client.SubToServerList(ZloGame.BF_4);
+                        App.Client.SubToServerList(ZloBFGame.BF_4);
                         break;
                     case 2:
-                        App.Client.SubToServerList(ZloGame.BF_HardLine);
+                        App.Client.SubToServerList(ZloBFGame.BF_HardLine);
                         break;
                     default:
                         break;
@@ -429,7 +446,7 @@ Exit
 
         private void OfficialDiscordButton_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://discord.gg/FUk56Rc");
+            Process.Start("https://discord.gg/m5n5Dvd");
             PrintDebug(DebugLevel.System, "Пошел в дискорд к разработчику !");
         }
 
@@ -483,42 +500,11 @@ Exit
             }
         }
 
-        private void MetroWindow_Activated(object sender, EventArgs e)
-        {
-            if (Settings.Default.Config.config.IsMusicEnabled)
-            {
-                if (!File.Exists("music.mp3"))
-                {
-                    PrintDebug(DebugLevel.Warn, $"Отсутствует музыкальный файл music.mp3 \n Начинаю скачивать с {download_music_link}");
-                    string musicfile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "music.mp3");
-                    // Нет музыкального файла скачать
-                    Dispatcher.Invoke(() =>
-                    {
-                        using (WebClient wc = new WebClient())
-                        {
-                            wc.DownloadFileCompleted += Wc_DownloadMusicCompletedAsync;
-                            wc.DownloadFileAsync(new Uri(download_music_link), musicfile);
-                        }
-                    });
-                }
-                else
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        player.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + "music.mp3", UriKind.RelativeOrAbsolute));
-                        string uri = AppDomain.CurrentDomain.BaseDirectory + "music.mp3";
-                        PrintDebug(DebugLevel.Info, "Включаю музыку :D");
-                        player.Play();
-                    });
-                }
-            }
-        }
-
         private void MetroWindow_Closing(object sender, CancelEventArgs e)
         {
             Settings.Default.Save();
             SaveLogInFile();
-            App.Client.Close();
+            App.Client.Dispose();
             var p = Process.GetCurrentProcess();
             p.Kill();
         }
@@ -634,7 +620,7 @@ Exit
             await this.ShowMessageAsync("Загрузка", "Файлы загружены.. \nЛаунчер будет перезапущен", MessageDialogStyle.Affirmative);
             Dispatcher.Invoke(() =>
             {
-                App.Client.Close();
+                App.Client.Dispose();
                 Process.Start(System.Windows.Application.ResourceAssembly.Location);
                 System.Windows.Application.Current.Shutdown();
             });
@@ -642,8 +628,11 @@ Exit
 
         private void CheckZclient()
         {
-            PrintDebug(DebugLevel.Info, "Проверяю запущен ли Zclient");          
-            var proc =  Process.GetProcessesByName("ZClient");
+            PrintDebug(DebugLevel.Info, "Проверяю запущен ли Zclient");
+            var proc = Process.GetProcessesByName("ZClient");
+            if (proc.Length > 0)
+                App.Client.Connect();
+           
             if (proc.Length == 0)
             {
                 PrintDebug(DebugLevel.Error, "ZCLIENT НЕ ЗАПУЩЕН, влючите пункт в автозапуске либо запустите его вручную".ToUpper());
@@ -651,17 +640,17 @@ Exit
                 {
                     RunZClient();
                     PrintDebug(DebugLevel.Warn, "НЕ ЗАПУЩЕН ZCLIENT,ЗАПУСКАЮ!!!!");
-                    Thread.Sleep(10000);
+                    Thread.Sleep(8000);
                 }
             }
-            App.Client.ReConnect();
         }
 
         private void RunZClient()
         {
-            if (!File.Exists(Settings.Default.Config.config.ZclientPath))
+            var result = tryToFindZclient();
+            if (!result)
             {
-                PrintDebug(DebugLevel.Error, "ZLO CLIENT путь не указан");
+                PrintDebug(DebugLevel.Error, "ZLO CLIENT автоматически не найден, укажите путь вручную!");
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.AddExtension = true;
                 openFileDialog.Filter = "ZClient|ZClient.exe";
@@ -670,9 +659,43 @@ Exit
                 Settings.Default.Config.config.ZclientPath = openFileDialog.FileName;
                 Settings.Default.Save();
             }
-            Process.Start(Settings.Default.Config.config.ZclientPath);
+            Task t = Task.Run(() => { Process.Start(Settings.Default.Config.config.ZclientPath); });
         }
 
+        private bool tryToFindZclient()
+        {
+           string procname = "ZClient.exe";
+           string workingDirrectory = AppDomain.CurrentDomain.BaseDirectory;
+           string path = Path.Combine(workingDirrectory, procname);
+            if (File.Exists(path))
+            {
+                PrintDebug(DebugLevel.Info, "ZLO CLIENT найден автоматически и сейчас будет запущен!");
+                Settings.Default.Config.config.ZclientPath = path;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public string BuildString(string[] arg)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (string str in arg)
+            {
+                sb.Append(str);
+            }
+
+            return sb.ToString();
+        }
+
+        private void ChangeWindowHeader(string param)
+        {
+            Dispatcher.Invoke(() => 
+            {
+                Title = param;
+            });
+        }
         #endregion
 
         public delegate bool CallBack(int hwnd, int lParam);

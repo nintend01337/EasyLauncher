@@ -6,6 +6,9 @@ using System.Windows;
 using System.Windows.Media;
 using Zlo;
 using ZloGUILauncher.Addons;
+using ZloGUILauncher.Views;
+using ZloGUILauncher.Views.ListViews;
+
 
 namespace ZloGUILauncher
 {
@@ -34,6 +37,7 @@ namespace ZloGUILauncher
         }
         private static API_ZloClient _mClient;
         public static API_ZloClient Client => _mClient ?? (_mClient = new API_ZloClient());
+        public static BFServerListViewModel BFListViewModel { get; } = new BFServerListViewModel();
 
         protected override void OnStartup(StartupEventArgs e)
         {

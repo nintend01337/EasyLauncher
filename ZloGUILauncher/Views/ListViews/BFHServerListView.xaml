@@ -39,7 +39,7 @@
                   SelectionMode="Single" SelectionUnit="FullRow"
                   IsSynchronizedWithCurrentItem="True" 
                   IsTextSearchEnabled="True" AutoGenerateColumns="False"                     
-                  IsReadOnly="True"  ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}" SelectionChanged="ServersDG_SelectionChanged">
+                  IsReadOnly="True"  ColumnHeaderStyle="{StaticResource MetroDataGridColumnHeader}" SelectionChanged="ServersDG_SelectionChanged" MouseLeftButtonDown="ServersDG_MouseLeftButtonDown">
             <DataGrid.Resources>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="Control.HorizontalContentAlignment" Value="Center" />
@@ -94,18 +94,13 @@
                                 <TextBlock  DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="ранговый скорее всего"/>
                             </DockPanel>
 
-                            <!--<DockPanel>
-                        <TextBlock Text="Пароль : "/>
-                        <TextBlock  DataContext="{Binding ElementName=ServersDG, Path = SelectedItem}" Text="{Binding IsHasPW, UpdateSourceTrigger=PropertyChanged}"/>
-                    </DockPanel>-->
-
                             <DockPanel>
                                 <TextBlock Text="Punkbuster : "/>
                                 <TextBlock  DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding IsHasPB, UpdateSourceTrigger=PropertyChanged}"/>
                             </DockPanel>
                             <DockPanel>
                                 <TextBlock Text="FairFight : "/>
-                                <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="БФ3"/>
+                                <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding IsHasFF,UpdateSourceTrigger=PropertyChanged}"/>
                             </DockPanel>
                             <DockPanel>
                                 <TextBlock Text="Country : "/>
@@ -136,11 +131,11 @@
                         </StackPanel>
                     </Grid>
                 </GroupBox>
+                <Button Margin="0,0,0,70" x:Name="info_btn" Click="InfoButton_Click" DataContext="{Binding SelectedItem, ElementName=ServersDG}" Foreground="{DynamicResource AccentColorBrush}" Content="Подробнее" Height="40" FontFamily="Verdana" FontWeight="Bold" Width="275"/>
                 <Grid MaxHeight="100" Margin="10,0,10,10" VerticalAlignment="Bottom" Height="43.293" >
                     <Button Margin="0" Click="JoinButton_Click" DataContext="{Binding SelectedItem, ElementName=ServersDG}" FontFamily="Verdana" FontWeight="Bold"             Content="ПОДКЛЮЧИТЬСЯ" Height="40" Width="275"/>
                     <!--<Button Margin="0,2,10,0" Click="JoinCommanderButton_Click" DataContext="{Binding SelectedItem, ElementName=ServersDG}"     Content="Командор" Height="25" VerticalAlignment="Top" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Width="90"/>
-            <Button Margin="10,2,0,0" Click="JoinSpectatorButton_Click" DataContext="{Binding SelectedItem, ElementName=ServersDG}"     Content="Наблюдатель" Height="25" VerticalAlignment="Top" Width="90" HorizontalAlignment="Left"/>
-            -->
+            <Button Margin="10,2,0,0" Click="JoinSpectatorButton_Click" DataContext="{Binding SelectedItem, ElementName=ServersDG}"     Content="Наблюдатель" Height="25" VerticalAlignment="Top" Width="90" HorizontalAlignment="Left"/>-->
         </Grid>
     </Grid>
     </controls:Flyout>
