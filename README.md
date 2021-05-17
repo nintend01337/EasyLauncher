@@ -1,7 +1,15 @@
 #Welcome!
 
-this is the official api documentation and example using wpf
+This is the unofficial Launcher for Battlefield 3 , 4 , Hardline special for ZloGames Project using ZloAPI
 
-#Documentation and how to use : 
+![](https://media.discordapp.net/attachments/426864114539823114/432639860256276490/unknown.png?width=962&height=577)
 
-Please refer to : https://github.com/bigworld12/ZloShared/wiki/Documentation
+**How to use ?**
+
+1.  Make Sure you are have ZloClient and logged in.
+2.  Launch it from admin.
+3.  Enjoy.
+
+ZloAPI : 
+#Documentation and how to use  
+**[here](https://gist.github.com/bigworld12/9eb609407859c571c02ad0c48251b767)**
