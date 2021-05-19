@@ -51,11 +51,11 @@ namespace ZloGUILauncher.Views
 
         public static void Remove()
         {
-            string fullpath = Path.Combine(path, dllname);
-            if (File.Exists(fullpath))
-            {
-                File.Delete(fullpath);
-            }
+            //string fullpath = Path.Combine(path, dllname);
+            //if (File.Exists(fullpath))
+            //{
+            //    File.Delete(fullpath);
+            //}
             var dz = QuickDlls;
             if (dz != null)
             {

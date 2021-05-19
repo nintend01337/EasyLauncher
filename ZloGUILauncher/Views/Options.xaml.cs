@@ -233,25 +233,22 @@ namespace ZloGUILauncher.Views
             }           
         }
 
-        private void DiscordRPCToogle_Checked(object sender, RoutedEventArgs e)
-        {
-            App.Client.IsEnableDiscordRPC = true;
-        }
+        private void DiscordRPCToogle_Checked(object sender, RoutedEventArgs e) { App.Client.IsEnableDiscordRPC = true; }
 
-        private void DiscordRPCToogle_Unchecked(object sender, RoutedEventArgs e)
-        {
-            App.Client.IsEnableDiscordRPC = false;
-            
-        }
+        private void DiscordRPCToogle_Unchecked(object sender, RoutedEventArgs e) { App.Client.IsEnableDiscordRPC = false; }
 
-        private void BF3FX_Checked(object sender, RoutedEventArgs e)
-        {
-            ShaderManager.Install();
-        }
+        private void BF3FX_Checked(object sender, RoutedEventArgs e) { ShaderManager.Install(); }
 
-        private void BF3FX_Unchecked(object sender, RoutedEventArgs e)
+        private void BF3FX_Unchecked(object sender, RoutedEventArgs e) { ShaderManager.Remove(); }
+
+        private void Music_Checked(object sender, RoutedEventArgs e) { MainWindow.player.Play(); }
+
+        private void Music_Unchecked(object sender, RoutedEventArgs e) { MainWindow.player.Stop(); }
+
+        private void btn_reshade_install(object sender, RoutedEventArgs e)
         {
-            ShaderManager.Remove();
+            var window = new ReshadeInstaller();
+            window.Show();
         }
     }
 

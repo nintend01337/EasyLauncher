@@ -74,7 +74,7 @@
             </DockPanel>
             <DockPanel x:Name="MusP" Height="39" LastChildFill="False" Margin="10,0,0,10">
                 <Label Content="Музыка"  FontFamily="Verdana" FontSize="20" Margin="0" HorizontalAlignment="Left" Height="39" VerticalContentAlignment="Center"/>
-                <Custom:ToggleSwitch x:Name="music" IsChecked="{Binding Config.config.IsMusicEnabled, Mode=TwoWay, Source={x:Static settings:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Margin="0" Width="130" DockPanel.Dock="Right" Height="39" HorizontalAlignment="Right" HorizontalContentAlignment="Right" FontSize="20" FontFamily="Verdana" VerticalContentAlignment="Center"/>
+                <Custom:ToggleSwitch x:Name="music" IsChecked="{Binding Config.config.IsMusicEnabled, Mode=TwoWay, Source={x:Static settings:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Margin="0" Width="130" DockPanel.Dock="Right" Height="39" HorizontalAlignment="Right" HorizontalContentAlignment="Right" FontSize="20" FontFamily="Verdana" VerticalContentAlignment="Center" Checked="Music_Checked" Unchecked="Music_Unchecked"/>
             </DockPanel>
             <DockPanel x:Name="MaxP" Height="39" LastChildFill="False" Margin="10,0,0,10">
                 <Label Content="Разворот игры при запуске" FontFamily="Verdana" FontSize="20" Margin="0" HorizontalAlignment="Left" Height="39" VerticalContentAlignment="Center"/>
@@ -152,11 +152,19 @@
                 <ListBoxItem Content="Dark" BorderBrush="{x:Null}" Background="{x:Null}"/>
             </ComboBox>
         </GroupBox>
-        <Button x:Name="btn_color_picker"  Click="btn_color_picker_Click" MaxHeight="64" MaxWidth="64" Margin="3,38,2,26" Grid.Column="1" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="{x:Null}">
+        <StackPanel Orientation="Vertical" Grid.Column="1">
+            <Button x:Name="btn_color_picker"  Click="btn_color_picker_Click" MaxHeight="64" MaxWidth="64" Margin="2,15,2,25"  BorderBrush="{x:Null}" Background="{x:Null}" Foreground="{x:Null}">
             <StackPanel Orientation="Horizontal">
-                <Ellipse Width="24.917" Height="25" Margin="0" Fill="{DynamicResource AccentColorBrush}"/>
-                <Image Source="pallete.png" Stretch="UniformToFill" VerticalAlignment="Center" Margin="-26,0,0,0" Height="27" Width="27"/>
+                <Ellipse Width="32" Height="32" Margin="0" Fill="{DynamicResource AccentColorBrush}"/>
+                <Image Source="pallete.png" Stretch="UniformToFill" VerticalAlignment="Center" Margin="-32,0,0,0" Height="32" Width="32"/>
             </StackPanel>
         </Button>
+            <Button Name="btn_reshade" Click="btn_reshade_install"  MaxHeight="64" MaxWidth="64" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="{x:Null}">
+                <StackPanel>
+                    <Ellipse Width="32" Height="32" Margin="0" Fill="{DynamicResource AccentColorBrush}"/>
+                    <Image Source="reshade.png" Stretch="UniformToFill" VerticalAlignment="Center"  Height="32" Width="32" Margin="0,-32,0,0"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>

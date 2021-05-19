@@ -1,0 +1,81 @@
+﻿<Controls:MetroWindow  
+        x:Class="ZloGUILauncher.Views.ReshadeInstaller"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZloGUILauncher.Views"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d"
+        Title="ReshadeInstaller" Height="200" Width="400"
+        ResizeMode="NoResize"
+        ShowSystemMenuOnRightClick="False"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+  
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" Grid.Row="0">
+            <TextBlock Text="Выберите игру : "/>
+            <ComboBox Name="GameSelector"></ComboBox>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="0" Margin="5,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <TextBlock  Text="Игра установлена : "/>
+            <TextBlock  Text="{Binding Path=Path}" FontSize ="9"/>
+        </StackPanel>
+        <TextBlock Name="IsInstalled" Grid.Column="0" Grid.Row="1" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock.Style>
+                <Style  TargetType="{x:Type TextBlock}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=isReshadeInstalled}" Value="True">
+                            <Setter Property="Text" Value="Reshade installed"/>
+                            <Setter Property="Foreground" Value="Lime"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=isReshadeInstalled}" Value="False">
+                            <Setter Property="Text" Value="Reshade not installed"/>
+                            <Setter Property="Foreground" Value="DarkRed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <Button Grid.Column="0" Grid.Row="2" Content="Установить" Background="LimeGreen" HorizontalAlignment="Right" Height="20" Width="100" Margin="0,0,45,0">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=isReshadeInstalled}" Value="True">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=isReshadeInstalled}" Value="False">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button Grid.Column="1" Grid.Row="2" Content="Удалить" Background="DarkRed"  HorizontalAlignment="Left" Height="20" Width="100" Margin="45,0,0,0">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=isReshadeInstalled}" Value="True">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=isReshadeInstalled}" Value="False">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+    </Grid>
+</Controls:MetroWindow>

@@ -74,7 +74,7 @@
                         <Button x:Name="Btnscr" Content="Нажмите в любое место чтобы запустить" Margin="0" Background="#00DDDDDD" BorderBrush="#00707070" Foreground="#C0FFFFFF" FontSize="9" Click="Button_Click"/>
                     </Grid>
                 </TabItem>
-                <controls:Flyout Header="" AllowDrop="True" Position="Bottom" IsOpen="False" x:Name="fly" Margin="0" >
+<!--                 <controls:Flyout Header="" AllowDrop="True" Position="Bottom" IsOpen="False" x:Name="fly" Margin="0" >
                     <GroupBox VerticalAlignment="Top"
                                       HorizontalAlignment="Stretch" 
                                       Grid.Column="2" Margin="2"  Header="Базовая Информация" MaxHeight="110">
@@ -101,8 +101,8 @@
                                     <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="БФ3"/>
                                 </DockPanel>
                                 <DockPanel>
-                                    <TextBlock Text="Country : "/>
-                                    <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding Country, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Text="Страна : "/>
+                                    <TextBlock DataContext="{Binding SelectedItem, ElementName=ServersDG}" Text="{Binding CountryCode, UpdateSourceTrigger=PropertyChanged}"/>
                                 </DockPanel>
                             </StackPanel>
                             <StackPanel Grid.Column="1">
@@ -140,7 +140,7 @@
                         </Grid>
                     </GroupBox>
                     
-                </controls:Flyout>
+                </controls:Flyout> -->
 
 
 

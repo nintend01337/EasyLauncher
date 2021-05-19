@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Zlo.Extras;
+using Newtonsoft.Json;
 
 namespace ZloGUILauncher.Servers
 {
@@ -53,8 +54,9 @@ namespace ZloGUILauncher.Servers
 
         public bool IsHasPB => Raw.Attributes.TryGetValue("punkbuster",out var pb) ? YesNo(pb) : false;
         public int Ping { get; set; }
-        public string Country { get; set; }
 
+        public string Country { get; set; }
+        public string CountryCode { get; set; }
         public virtual void UpdateAllProps()
         {
             OPC(nameof(ID));
@@ -72,23 +74,38 @@ namespace ZloGUILauncher.Servers
             Maps.Update();
             Players.Update();
             PingUpdate();
-        //    CountryUpdate();
+            CountryUpdate();
         }
 
         private void CountryUpdate()
         {
-            var t = Task.Run(() =>
+            Country = "Unknown";
+            CountryCode = "null";
+
+            var country =   new { country_name="" };
+            var country_code =  new { country_code2 = "" };
+            var response_msg =      new { response_message = "" };
+
+            var t = Task.Run(() => 
             {
-                string strFile = "Unknown";
-                using (var objClient = new System.Net.WebClient())
-                { strFile = objClient.DownloadString("http://ipwhois.app/xml/" + Raw.ServerIP.ToString()); }
-                int firstlocation = strFile.IndexOf("<country>") + "<country>".Length;
-                int lastlocation = strFile.IndexOf("</", firstlocation);
-                string location = strFile.Substring(firstlocation, lastlocation - firstlocation);
-                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() => { Country = location; }));
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Country"));
-            });
-        
+                string response;
+                using (var client = new WebClient())
+                { response = client.DownloadString("https://api.iplocation.net/?ip=" + Raw.ServerIP.ToString()); }
+
+                var json1 = JsonConvert.DeserializeAnonymousType(response, country);
+                var json2 = JsonConvert.DeserializeAnonymousType(response, country_code);
+                var json3 = JsonConvert.DeserializeAnonymousType(response, response_msg);
+
+                //if request succesful update properties
+
+                if (json3.response_message == "OK")
+                {
+                    Country = json1.country_name;
+                    CountryCode = json2.country_code2;
+                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Country"));
+                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("CountryCode"));
+                }
+            });       
        
         }
 

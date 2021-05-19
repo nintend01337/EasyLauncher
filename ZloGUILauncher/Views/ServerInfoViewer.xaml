@@ -146,7 +146,7 @@ ShowIconOnTitleBar="true"
                 <Style TargetType="DataGridRow">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=IsCurrent}" Value="True">
-                            <Setter Property="Background" Value="Lime" />
+                            <Setter Property="Background" Value="LimeGreen" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

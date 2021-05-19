@@ -171,6 +171,9 @@
     <Compile Include="Views\BFHView.xaml.cs">
       <DependentUpon>BFHView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ReshadeInstaller.xaml.cs">
+      <DependentUpon>ReshadeInstaller.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ServerInfoViewer.xaml.cs">
       <DependentUpon>ServerInfoViewer.xaml</DependentUpon>
     </Compile>
@@ -253,6 +256,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Options.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReshadeInstaller.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -360,6 +367,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\BF3FX.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\reshade.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -21,6 +21,7 @@ using System.Threading;
 using System.Text;
 using System.Threading.Tasks;
 using ZloGUILauncher.Addons;
+using System.Reflection;
 
 namespace ZloGUILauncher
 {
@@ -49,24 +50,28 @@ namespace ZloGUILauncher
         public const string LauncherNew = "Easy_New.exe";
         public const string Log = "Easy.log";
         public const string Autor = "nintend01337";
+        public const string GUID = "0xFDCD2684";
         public string Version = "1.6.4";
         public string ApiVersion { get; set; }
         public string Soldiername { get; set; }
         public string SoldierId { get; set; }
         public bool IsDebug = Settings.Default.Config.config.IsDebug;   //enable-disable debugg messages
         public bool IsMusicEnabled = Settings.Default.Config.config.IsMusicEnabled;
-        MediaPlayer player = new MediaPlayer();
-  
+        public static MediaPlayer player = new MediaPlayer();
+                 
         protected ManualResetEvent _resetEvent = new ManualResetEvent(false);   //ждун
+
 
         public MainWindow()
         {
             InitializeComponent();
             PrintDebug(DebugLevel.Info, "Инициализация компонентов завершена!");
+            PrintDebug(DebugLevel.System,$"Application guid : {GUID}");
             LoadImage();
             CheckUpdates();
             CheckZclient();
-            
+
+            player.MediaEnded += playFinished;
             App.Client.ErrorOccured += Client_ErrorOccured;
             App.Client.UserInfoReceived += Client_UserInfoReceived;
             App.Client.GameStateReceived += Client_GameStateReceived;
@@ -148,11 +153,11 @@ Exit
             Dispatcher.Invoke(() =>
             {
                 if (!Settings.Default.Config.config.CheckUpdates) return;
-                string currentVersion = Version.ToLower();
+                string currentVersion = Version + ":" + GUID.ToUpper();
                 string remoteVersion = "";
                 var obj = new WebClient();
                 PrintDebug(DebugLevel.Warn, "Проверяю обновления Лаунчера");
-                remoteVersion = obj.DownloadString(new Uri(RemoteVersionLink)).ToLower();
+                remoteVersion = obj.DownloadString(new Uri(RemoteVersionLink)).ToUpper();
 
                 if (string.IsNullOrEmpty(remoteVersion))
                     PrintDebug(DebugLevel.Error, "Невозможно проверить ОБНОВЛЕНИЯ");
@@ -167,7 +172,7 @@ Exit
                         changelog = "АВТОР НЕ УКАЗАЛ";
 
                     var mbr = MessageBox.Show(
-                        $"Текущая  версия Лаунчера : {Version} \n Последняя  версия Лаунчера : {remoteVersion}\n  \n Список Изменений : \n {changelog} \n \n \n Обновить сейчас?",
+                        $"Текущая  версия Лаунчера : {currentVersion} \n Последняя  версия Лаунчера : {remoteVersion}\n  \n Список Изменений : \n {changelog} \n \n \n Обновить сейчас?",
                         "Обновление Лаунчера", MessageBoxButton.YesNo);
 
                     if (mbr != MessageBoxResult.Yes) return;
@@ -469,7 +474,22 @@ Exit
             }
         }
 
+        private void playFinished(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                player.Stop();
+                player.Play();
+            });
+            PrintDebug(DebugLevel.Warn, "Проигрывание завершено!");
+        }
+
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            PlayMusic();
+        }
+
+        public void PlayMusic()
         {
             if (Settings.Default.Config.config.IsMusicEnabled)
             {
@@ -498,6 +518,11 @@ Exit
                     });
                 }
             }
+        }
+
+        public static void ShutOffMusic()
+        {
+            player.Stop();
         }
 
         private void MetroWindow_Closing(object sender, CancelEventArgs e)
