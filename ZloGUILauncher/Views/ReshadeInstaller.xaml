@@ -12,7 +12,9 @@
         ShowSystemMenuOnRightClick="False"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-  
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+        </Style>
     </Window.Resources>
     
     <Grid>
@@ -31,17 +33,17 @@
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="0" Margin="5,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
             <TextBlock  Text="Игра установлена : "/>
-            <TextBlock  Text="{Binding Path=Path}" FontSize ="9"/>
+            <TextBlock  Text="{Binding ElementName=GameSelector,Path=SelectedItem.Path}" FontSize ="9"/>
         </StackPanel>
         <TextBlock Name="IsInstalled" Grid.Column="0" Grid.Row="1" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock.Style>
                 <Style  TargetType="{x:Type TextBlock}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=isReshadeInstalled}" Value="True">
+                        <DataTrigger Binding="{Binding ElementName=GameSelector,Path=SelectedItem.isReshadeInstalled,UpdateSourceTrigger=PropertyChanged}" Value="True">
                             <Setter Property="Text" Value="Reshade installed"/>
                             <Setter Property="Foreground" Value="Lime"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Path=isReshadeInstalled}" Value="False">
+                        <DataTrigger Binding="{Binding ElementName=GameSelector,Path=SelectedItem.isReshadeInstalled,UpdateSourceTrigger=PropertyChanged}" Value="False">
                             <Setter Property="Text" Value="Reshade not installed"/>
                             <Setter Property="Foreground" Value="DarkRed"/>
                         </DataTrigger>
@@ -49,28 +51,34 @@
                 </Style>
             </TextBlock.Style>
         </TextBlock>
-        <Button Grid.Column="0" Grid.Row="2" Content="Установить" Background="LimeGreen" HorizontalAlignment="Right" Height="20" Width="100" Margin="0,0,45,0">
+        <Button Grid.Column="0" Grid.Row="2" Content="Установить" Background="LimeGreen" HorizontalAlignment="Right" Height="20" Width="100" Margin="0,0,45,0" Click="InstallReshade">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=isReshadeInstalled}" Value="True">
+                        <DataTrigger Binding="{Binding ElementName=GameSelector,Path=SelectedItem.isInstalled,UpdateSourceTrigger=PropertyChanged}" Value="True">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=GameSelector,Path=SelectedItem.isInstalled,UpdateSourceTrigger=PropertyChanged}" Value="False">
                             <Setter Property="IsEnabled" Value="False"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Path=isReshadeInstalled}" Value="False">
+                        <DataTrigger Binding="{Binding ElementName=GameSelector,Path=SelectedItem.isReshadeInstalled,UpdateSourceTrigger=PropertyChanged}" Value="True">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=GameSelector,Path=SelectedItem.isReshadeInstalled,UpdateSourceTrigger=PropertyChanged}" Value="False">
                             <Setter Property="IsEnabled" Value="True"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Button.Style>
         </Button>
-        <Button Grid.Column="1" Grid.Row="2" Content="Удалить" Background="DarkRed"  HorizontalAlignment="Left" Height="20" Width="100" Margin="45,0,0,0">
+        <Button Grid.Column="1" Grid.Row="2" Content="Удалить" Background="DarkRed"  HorizontalAlignment="Left" Height="20" Width="100" Margin="45,0,0,0" Click="DeleteReshade">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=isReshadeInstalled}" Value="True">
+                        <DataTrigger Binding="{Binding ElementName=GameSelector,Path=SelectedItem.isReshadeInstalled,UpdateSourceTrigger=PropertyChanged}" Value="True">
                             <Setter Property="IsEnabled" Value="True"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Path=isReshadeInstalled}" Value="False">
+                        <DataTrigger Binding="{Binding ElementName=GameSelector,Path=SelectedItem.isReshadeInstalled,UpdateSourceTrigger=PropertyChanged}" Value="False">
                             <Setter Property="IsEnabled" Value="False"/>
                         </DataTrigger>
                     </Style.Triggers>

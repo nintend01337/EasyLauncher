@@ -113,6 +113,16 @@ namespace ZloGUILauncher.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] Reshade {
+            get {
+                object obj = ResourceManager.GetObject("Reshade", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] winhttp {
             get {
                 object obj = ResourceManager.GetObject("winhttp", resourceCulture);

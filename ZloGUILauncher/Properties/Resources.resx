@@ -142,4 +142,7 @@
   <data name="BF3FX" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\bf3fx.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Reshade" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Reshade.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

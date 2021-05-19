@@ -50,7 +50,7 @@ namespace ZloGUILauncher
         public const string LauncherNew = "Easy_New.exe";
         public const string Log = "Easy.log";
         public const string Autor = "nintend01337";
-        public const string GUID = "0xFDCD2684";
+        public const string GUID = "0xFDCD2686";
         public string Version = "1.6.4";
         public string ApiVersion { get; set; }
         public string Soldiername { get; set; }
