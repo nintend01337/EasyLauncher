@@ -3,6 +3,7 @@
 ## This is the unofficial Launcher for Battlefield 3 , 4 , Hardline special for ZloGames Project using ZloAPI
 
 ![](https://i.imgur.com/TSz0k3e.jpeg)
+![](https://i.imgur.com/AJwBUIv.png)
 ![](https://i.imgur.com/9L9TNhW.png)
 ![](https://i.imgur.com/0fr55oa.png)
 
